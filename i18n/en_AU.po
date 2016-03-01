@@ -1,0 +1,981 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * hybrid
+# 
+# Translators:
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-21 14:07+0000\n"
+"PO-Revision-Date: 2015-07-31 08:13+0000\n"
+"Last-Translator: Martin Trigaux\n"
+"Language-Team: English (Australia) (http://www.transifex.com/odoo/odoo-8/language/en_AU/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: en_AU\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: hybrid
+#: code:addons/hybrid/hybrid.py:158
+#, python-format
+msgid "%s (copy)"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.open_view_employee_list_my
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to add a new employee.\n"
+"              </p><p>\n"
+"                With just a quick glance on the Odoo employee screen, you\n"
+"                can easily find all the information you need for each person;\n"
+"                contact data, job position, availability, etc.\n"
+"              </p>\n"
+"            "
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.open_module_tree_department
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to create a department.\n"
+"              </p><p>\n"
+"                Odoo's department structure is used to manage all documents\n"
+"                related to employees by departments: expenses, timesheets,\n"
+"                leaves and holidays, recruitments, etc.\n"
+"              </p>\n"
+"            "
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.view_department_form_installer
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to define a new department.\n"
+"              </p><p>\n"
+"                Your departments structure is used to manage all documents\n"
+"                related to employees by departments: expenses and timesheets,\n"
+"                leaves and holidays, recruitments, etc.\n"
+"              </p>\n"
+"            "
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.action_hybrid_job
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to define a new job position.\n"
+"              </p><p>\n"
+"                Job Positions are used to define jobs and their requirements.\n"
+"                You can keep track of the number of employees you have per job\n"
+"                position and follow the evolution according to what you planned\n"
+"                for the future.\n"
+"              </p><p>\n"
+"                You can attach a survey to a job position. It will be used in\n"
+"                the recruitment process to evaluate the applicants for this job\n"
+"                position.\n"
+"              </p>\n"
+"            "
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Active"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Additional Features"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_account_analytic_analysis:0
+msgid ""
+"Allow invoicing based on timesheets (the sale application will be installed)"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_timesheet_sheet:0
+msgid "Allow timesheets validation by managers"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Apply"
+msgstr "Apply"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_open_view_attendance_reason_new_config
+msgid "Attendance"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,bank_account_id:0
+msgid "Bank Account Number"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Birth"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.job,state:0
+msgid ""
+"By default 'Closed', set it to 'In Recruitment' if recruitment process is "
+"going on for this job position."
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Cancel"
+msgstr "Cancel"
+
+#. module: hybrid
+#: field:hybrid.cloud,child_ids:0
+msgid "Child Categories"
+msgstr "Child Categories"
+
+#. module: hybrid
+#: field:hybrid.department,child_ids:0
+msgid "Child Departments"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Citizenship & Other Info"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,city:0
+msgid "City"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter field:hybrid.user,coach_id:0
+msgid "Coach"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,color:0
+msgid "Color Index"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_tree
+msgid "Companies"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.department,company_id:0 view:hybrid.user:hybrid.view_employee_filter
+#: view:hybrid.job:hybrid.view_job_filter field:hybrid.job,company_id:0
+msgid "Company"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_configuration
+msgid "Configuration"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+#: model:ir.actions.act_window,name:hybrid.action_hybrid_cloud_configuration
+msgid "Configure Hybrid Cloud"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Contact Information"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Contracts"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.view_department_form_installer
+msgid "Create Your Departments"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,create_uid:0 field:hybrid.department,create_uid:0
+#: field:hybrid.user,create_uid:0 field:hybrid.cloud,create_uid:0
+#: field:hybrid.job,create_uid:0
+msgid "Created by"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,create_date:0 field:hybrid.department,create_date:0
+#: field:hybrid.user,create_date:0 field:hybrid.cloud,create_date:0
+#: field:hybrid.job,create_date:0
+msgid "Created on"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.job,no_of_employee:0
+msgid "Current Number of Employees"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,birthday:0
+msgid "Date of Birth"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,message_last_post:0 help:hybrid.job,message_last_post:0
+msgid "Date of the last message posted on the record."
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_filter
+#: view:hybrid.user:hybrid.view_employee_filter field:hybrid.user,department_id:0
+#: view:hybrid.job:hybrid.view_job_filter field:hybrid.job,department_id:0
+msgid "Department"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.department,name:0
+msgid "Department Name"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_filter
+#: model:ir.actions.act_window,name:hybrid.open_module_tree_department
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_department_tree
+msgid "Departments"
+msgstr ""
+
+#. module: hybrid
+#: field:res.users,display_employees_suggestions:0
+msgid "Display Employees Suggestions"
+msgstr ""
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Divorced"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_gamification:0
+msgid "Drive engagement with challenges and badges"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+#: model:ir.model,name:hybrid.model_hybrid_user
+msgid "Employee"
+msgstr "Employee"
+
+#. module: hybrid
+#: view:hybrid.cloud:hybrid.view_employee_category_form
+#: model:ir.model,name:hybrid.model_hybrid_cloud
+msgid "Employee Category"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.cloud,name:0
+msgid "Employee Tag"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_view_categ_form
+#: model:ir.ui.menu,name:hybrid.menu_view_employee_category_form
+msgid "Employee Tags"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,bank_account_id:0
+msgid "Employee bank salary account"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter
+#: view:hybrid.user:hybrid.view_employee_tree
+#: view:hybrid.user:hybrid.view_partner_tree2
+#: field:hybrid.cloud,employee_ids:0 field:hybrid.job,employee_ids:0
+#: model:ir.actions.act_window,name:hybrid.hybrid_user_normal_action_tree
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_list
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_list_my
+#: model:ir.ui.menu,name:hybrid.menu_open_view_employee_list_my
+msgid "Employees"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.cloud:hybrid.view_employee_category_list
+#: view:hybrid.cloud:hybrid.view_employee_category_tree
+msgid "Employees Categories"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_tree
+msgid "Employees Structure"
+msgstr ""
+
+#. module: hybrid
+#: constraint:hybrid.cloud:0
+msgid "Error! You cannot create recursive Categories."
+msgstr ""
+
+#. module: hybrid
+#: constraint:hybrid.department:0
+msgid "Error! You cannot create recursive departments."
+msgstr ""
+
+#. module: hybrid
+#: constraint:hybrid.user:0
+msgid "Error! You cannot create recursive hierarchy of Employee(s)."
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.job,no_of_recruitment:0
+msgid "Expected New Employees"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.job,expected_employees:0
+msgid ""
+"Expected number of employees for this job position after new recruitment."
+msgstr ""
+
+#. module: hybrid
+#: selection:hybrid.user,gender:0
+msgid "Female"
+msgstr "Female"
+
+#. module: hybrid
+#. openerp-web
+#: code:addons/hybrid_cloud/static/src/xml/suggestions.xml:29
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+#, python-format
+msgid "Follow"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,message_follower_ids:0
+#: field:hybrid.job,message_follower_ids:0
+msgid "Followers"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+msgid "Following"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,gender:0
+msgid "Gender"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter view:hybrid.job:hybrid.view_job_filter
+msgid "Group By"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "HR Settings"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.job,no_of_hired_employee:0
+msgid "Hired Employees"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,message_summary:0 help:hybrid.job,message_summary:0
+msgid ""
+"Holds the Chatter summary (number of messages, ...). This summary is "
+"directly in html format in order to be inserted in kanban views."
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,address_home_id:0
+msgid "Home Address"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_main
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_reporting
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_root
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_cloud_configuration
+msgid "Hybrid Cloud"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Hybrid Cloud Management"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,id:0 field:hybrid.department,id:0
+#: field:hybrid.user,id:0 field:hybrid.cloud,id:0 field:hybrid.job,id:0
+msgid "ID"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,identification_id:0
+msgid "Identification No"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,message_unread:0 help:hybrid.job,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_job_filter
+msgid "In Position"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_job_filter
+msgid "In Recruitment"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_attendance:0
+msgid "Install attendances feature"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Install your country's payroll"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,message_is_follower:0 field:hybrid.job,message_is_follower:0
+msgid "Is a Follower"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter view:hybrid.job:hybrid.view_hybrid_job_form
+#: view:hybrid.job:hybrid.view_hybrid_job_tree view:hybrid.job:hybrid.view_job_filter
+msgid "Job"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.job,description:0
+msgid "Job Description"
+msgstr "Job Description"
+
+#. module: hybrid
+#: field:hybrid.job,name:0
+msgid "Job Name"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.model,name:hybrid.model_hybrid_job
+msgid "Job Position"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.action_hybrid_job
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_job_position
+msgid "Job Positions"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,job_id:0
+msgid "Job Title"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.department,jobs_ids:0 view:hybrid.job:hybrid.view_job_filter
+msgid "Jobs"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,message_last_post:0 field:hybrid.job,message_last_post:0
+msgid "Last Message Date"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,write_uid:0 field:hybrid.department,write_uid:0
+#: field:hybrid.user,write_uid:0 field:hybrid.cloud,write_uid:0
+#: field:hybrid.job,write_uid:0
+msgid "Last Updated by"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,write_date:0 field:hybrid.department,write_date:0
+#: field:hybrid.user,write_date:0 field:hybrid.cloud,write_date:0
+msgid "Last Updated on"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,last_login:0
+msgid "Latest Connection"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "Launch Recruitment"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_open_view_attendance_reason_config
+msgid "Leaves"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,login:0
+msgid "Login"
+msgstr "Login"
+
+#. module: hybrid
+#: selection:hybrid.user,gender:0
+msgid "Male"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_expense:0
+msgid "Manage employees expenses"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_holidays:0
+msgid "Manage holidays, leaves and allocation requests"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_payroll:0
+msgid "Manage payroll"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_recruitment:0
+msgid "Manage the recruitment process"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_timesheet:0
+msgid "Manage timesheets"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.department,manager_id:0 view:hybrid.user:hybrid.view_employee_filter
+#: field:hybrid.user,parent_id:0
+msgid "Manager"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,marital:0
+msgid "Marital Status"
+msgstr ""
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Married"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,image_medium:0
+msgid "Medium-sized photo"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,image_medium:0
+msgid ""
+"Medium-sized photo of the employee. It is automatically resized as a "
+"128x128px image, with aspect ratio preserved. Use this field in form views "
+"or some kanban views."
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.department,member_ids:0
+msgid "Members"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,message_ids:0 field:hybrid.job,message_ids:0
+msgid "Messages"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,message_ids:0 help:hybrid.job,message_ids:0
+msgid "Messages and communication history"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.department,complete_name:0 field:hybrid.user,name_related:0
+#: field:hybrid.cloud,complete_name:0
+msgid "Name"
+msgstr "Name"
+
+#. module: hybrid
+#: field:hybrid.user,country_id:0
+msgid "Nationality"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.department,note:0
+msgid "Note"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,notes:0
+msgid "Notes"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.job,no_of_employee:0
+msgid "Number of employees currently occupying this job position."
+msgstr ""
+
+#. module: hybrid
+#: sql_constraint:hybrid.job:0
+msgid ""
+"Number of hired employee must be less than expected number of employee in "
+"recruitment."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.job,no_of_hired_employee:0
+msgid ""
+"Number of hired employees for this job position during recruitment phase."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.job,no_of_recruitment:0
+msgid "Number of new employees you expect to recruit."
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,work_location:0
+msgid "Office Location"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.client,name:hybrid.action_client_hybrid_menu
+msgid "Open HR Menu"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_evaluation:0
+msgid "Organize employees periodic evaluation"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,otherid:0
+msgid "Other Id"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Other Information ..."
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.department,parent_id:0
+msgid "Parent Department"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.cloud,parent_id:0
+msgid "Parent Employee Tag"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,passport_id:0
+msgid "Passport No"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_payroll_modules
+msgid "Payroll"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Personal Information"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,image:0
+msgid "Photo"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Position"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Public Information"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_contract:0
+msgid "Record contracts per employee"
+msgstr ""
+
+#. module: hybrid
+#: selection:hybrid.job,state:0
+msgid "Recruitment Closed"
+msgstr ""
+
+#. module: hybrid
+#: selection:hybrid.job,state:0
+msgid "Recruitment in Progress"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Related User"
+msgstr ""
+
+#. module: hybrid
+#: field:res.users,employee_ids:0
+msgid "Related employees"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_reporting_timesheet
+msgid "Reports"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.job,requirements:0
+msgid "Requirements"
+msgstr "Requirements"
+
+#. module: hybrid
+#: field:hybrid.user,resource_id:0
+msgid "Resource"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,sinid:0
+msgid "SIN No"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,ssnid:0
+msgid "SSN No"
+msgstr ""
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Single"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,image_small:0
+msgid "Small-sized photo"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,image_small:0
+msgid ""
+"Small-sized photo of the employee. It is automatically resized as a 64x64px "
+"image, with aspect ratio preserved. Use this field anywhere a small image is"
+" required."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,sinid:0
+msgid "Social Insurance Number"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,ssnid:0
+msgid "Social Security Number"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form view:hybrid.job:hybrid.view_job_filter
+#: field:hybrid.job,state:0
+msgid "Status"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "Stop Recruitment"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.action2
+msgid "Subordinate Hierarchy"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,child_ids:0
+msgid "Subordinates"
+msgstr ""
+
+#. module: hybrid
+#. openerp-web
+#: code:addons/hybrid_cloud/static/src/xml/suggestions.xml:15
+#, python-format
+msgid "Suggested Employees"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,message_summary:0 field:hybrid.job,message_summary:0
+msgid "Summary"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,category_ids:0
+msgid "Tags"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Talent Management"
+msgstr ""
+
+#. module: hybrid
+#: sql_constraint:hybrid.job:0
+msgid "The name of the job position must be unique per department in company!"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,image:0
+msgid ""
+"This field holds the image used as photo for the employee, limited to "
+"1024x1024px."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_account_analytic_analysis:0
+msgid ""
+"This installs the module account_analytic_analysis, which will install sales"
+" management too."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_attendance:0
+msgid "This installs the module hybrid_attendance."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_contract:0
+msgid "This installs the module hybrid_contract."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_evaluation:0
+msgid "This installs the module hybrid_evaluation."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_expense:0
+msgid "This installs the module hybrid_expense."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_gamification:0
+msgid "This installs the module hybrid_gamification."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_holidays:0
+msgid "This installs the module hybrid_holidays."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_payroll:0
+msgid "This installs the module hybrid_payroll."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_recruitment:0
+msgid "This installs the module hybrid_recruitment."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_timesheet:0
+msgid "This installs the module hybrid_timesheet."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_timesheet_sheet:0
+msgid "This installs the module hybrid_timesheet_sheet."
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Time Tracking"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.job,expected_employees:0
+msgid "Total Forecasted Employees"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+msgid "Unfollow"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,message_unread:0 field:hybrid.job,message_unread:0
+msgid "Unread Messages"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.job,write_date:0
+msgid "Update Date"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.model,name:hybrid.model_res_users
+msgid "Users"
+msgstr ""
+
+#. module: hybrid
+#: code:addons/hybrid/hybrid.py:273
+#, python-format
+msgid "Welcome to %s! Please help him/her take the first steps with Odoo!"
+msgstr ""
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Widower"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,work_email:0
+msgid "Work Email"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,mobile_phone:0
+msgid "Work Mobile"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,work_phone:0
+msgid "Work Phone"
+msgstr "Work Phone"
+
+#. module: hybrid
+#: field:hybrid.user,address_id:0
+msgid "Working Address"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_form
+msgid "department"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "e.g. Part Time"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "new employee(s) expected"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "or"
+msgstr "or"

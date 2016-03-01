@@ -1,0 +1,982 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * hybrid
+# 
+# Translators:
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014
+# Mikael Åkerberg <mikael.akerberg@dermanord.se>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-21 14:07+0000\n"
+"PO-Revision-Date: 2015-10-16 08:13+0000\n"
+"Last-Translator: Martin Trigaux\n"
+"Language-Team: Swedish (http://www.transifex.com/odoo/odoo-8/language/sv/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: hybrid
+#: code:addons/hybrid/hybrid.py:158
+#, python-format
+msgid "%s (copy)"
+msgstr "%s (kopia)"
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.open_view_employee_list_my
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to add a new employee.\n"
+"              </p><p>\n"
+"                With just a quick glance on the Odoo employee screen, you\n"
+"                can easily find all the information you need for each person;\n"
+"                contact data, job position, availability, etc.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\nKlicka här för att lägga till en ny medarbetare.\n</p><p>\nBara genom en snabb överblick på Odoo anställningsregister,\nhittar du lätt all information du behöver för varje person;\nkontaktuppgifter, befattning, tillgänglighet, etc.\n</p>"
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.open_module_tree_department
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to create a department.\n"
+"              </p><p>\n"
+"                Odoo's department structure is used to manage all documents\n"
+"                related to employees by departments: expenses, timesheets,\n"
+"                leaves and holidays, recruitments, etc.\n"
+"              </p>\n"
+"            "
+msgstr ""
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.view_department_form_installer
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to define a new department.\n"
+"              </p><p>\n"
+"                Your departments structure is used to manage all documents\n"
+"                related to employees by departments: expenses and timesheets,\n"
+"                leaves and holidays, recruitments, etc.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\"> \n                 Klicka för att definiera en ny avdelning. \n               </p><p> \n                 Din avdelningsstruktur används för att hantera alla dokument \n                 relaterade till de anställda från avdelningarna: kostnader och tidrapporter, \n                 blad och helgdagar, rekryteringar etc. \n               </p>\n            "
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.action_hybrid_job
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to define a new job position.\n"
+"              </p><p>\n"
+"                Job Positions are used to define jobs and their requirements.\n"
+"                You can keep track of the number of employees you have per job\n"
+"                position and follow the evolution according to what you planned\n"
+"                for the future.\n"
+"              </p><p>\n"
+"                You can attach a survey to a job position. It will be used in\n"
+"                the recruitment process to evaluate the applicants for this job\n"
+"                position.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\"> \n                 Klicka för att definiera en ny befattning. \n               </p><p> \n                 Befattningar används för att definiera arbetsuppgifter och deras krav. \n                 Du kan hålla reda på hur många anställda du har per befattning \n                 och följa utvecklingen efter vad du planerat \n                 för framtiden. \n               </p><p> \n                 Du kan bifoga en enkät till en befattning. Den kommer att användas i \n                 rekryteringsprocessen för att utvärdera sökande till befattningen. \n               </p>\n            "
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Active"
+msgstr "Aktiv"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Additional Features"
+msgstr "Extra funktioner"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_account_analytic_analysis:0
+msgid ""
+"Allow invoicing based on timesheets (the sale application will be installed)"
+msgstr "Tillåter fakturering baserat på tidrapporter (kundorder-modulen kommer installeras)"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_timesheet_sheet:0
+msgid "Allow timesheets validation by managers"
+msgstr "Tillåter att tidrapporter granskas av närmaste chef"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Apply"
+msgstr "Verkställ"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_open_view_attendance_reason_new_config
+msgid "Attendance"
+msgstr "Närvarande"
+
+#. module: hybrid
+#: field:hybrid.user,bank_account_id:0
+msgid "Bank Account Number"
+msgstr "Bankkontonummer"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Birth"
+msgstr "Född"
+
+#. module: hybrid
+#: help:hybrid.job,state:0
+msgid ""
+"By default 'Closed', set it to 'In Recruitment' if recruitment process is "
+"going on for this job position."
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Cancel"
+msgstr "Avbryt"
+
+#. module: hybrid
+#: field:hybrid.cloud,child_ids:0
+msgid "Child Categories"
+msgstr "Underkategori"
+
+#. module: hybrid
+#: field:hybrid.department,child_ids:0
+msgid "Child Departments"
+msgstr "Underavdelning"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Citizenship & Other Info"
+msgstr "Medborgarskap och annan information"
+
+#. module: hybrid
+#: field:hybrid.user,city:0
+msgid "City"
+msgstr "Ort"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter field:hybrid.user,coach_id:0
+msgid "Coach"
+msgstr "Handledare"
+
+#. module: hybrid
+#: field:hybrid.user,color:0
+msgid "Color Index"
+msgstr "Färgindex"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_tree
+msgid "Companies"
+msgstr "Företag"
+
+#. module: hybrid
+#: field:hybrid.department,company_id:0 view:hybrid.user:hybrid.view_employee_filter
+#: view:hybrid.job:hybrid.view_job_filter field:hybrid.job,company_id:0
+msgid "Company"
+msgstr "Företag"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_configuration
+msgid "Configuration"
+msgstr "Konfiguration"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+#: model:ir.actions.act_window,name:hybrid.action_hybrid_cloud_configuration
+msgid "Configure Hybrid Cloud"
+msgstr "Konfgiurera personaladministrationen"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Contact Information"
+msgstr "Kontaktinformation"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Contracts"
+msgstr "Avtal"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.view_department_form_installer
+msgid "Create Your Departments"
+msgstr "Skapa din avdelning"
+
+#. module: hybrid
+#: field:hybrid.config.settings,create_uid:0 field:hybrid.department,create_uid:0
+#: field:hybrid.user,create_uid:0 field:hybrid.cloud,create_uid:0
+#: field:hybrid.job,create_uid:0
+msgid "Created by"
+msgstr "Skapad av"
+
+#. module: hybrid
+#: field:hybrid.config.settings,create_date:0 field:hybrid.department,create_date:0
+#: field:hybrid.user,create_date:0 field:hybrid.cloud,create_date:0
+#: field:hybrid.job,create_date:0
+msgid "Created on"
+msgstr "Skapad den"
+
+#. module: hybrid
+#: field:hybrid.job,no_of_employee:0
+msgid "Current Number of Employees"
+msgstr "Aktuellt antal anställda"
+
+#. module: hybrid
+#: field:hybrid.user,birthday:0
+msgid "Date of Birth"
+msgstr "Födelsedatum"
+
+#. module: hybrid
+#: help:hybrid.user,message_last_post:0 help:hybrid.job,message_last_post:0
+msgid "Date of the last message posted on the record."
+msgstr "Datum för senast publicerade meddelandet i loggen."
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_filter
+#: view:hybrid.user:hybrid.view_employee_filter field:hybrid.user,department_id:0
+#: view:hybrid.job:hybrid.view_job_filter field:hybrid.job,department_id:0
+msgid "Department"
+msgstr "Avdelning"
+
+#. module: hybrid
+#: field:hybrid.department,name:0
+msgid "Department Name"
+msgstr "Avdelningsnamn"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_filter
+#: model:ir.actions.act_window,name:hybrid.open_module_tree_department
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_department_tree
+msgid "Departments"
+msgstr "Avdelningar"
+
+#. module: hybrid
+#: field:res.users,display_employees_suggestions:0
+msgid "Display Employees Suggestions"
+msgstr "Visa Anställdas Förslag"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Divorced"
+msgstr "Skild"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_gamification:0
+msgid "Drive engagement with challenges and badges"
+msgstr "Öka engagemang med utmaningar och märken"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+#: model:ir.model,name:hybrid.model_hybrid_user
+msgid "Employee"
+msgstr "Anställd"
+
+#. module: hybrid
+#: view:hybrid.cloud:hybrid.view_employee_category_form
+#: model:ir.model,name:hybrid.model_hybrid_cloud
+msgid "Employee Category"
+msgstr "Anställningskategori"
+
+#. module: hybrid
+#: field:hybrid.cloud,name:0
+msgid "Employee Tag"
+msgstr "Anställds etikett"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_view_categ_form
+#: model:ir.ui.menu,name:hybrid.menu_view_employee_category_form
+msgid "Employee Tags"
+msgstr "Medarbetaretiketter"
+
+#. module: hybrid
+#: help:hybrid.user,bank_account_id:0
+msgid "Employee bank salary account"
+msgstr "Anställds lönekonto"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter
+#: view:hybrid.user:hybrid.view_employee_tree
+#: view:hybrid.user:hybrid.view_partner_tree2
+#: field:hybrid.cloud,employee_ids:0 field:hybrid.job,employee_ids:0
+#: model:ir.actions.act_window,name:hybrid.hybrid_user_normal_action_tree
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_list
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_list_my
+#: model:ir.ui.menu,name:hybrid.menu_open_view_employee_list_my
+msgid "Employees"
+msgstr "Anställda"
+
+#. module: hybrid
+#: view:hybrid.cloud:hybrid.view_employee_category_list
+#: view:hybrid.cloud:hybrid.view_employee_category_tree
+msgid "Employees Categories"
+msgstr "Anställningskategorier"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_tree
+msgid "Employees Structure"
+msgstr "Struktur för de anställda"
+
+#. module: hybrid
+#: constraint:hybrid.cloud:0
+msgid "Error! You cannot create recursive Categories."
+msgstr "Fel! Du kan inte skapa rekursiva kategorier."
+
+#. module: hybrid
+#: constraint:hybrid.department:0
+msgid "Error! You cannot create recursive departments."
+msgstr "Fel! Rekursiv avdelningsstruktur ej tillåten."
+
+#. module: hybrid
+#: constraint:hybrid.user:0
+msgid "Error! You cannot create recursive hierarchy of Employee(s)."
+msgstr "Fel! Rekusriva hierarkier med anställda ej möjligt-"
+
+#. module: hybrid
+#: field:hybrid.job,no_of_recruitment:0
+msgid "Expected New Employees"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.job,expected_employees:0
+msgid ""
+"Expected number of employees for this job position after new recruitment."
+msgstr "Väntat antal anställda vid denna befattning efter en ny rekryteringsomgång."
+
+#. module: hybrid
+#: selection:hybrid.user,gender:0
+msgid "Female"
+msgstr "Kvinna"
+
+#. module: hybrid
+#. openerp-web
+#: code:addons/hybrid_cloud/static/src/xml/suggestions.xml:29
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+#, python-format
+msgid "Follow"
+msgstr "Följ"
+
+#. module: hybrid
+#: field:hybrid.user,message_follower_ids:0
+#: field:hybrid.job,message_follower_ids:0
+msgid "Followers"
+msgstr "Följare"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+msgid "Following"
+msgstr "Följer"
+
+#. module: hybrid
+#: field:hybrid.user,gender:0
+msgid "Gender"
+msgstr "Kön"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter view:hybrid.job:hybrid.view_job_filter
+msgid "Group By"
+msgstr "Gruppera efter"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "HR Settings"
+msgstr "Personalinställningar"
+
+#. module: hybrid
+#: field:hybrid.job,no_of_hired_employee:0
+msgid "Hired Employees"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,message_summary:0 help:hybrid.job,message_summary:0
+msgid ""
+"Holds the Chatter summary (number of messages, ...). This summary is "
+"directly in html format in order to be inserted in kanban views."
+msgstr "Lagrar pladder-sammanfattning (antal meddelanden, ...). Denna sammanfattning presenteras i html-format för att kunna sättas in i kanban vyer."
+
+#. module: hybrid
+#: field:hybrid.user,address_home_id:0
+msgid "Home Address"
+msgstr "HemAdress"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_main
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_reporting
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_root
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_cloud_configuration
+msgid "Hybrid Cloud"
+msgstr "Personal"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Hybrid Cloud Management"
+msgstr "Personaladministration"
+
+#. module: hybrid
+#: field:hybrid.config.settings,id:0 field:hybrid.department,id:0
+#: field:hybrid.user,id:0 field:hybrid.cloud,id:0 field:hybrid.job,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: hybrid
+#: field:hybrid.user,identification_id:0
+msgid "Identification No"
+msgstr "Identifikations nr"
+
+#. module: hybrid
+#: help:hybrid.user,message_unread:0 help:hybrid.job,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "Om ikryssad nya meddelanden som kräver din uppmärksamhet"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_job_filter
+msgid "In Position"
+msgstr "I befattning"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_job_filter
+msgid "In Recruitment"
+msgstr "I anställningsprocessen"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_attendance:0
+msgid "Install attendances feature"
+msgstr "Installerar närvarofunktionerna"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Install your country's payroll"
+msgstr "Installera ditt lands lönehantering"
+
+#. module: hybrid
+#: field:hybrid.user,message_is_follower:0 field:hybrid.job,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Är en följare"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter view:hybrid.job:hybrid.view_hybrid_job_form
+#: view:hybrid.job:hybrid.view_hybrid_job_tree view:hybrid.job:hybrid.view_job_filter
+msgid "Job"
+msgstr "Jobb"
+
+#. module: hybrid
+#: field:hybrid.job,description:0
+msgid "Job Description"
+msgstr "Arbetsbeskrivning"
+
+#. module: hybrid
+#: field:hybrid.job,name:0
+msgid "Job Name"
+msgstr "Jobbnamn"
+
+#. module: hybrid
+#: model:ir.model,name:hybrid.model_hybrid_job
+msgid "Job Position"
+msgstr "Tjänst"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.action_hybrid_job
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_job_position
+msgid "Job Positions"
+msgstr "Befattningar"
+
+#. module: hybrid
+#: field:hybrid.user,job_id:0
+msgid "Job Title"
+msgstr "Befattning"
+
+#. module: hybrid
+#: field:hybrid.department,jobs_ids:0 view:hybrid.job:hybrid.view_job_filter
+msgid "Jobs"
+msgstr "Jobb"
+
+#. module: hybrid
+#: field:hybrid.user,message_last_post:0 field:hybrid.job,message_last_post:0
+msgid "Last Message Date"
+msgstr "Senast meddelandedatum"
+
+#. module: hybrid
+#: field:hybrid.config.settings,write_uid:0 field:hybrid.department,write_uid:0
+#: field:hybrid.user,write_uid:0 field:hybrid.cloud,write_uid:0
+#: field:hybrid.job,write_uid:0
+msgid "Last Updated by"
+msgstr "Senast uppdaterad av"
+
+#. module: hybrid
+#: field:hybrid.config.settings,write_date:0 field:hybrid.department,write_date:0
+#: field:hybrid.user,write_date:0 field:hybrid.cloud,write_date:0
+msgid "Last Updated on"
+msgstr "Senast uppdaterad"
+
+#. module: hybrid
+#: field:hybrid.user,last_login:0
+msgid "Latest Connection"
+msgstr "Senaste kontakt"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "Launch Recruitment"
+msgstr ""
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_open_view_attendance_reason_config
+msgid "Leaves"
+msgstr "Frånvaro"
+
+#. module: hybrid
+#: field:hybrid.user,login:0
+msgid "Login"
+msgstr "Logga in"
+
+#. module: hybrid
+#: selection:hybrid.user,gender:0
+msgid "Male"
+msgstr "Man"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_expense:0
+msgid "Manage employees expenses"
+msgstr "Utläggshantering"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_holidays:0
+msgid "Manage holidays, leaves and allocation requests"
+msgstr "Hantera röda dagar, ledighet och jobbönskemål"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_payroll:0
+msgid "Manage payroll"
+msgstr "Lönadministration"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_recruitment:0
+msgid "Manage the recruitment process"
+msgstr "Administrera rekryteringsprocessen"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_timesheet:0
+msgid "Manage timesheets"
+msgstr "Administrera tidrapporter"
+
+#. module: hybrid
+#: field:hybrid.department,manager_id:0 view:hybrid.user:hybrid.view_employee_filter
+#: field:hybrid.user,parent_id:0
+msgid "Manager"
+msgstr "Chef"
+
+#. module: hybrid
+#: field:hybrid.user,marital:0
+msgid "Marital Status"
+msgstr "Civilstånd"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Married"
+msgstr "Gift"
+
+#. module: hybrid
+#: field:hybrid.user,image_medium:0
+msgid "Medium-sized photo"
+msgstr "Medelstort foto"
+
+#. module: hybrid
+#: help:hybrid.user,image_medium:0
+msgid ""
+"Medium-sized photo of the employee. It is automatically resized as a "
+"128x128px image, with aspect ratio preserved. Use this field in form views "
+"or some kanban views."
+msgstr "Medelstort foto av den anställde. Det storleksändras automatiskt till 128x128px , med bildförhållande bevaras. Använd det här fältet i formulär vyer eller några Kanban vyer."
+
+#. module: hybrid
+#: field:hybrid.department,member_ids:0
+msgid "Members"
+msgstr "Medlemmar"
+
+#. module: hybrid
+#: field:hybrid.user,message_ids:0 field:hybrid.job,message_ids:0
+msgid "Messages"
+msgstr "Meddelanden"
+
+#. module: hybrid
+#: help:hybrid.user,message_ids:0 help:hybrid.job,message_ids:0
+msgid "Messages and communication history"
+msgstr "Meddelande och kommunikationshistorik"
+
+#. module: hybrid
+#: field:hybrid.department,complete_name:0 field:hybrid.user,name_related:0
+#: field:hybrid.cloud,complete_name:0
+msgid "Name"
+msgstr "Namn"
+
+#. module: hybrid
+#: field:hybrid.user,country_id:0
+msgid "Nationality"
+msgstr "Medborgarskap"
+
+#. module: hybrid
+#: field:hybrid.department,note:0
+msgid "Note"
+msgstr "Anteckning"
+
+#. module: hybrid
+#: field:hybrid.user,notes:0
+msgid "Notes"
+msgstr "Anteckningar"
+
+#. module: hybrid
+#: help:hybrid.job,no_of_employee:0
+msgid "Number of employees currently occupying this job position."
+msgstr "Antal anställda som förnärvarande innehar denna befattning."
+
+#. module: hybrid
+#: sql_constraint:hybrid.job:0
+msgid ""
+"Number of hired employee must be less than expected number of employee in "
+"recruitment."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.job,no_of_hired_employee:0
+msgid ""
+"Number of hired employees for this job position during recruitment phase."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.job,no_of_recruitment:0
+msgid "Number of new employees you expect to recruit."
+msgstr "Antal nya personer som väntas anställas"
+
+#. module: hybrid
+#: field:hybrid.user,work_location:0
+msgid "Office Location"
+msgstr "Kontorsplats"
+
+#. module: hybrid
+#: model:ir.actions.client,name:hybrid.action_client_hybrid_menu
+msgid "Open HR Menu"
+msgstr "Öppna personalmenyn"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_evaluation:0
+msgid "Organize employees periodic evaluation"
+msgstr "Anordna strukturerad utvärdering av personalen"
+
+#. module: hybrid
+#: field:hybrid.user,otherid:0
+msgid "Other Id"
+msgstr "Annat ID"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Other Information ..."
+msgstr "Övrig information ..."
+
+#. module: hybrid
+#: field:hybrid.department,parent_id:0
+msgid "Parent Department"
+msgstr "Huvudavdelning"
+
+#. module: hybrid
+#: field:hybrid.cloud,parent_id:0
+msgid "Parent Employee Tag"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,passport_id:0
+msgid "Passport No"
+msgstr "Passnummer"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_payroll_modules
+msgid "Payroll"
+msgstr "Lön"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Personal Information"
+msgstr "Personlig information"
+
+#. module: hybrid
+#: field:hybrid.user,image:0
+msgid "Photo"
+msgstr "Bild"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Position"
+msgstr "Tjänst"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Public Information"
+msgstr "Publik information"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_contract:0
+msgid "Record contracts per employee"
+msgstr "Registrera avtal per anställd"
+
+#. module: hybrid
+#: selection:hybrid.job,state:0
+msgid "Recruitment Closed"
+msgstr ""
+
+#. module: hybrid
+#: selection:hybrid.job,state:0
+msgid "Recruitment in Progress"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Related User"
+msgstr "Relaterad användare"
+
+#. module: hybrid
+#: field:res.users,employee_ids:0
+msgid "Related employees"
+msgstr "Relaterade anställda"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_reporting_timesheet
+msgid "Reports"
+msgstr "Rapporter"
+
+#. module: hybrid
+#: field:hybrid.job,requirements:0
+msgid "Requirements"
+msgstr "Krav"
+
+#. module: hybrid
+#: field:hybrid.user,resource_id:0
+msgid "Resource"
+msgstr "Resurs"
+
+#. module: hybrid
+#: field:hybrid.user,sinid:0
+msgid "SIN No"
+msgstr "Personnummer"
+
+#. module: hybrid
+#: field:hybrid.user,ssnid:0
+msgid "SSN No"
+msgstr "Personnummer"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Single"
+msgstr "Singel"
+
+#. module: hybrid
+#: field:hybrid.user,image_small:0
+msgid "Small-sized photo"
+msgstr "Litet fotografi"
+
+#. module: hybrid
+#: help:hybrid.user,image_small:0
+msgid ""
+"Small-sized photo of the employee. It is automatically resized as a 64x64px "
+"image, with aspect ratio preserved. Use this field anywhere a small image is"
+" required."
+msgstr "Litet foto av den anställde. Det storleksändras automatiskt till 64x64px, men bildförhållandet bevaras. Använd det här fältet i de fall en liten bild krävs."
+
+#. module: hybrid
+#: help:hybrid.user,sinid:0
+msgid "Social Insurance Number"
+msgstr "Försäkringsnummer"
+
+#. module: hybrid
+#: help:hybrid.user,ssnid:0
+msgid "Social Security Number"
+msgstr "Personnummer"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form view:hybrid.job:hybrid.view_job_filter
+#: field:hybrid.job,state:0
+msgid "Status"
+msgstr "Status"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "Stop Recruitment"
+msgstr "Avsluta rekryteringen"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.action2
+msgid "Subordinate Hierarchy"
+msgstr "Underordnad hierarki"
+
+#. module: hybrid
+#: field:hybrid.user,child_ids:0
+msgid "Subordinates"
+msgstr "Underordnad"
+
+#. module: hybrid
+#. openerp-web
+#: code:addons/hybrid_cloud/static/src/xml/suggestions.xml:15
+#, python-format
+msgid "Suggested Employees"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,message_summary:0 field:hybrid.job,message_summary:0
+msgid "Summary"
+msgstr "Summering"
+
+#. module: hybrid
+#: field:hybrid.user,category_ids:0
+msgid "Tags"
+msgstr "Etiketter"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Talent Management"
+msgstr "Kompetensutveckling"
+
+#. module: hybrid
+#: sql_constraint:hybrid.job:0
+msgid "The name of the job position must be unique per department in company!"
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.user,image:0
+msgid ""
+"This field holds the image used as photo for the employee, limited to "
+"1024x1024px."
+msgstr "Detta fält innehåller ett foto av den anställde, begränsat till 1024x1024px."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_account_analytic_analysis:0
+msgid ""
+"This installs the module account_analytic_analysis, which will install sales"
+" management too."
+msgstr "Detta installerar modulen account_analytic_analysis, vilket kommer att installera kundorder också."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_attendance:0
+msgid "This installs the module hybrid_attendance."
+msgstr "Detta installerar modulen hybrid_attendance"
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_contract:0
+msgid "This installs the module hybrid_contract."
+msgstr "Detta installerar modulen hybrid_contract"
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_evaluation:0
+msgid "This installs the module hybrid_evaluation."
+msgstr "Detta installerar modulen hybrid_evaluation."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_expense:0
+msgid "This installs the module hybrid_expense."
+msgstr "Detta installerar modulen hybrid_expense."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_gamification:0
+msgid "This installs the module hybrid_gamification."
+msgstr ""
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_holidays:0
+msgid "This installs the module hybrid_holidays."
+msgstr "Detta installerar modulen hybrid_holidays"
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_payroll:0
+msgid "This installs the module hybrid_payroll."
+msgstr "Detta installerar modulen hybrid_payroll"
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_recruitment:0
+msgid "This installs the module hybrid_recruitment."
+msgstr "Detta installerar modulen hybrid_recruitment."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_timesheet:0
+msgid "This installs the module hybrid_timesheet."
+msgstr "Detta installerar modulen hybrid_timesheet."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_timesheet_sheet:0
+msgid "This installs the module hybrid_timesheet_sheet."
+msgstr "Detta installerar modulen hybrid_timesheet_sheet."
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Time Tracking"
+msgstr "Tidrapporter"
+
+#. module: hybrid
+#: field:hybrid.job,expected_employees:0
+msgid "Total Forecasted Employees"
+msgstr "Prognosticerat antal anställda"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+msgid "Unfollow"
+msgstr "Sluta följa"
+
+#. module: hybrid
+#: field:hybrid.user,message_unread:0 field:hybrid.job,message_unread:0
+msgid "Unread Messages"
+msgstr "Olästa meddelanden"
+
+#. module: hybrid
+#: field:hybrid.job,write_date:0
+msgid "Update Date"
+msgstr "Uppdateringsdatum"
+
+#. module: hybrid
+#: model:ir.model,name:hybrid.model_res_users
+msgid "Users"
+msgstr "Användare"
+
+#. module: hybrid
+#: code:addons/hybrid/hybrid.py:273
+#, python-format
+msgid "Welcome to %s! Please help him/her take the first steps with Odoo!"
+msgstr ""
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Widower"
+msgstr "Änkling"
+
+#. module: hybrid
+#: field:hybrid.user,work_email:0
+msgid "Work Email"
+msgstr "E-post arbete"
+
+#. module: hybrid
+#: field:hybrid.user,mobile_phone:0
+msgid "Work Mobile"
+msgstr "Arbetsmobil"
+
+#. module: hybrid
+#: field:hybrid.user,work_phone:0
+msgid "Work Phone"
+msgstr "Arbetstelefon"
+
+#. module: hybrid
+#: field:hybrid.user,address_id:0
+msgid "Working Address"
+msgstr "ArbetsAdress"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_form
+msgid "department"
+msgstr "avdelning"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "e.g. Part Time"
+msgstr "eg Deltid"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "new employee(s) expected"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "or"
+msgstr "eller"

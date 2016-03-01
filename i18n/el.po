@@ -1,0 +1,982 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * hybrid
+# 
+# Translators:
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014
+# Goutoudis Kostas <goutoudis@gmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-21 14:07+0000\n"
+"PO-Revision-Date: 2015-12-18 17:10+0000\n"
+"Last-Translator: Goutoudis Kostas <goutoudis@gmail.com>\n"
+"Language-Team: Greek (http://www.transifex.com/odoo/odoo-8/language/el/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: el\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: hybrid
+#: code:addons/hybrid/hybrid.py:158
+#, python-format
+msgid "%s (copy)"
+msgstr "%s (αντίγραφο)"
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.open_view_employee_list_my
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to add a new employee.\n"
+"              </p><p>\n"
+"                With just a quick glance on the Odoo employee screen, you\n"
+"                can easily find all the information you need for each person;\n"
+"                contact data, job position, availability, etc.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\nΚάντε κλικ για να προσθέσετε έναν νέο εργαζόμενο.\n</p><p>\nΜε μια σύντομη ματιά στην οθόνη εργαζόμενου στο Odoo, \nμπορείτε εύκολα να βρείτε όλες τις πληροφορίες που χρειάζεστε για κάθε άτομο;\nστοιχεία επαφής, θέση εργασίας, διαθεσιμότητα, κλπ.\n</p>"
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.open_module_tree_department
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to create a department.\n"
+"              </p><p>\n"
+"                Odoo's department structure is used to manage all documents\n"
+"                related to employees by departments: expenses, timesheets,\n"
+"                leaves and holidays, recruitments, etc.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\nΚάντε κλικ για να δημιουργήσετε ένα τμήμα.\n</p><p>\nΗ δομή του τμήματος του Odoo χρησιμοποιείται για τη διαχείριση όλων των δεδομένων\nπου σχετίζονται με τους εργαζόμενους ανά τμήματα: δαπάνες, φύλλα κατανομής χρόνου,\nάδειες και διακοπές, στρατολογήσεις, κλπ.\n</p>"
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.view_department_form_installer
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to define a new department.\n"
+"              </p><p>\n"
+"                Your departments structure is used to manage all documents\n"
+"                related to employees by departments: expenses and timesheets,\n"
+"                leaves and holidays, recruitments, etc.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\nΚάντε κλικ για να ορίσετε ένα νέο τμήμα.\n</p><p>\nΗ δομή των τμημάτων χρησιμοποίειται για τη διαχείριση όλων των εγγράφων\nσχετικά με τους εργαζόμενους ανά τμήματα: δαπάνες και φύλλα κατανομής χρόνου,\nάδειες και διακοπές, στρατολογήσεις, κλπ.\n</p>"
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.action_hybrid_job
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to define a new job position.\n"
+"              </p><p>\n"
+"                Job Positions are used to define jobs and their requirements.\n"
+"                You can keep track of the number of employees you have per job\n"
+"                position and follow the evolution according to what you planned\n"
+"                for the future.\n"
+"              </p><p>\n"
+"                You can attach a survey to a job position. It will be used in\n"
+"                the recruitment process to evaluate the applicants for this job\n"
+"                position.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\nΚάντε κλικ για να ορίσετε μια νέα θέση εργασίας.\nΟι Θέσεις Εργασίας χρησιμοποιούνται  για να ορίσετε εργασίες και τις απαιτήσεις τους.\nΜπορείτε να παρακολουθείτε τον αριθμό των εργαζομένων που έχετε για κάθε θέση εργασίας και να παρακολουθείτε την εξέλιξη σύμφωνα με αυτό που έχετε σχεδιάσει\nγια το μέλλον.\n</p><p>\nΜπορείτε να επισυνάψετε μια επισκόπηση σε μια θέση εργασίας. θα χρησιμοποιηθεί στη\nδιαδικασία στρατολόγησης για να αξιολογήσετε τους υποψήφιους για αυτή τη θέση εργασίας.\n</p>"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Active"
+msgstr "Ενεργό"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Additional Features"
+msgstr "Πρόσθετα Χαρακτηριστικά"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_account_analytic_analysis:0
+msgid ""
+"Allow invoicing based on timesheets (the sale application will be installed)"
+msgstr "Επιτρέψτε η τιμολόγηση να βασίζεται σε φύλλα κατανομής χρόνου (η εφαρμογή για τις πωλήσεις θα πρέπει να είναι εγκατεστημένη)"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_timesheet_sheet:0
+msgid "Allow timesheets validation by managers"
+msgstr "Επιτρέψτε την επικύρωση των φύλλων κατανομής χρόνου απο τους διαχειριστές"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Apply"
+msgstr "Εφαρμογή"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_open_view_attendance_reason_new_config
+msgid "Attendance"
+msgstr "Παρουσίες"
+
+#. module: hybrid
+#: field:hybrid.user,bank_account_id:0
+msgid "Bank Account Number"
+msgstr "Αριθμός Τραπεζικού Λογαριασμού"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Birth"
+msgstr "Γέννηση"
+
+#. module: hybrid
+#: help:hybrid.job,state:0
+msgid ""
+"By default 'Closed', set it to 'In Recruitment' if recruitment process is "
+"going on for this job position."
+msgstr "Εξ ορισμού το 'Κλειστό' ορίστε το στην 'Στελέχωση' αν η διαδικασία στελέχωσης συνεχίζεται για αυτή τη θέση εργασίας."
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+#. module: hybrid
+#: field:hybrid.cloud,child_ids:0
+msgid "Child Categories"
+msgstr "Υποκατηγορίες"
+
+#. module: hybrid
+#: field:hybrid.department,child_ids:0
+msgid "Child Departments"
+msgstr "Υπο- τμήματα"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Citizenship & Other Info"
+msgstr "Ιθαγένεια & Λοιπές Πληροφορίες"
+
+#. module: hybrid
+#: field:hybrid.user,city:0
+msgid "City"
+msgstr "Πόλη"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter field:hybrid.user,coach_id:0
+msgid "Coach"
+msgstr "Εκπαιδευτής"
+
+#. module: hybrid
+#: field:hybrid.user,color:0
+msgid "Color Index"
+msgstr "Χρωματισμός Δείκτη"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_tree
+msgid "Companies"
+msgstr "Εταιρείες"
+
+#. module: hybrid
+#: field:hybrid.department,company_id:0 view:hybrid.user:hybrid.view_employee_filter
+#: view:hybrid.job:hybrid.view_job_filter field:hybrid.job,company_id:0
+msgid "Company"
+msgstr "Εταιρεία"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_configuration
+msgid "Configuration"
+msgstr "Ρυθμίσεις"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+#: model:ir.actions.act_window,name:hybrid.action_hybrid_cloud_configuration
+msgid "Configure Hybrid Cloud"
+msgstr "Διαμόρφωση Ανθρωπίνων Πόρων"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Contact Information"
+msgstr "Πληροφορίες Επαφής"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Contracts"
+msgstr "Συμβάσεις"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.view_department_form_installer
+msgid "Create Your Departments"
+msgstr "Δημιουργήστε τα Τμήματα σας"
+
+#. module: hybrid
+#: field:hybrid.config.settings,create_uid:0 field:hybrid.department,create_uid:0
+#: field:hybrid.user,create_uid:0 field:hybrid.cloud,create_uid:0
+#: field:hybrid.job,create_uid:0
+msgid "Created by"
+msgstr "Δημιουργήθηκε από"
+
+#. module: hybrid
+#: field:hybrid.config.settings,create_date:0 field:hybrid.department,create_date:0
+#: field:hybrid.user,create_date:0 field:hybrid.cloud,create_date:0
+#: field:hybrid.job,create_date:0
+msgid "Created on"
+msgstr "Δημιουργήθηκε στις"
+
+#. module: hybrid
+#: field:hybrid.job,no_of_employee:0
+msgid "Current Number of Employees"
+msgstr "Τρέχων Αριθμός των Εργαζομένων"
+
+#. module: hybrid
+#: field:hybrid.user,birthday:0
+msgid "Date of Birth"
+msgstr "Ημερομηνία γεννήσεως"
+
+#. module: hybrid
+#: help:hybrid.user,message_last_post:0 help:hybrid.job,message_last_post:0
+msgid "Date of the last message posted on the record."
+msgstr "Ημερομηνία του τελευταίου μηνύματος "
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_filter
+#: view:hybrid.user:hybrid.view_employee_filter field:hybrid.user,department_id:0
+#: view:hybrid.job:hybrid.view_job_filter field:hybrid.job,department_id:0
+msgid "Department"
+msgstr "Τμήμα"
+
+#. module: hybrid
+#: field:hybrid.department,name:0
+msgid "Department Name"
+msgstr "Όνομα Τμήματος"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_filter
+#: model:ir.actions.act_window,name:hybrid.open_module_tree_department
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_department_tree
+msgid "Departments"
+msgstr "Τμήματα"
+
+#. module: hybrid
+#: field:res.users,display_employees_suggestions:0
+msgid "Display Employees Suggestions"
+msgstr "Εμφάνιση των Προτάσεων των Εργαζομένων"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Divorced"
+msgstr "Διαζευγμένος"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_gamification:0
+msgid "Drive engagement with challenges and badges"
+msgstr "Υποκινήστε την εμπλοκή με προκλήσεις και κονκάρδες"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+#: model:ir.model,name:hybrid.model_hybrid_user
+msgid "Employee"
+msgstr "Υπάλληλος"
+
+#. module: hybrid
+#: view:hybrid.cloud:hybrid.view_employee_category_form
+#: model:ir.model,name:hybrid.model_hybrid_cloud
+msgid "Employee Category"
+msgstr "Κατηγορία Εργαζομένου"
+
+#. module: hybrid
+#: field:hybrid.cloud,name:0
+msgid "Employee Tag"
+msgstr "Ετικέτα Εργαζόμενου"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_view_categ_form
+#: model:ir.ui.menu,name:hybrid.menu_view_employee_category_form
+msgid "Employee Tags"
+msgstr "Ετικέτες Εργαζομένων"
+
+#. module: hybrid
+#: help:hybrid.user,bank_account_id:0
+msgid "Employee bank salary account"
+msgstr "Τραπεζικός λογαριασμός για τη μισθοδοσία εργαζόμενου"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter
+#: view:hybrid.user:hybrid.view_employee_tree
+#: view:hybrid.user:hybrid.view_partner_tree2
+#: field:hybrid.cloud,employee_ids:0 field:hybrid.job,employee_ids:0
+#: model:ir.actions.act_window,name:hybrid.hybrid_user_normal_action_tree
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_list
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_list_my
+#: model:ir.ui.menu,name:hybrid.menu_open_view_employee_list_my
+msgid "Employees"
+msgstr "Υπάλληλοι"
+
+#. module: hybrid
+#: view:hybrid.cloud:hybrid.view_employee_category_list
+#: view:hybrid.cloud:hybrid.view_employee_category_tree
+msgid "Employees Categories"
+msgstr "Κατηγορίες Εργαζομένων"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_tree
+msgid "Employees Structure"
+msgstr "Δομή Ανθρώπινου Δυναμικού"
+
+#. module: hybrid
+#: constraint:hybrid.cloud:0
+msgid "Error! You cannot create recursive Categories."
+msgstr "Σφάλμα! Δεν μπορείτε να δημιουργήσετε αναδρομικές Κατηγορίες."
+
+#. module: hybrid
+#: constraint:hybrid.department:0
+msgid "Error! You cannot create recursive departments."
+msgstr "Σφάλμα! Δεν μπορείτε να δημιουργήσετε αναδρομικά Τμήματα."
+
+#. module: hybrid
+#: constraint:hybrid.user:0
+msgid "Error! You cannot create recursive hierarchy of Employee(s)."
+msgstr "Σφάλμα! Δεν μπορείτε να δημιουργήσετε αναδρομική ιεραρχία για Υπάλληλο(ους)."
+
+#. module: hybrid
+#: field:hybrid.job,no_of_recruitment:0
+msgid "Expected New Employees"
+msgstr "Αναμενόμενοι Νέοι Εργαζόμενοι"
+
+#. module: hybrid
+#: help:hybrid.job,expected_employees:0
+msgid ""
+"Expected number of employees for this job position after new recruitment."
+msgstr "Αναμενόμενος αριθμός των εργαζομένων για αυτή τη θέση εργασίας μετά από νέα στελέχωση."
+
+#. module: hybrid
+#: selection:hybrid.user,gender:0
+msgid "Female"
+msgstr "Γυναίκα"
+
+#. module: hybrid
+#. openerp-web
+#: code:addons/hybrid_cloud/static/src/xml/suggestions.xml:29
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+#, python-format
+msgid "Follow"
+msgstr "Ακολουθώ"
+
+#. module: hybrid
+#: field:hybrid.user,message_follower_ids:0
+#: field:hybrid.job,message_follower_ids:0
+msgid "Followers"
+msgstr "Ακόλουθοι"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+msgid "Following"
+msgstr "Ακολουθώ"
+
+#. module: hybrid
+#: field:hybrid.user,gender:0
+msgid "Gender"
+msgstr "Φύλλο"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter view:hybrid.job:hybrid.view_job_filter
+msgid "Group By"
+msgstr "Ομαδοποίηση Ανά"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "HR Settings"
+msgstr "Ρυθμίσεις Ανθρώπινου Δυναμικού"
+
+#. module: hybrid
+#: field:hybrid.job,no_of_hired_employee:0
+msgid "Hired Employees"
+msgstr "Εργαζόμενοι που προσλήφθηκαν"
+
+#. module: hybrid
+#: help:hybrid.user,message_summary:0 help:hybrid.job,message_summary:0
+msgid ""
+"Holds the Chatter summary (number of messages, ...). This summary is "
+"directly in html format in order to be inserted in kanban views."
+msgstr "Κρατά την συνολική σύνοψη (αριθμός των μυνημάτων, ...). Αυτή η σύνοψη είναι κατ' ευθείαν σε html format για να μπορεί να ενσωματωθεί σε εμφανίσεις kanban."
+
+#. module: hybrid
+#: field:hybrid.user,address_home_id:0
+msgid "Home Address"
+msgstr "Διεύθυνση Κατοικίας"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_main
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_reporting
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_root
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_cloud_configuration
+msgid "Hybrid Cloud"
+msgstr "Διαχείριση Ανθρωπίνων Πόρων"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Hybrid Cloud Management"
+msgstr "Διαχείριση Ανθρωπίνου Δυναμικού"
+
+#. module: hybrid
+#: field:hybrid.config.settings,id:0 field:hybrid.department,id:0
+#: field:hybrid.user,id:0 field:hybrid.cloud,id:0 field:hybrid.job,id:0
+msgid "ID"
+msgstr "Κωδικός"
+
+#. module: hybrid
+#: field:hybrid.user,identification_id:0
+msgid "Identification No"
+msgstr "Αριθμός Αναγνώρισης"
+
+#. module: hybrid
+#: help:hybrid.user,message_unread:0 help:hybrid.job,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "Εάν επιλεγεί τα νέα μηνύματα χρειάζονται την προσοχή σας"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_job_filter
+msgid "In Position"
+msgstr "Στη Θέση"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_job_filter
+msgid "In Recruitment"
+msgstr "Σε Στρατολόγηση"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_attendance:0
+msgid "Install attendances feature"
+msgstr "Εγκατάσταση στοιχείου συμμετεχόντων"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Install your country's payroll"
+msgstr "Εγκατάσταση του μισθολογίου της χώρας σου"
+
+#. module: hybrid
+#: field:hybrid.user,message_is_follower:0 field:hybrid.job,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Είναι Ακόλουθος"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter view:hybrid.job:hybrid.view_hybrid_job_form
+#: view:hybrid.job:hybrid.view_hybrid_job_tree view:hybrid.job:hybrid.view_job_filter
+msgid "Job"
+msgstr "Εργασία"
+
+#. module: hybrid
+#: field:hybrid.job,description:0
+msgid "Job Description"
+msgstr "Περιγραφή Θέσης"
+
+#. module: hybrid
+#: field:hybrid.job,name:0
+msgid "Job Name"
+msgstr "Όνομα Εργασίας"
+
+#. module: hybrid
+#: model:ir.model,name:hybrid.model_hybrid_job
+msgid "Job Position"
+msgstr "Θέση Εργασίας"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.action_hybrid_job
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_job_position
+msgid "Job Positions"
+msgstr "Θέση Εργασίας"
+
+#. module: hybrid
+#: field:hybrid.user,job_id:0
+msgid "Job Title"
+msgstr "Τίτλος εργασίας"
+
+#. module: hybrid
+#: field:hybrid.department,jobs_ids:0 view:hybrid.job:hybrid.view_job_filter
+msgid "Jobs"
+msgstr "Θέσεις"
+
+#. module: hybrid
+#: field:hybrid.user,message_last_post:0 field:hybrid.job,message_last_post:0
+msgid "Last Message Date"
+msgstr "Τελευταία ημερομηνία μηνύματος"
+
+#. module: hybrid
+#: field:hybrid.config.settings,write_uid:0 field:hybrid.department,write_uid:0
+#: field:hybrid.user,write_uid:0 field:hybrid.cloud,write_uid:0
+#: field:hybrid.job,write_uid:0
+msgid "Last Updated by"
+msgstr "Τελευταία Ενημέρωση από"
+
+#. module: hybrid
+#: field:hybrid.config.settings,write_date:0 field:hybrid.department,write_date:0
+#: field:hybrid.user,write_date:0 field:hybrid.cloud,write_date:0
+msgid "Last Updated on"
+msgstr "Τελευταία Ενημέρωση στις"
+
+#. module: hybrid
+#: field:hybrid.user,last_login:0
+msgid "Latest Connection"
+msgstr "Η Τελευταία Σύνδεση"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "Launch Recruitment"
+msgstr "Έναρξη Στρατολήγησης "
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_open_view_attendance_reason_config
+msgid "Leaves"
+msgstr "Άδειες"
+
+#. module: hybrid
+#: field:hybrid.user,login:0
+msgid "Login"
+msgstr "Είσοδος"
+
+#. module: hybrid
+#: selection:hybrid.user,gender:0
+msgid "Male"
+msgstr "Άνδρας"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_expense:0
+msgid "Manage employees expenses"
+msgstr "Διαχείριση δαπανών εργαζομένων"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_holidays:0
+msgid "Manage holidays, leaves and allocation requests"
+msgstr "Διαχείριση διακοπών, αδειών και κατανομή αιτήσεων "
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_payroll:0
+msgid "Manage payroll"
+msgstr "Διαχείριση μισθοδοσίας"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_recruitment:0
+msgid "Manage the recruitment process"
+msgstr "Διαχείριση της διαδικασίας στρατολόγησης"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_timesheet:0
+msgid "Manage timesheets"
+msgstr "Διαχείριση φύλλων κατανομής χρόνου"
+
+#. module: hybrid
+#: field:hybrid.department,manager_id:0 view:hybrid.user:hybrid.view_employee_filter
+#: field:hybrid.user,parent_id:0
+msgid "Manager"
+msgstr "Manager"
+
+#. module: hybrid
+#: field:hybrid.user,marital:0
+msgid "Marital Status"
+msgstr "Έγγαμος/η;"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Married"
+msgstr "Παντρεμένος/η"
+
+#. module: hybrid
+#: field:hybrid.user,image_medium:0
+msgid "Medium-sized photo"
+msgstr "Μεσαίου μεγέθους φωτογραφία"
+
+#. module: hybrid
+#: help:hybrid.user,image_medium:0
+msgid ""
+"Medium-sized photo of the employee. It is automatically resized as a "
+"128x128px image, with aspect ratio preserved. Use this field in form views "
+"or some kanban views."
+msgstr "Μεσαίου μεγέθους φωτογραφία του εργαζόμενου. Αυτόματη αλλαγή μεγέθους σε εικόνα 128X128 px, με διατάρηση της αναλογίας των διαστάσεων. Χρήση αυτού του πεδίου σε φόρμα προβολής ή σε κάποιες προβολές Kanban."
+
+#. module: hybrid
+#: field:hybrid.department,member_ids:0
+msgid "Members"
+msgstr "Μέλη"
+
+#. module: hybrid
+#: field:hybrid.user,message_ids:0 field:hybrid.job,message_ids:0
+msgid "Messages"
+msgstr "Μηνύματα"
+
+#. module: hybrid
+#: help:hybrid.user,message_ids:0 help:hybrid.job,message_ids:0
+msgid "Messages and communication history"
+msgstr "Μηνύματα και ιστορικό επικοινωνίας"
+
+#. module: hybrid
+#: field:hybrid.department,complete_name:0 field:hybrid.user,name_related:0
+#: field:hybrid.cloud,complete_name:0
+msgid "Name"
+msgstr "Όνομα"
+
+#. module: hybrid
+#: field:hybrid.user,country_id:0
+msgid "Nationality"
+msgstr "Εθνικότητα"
+
+#. module: hybrid
+#: field:hybrid.department,note:0
+msgid "Note"
+msgstr "Σημείωση"
+
+#. module: hybrid
+#: field:hybrid.user,notes:0
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+#. module: hybrid
+#: help:hybrid.job,no_of_employee:0
+msgid "Number of employees currently occupying this job position."
+msgstr "Ο αριθμός των εργαζομένων που καταλαβάνουν τώρα αυτή τη θέση εργασίας."
+
+#. module: hybrid
+#: sql_constraint:hybrid.job:0
+msgid ""
+"Number of hired employee must be less than expected number of employee in "
+"recruitment."
+msgstr "Ο αριθμός των εργαζομένων που έχουν προσληφθεί πρέπει να είναι μικρότερος απο τον αναμενόμενο αριθμό των εργαζομένων στη στρατολόγηση."
+
+#. module: hybrid
+#: help:hybrid.job,no_of_hired_employee:0
+msgid ""
+"Number of hired employees for this job position during recruitment phase."
+msgstr "Ο αριθμός των εργαζομένων που προσλήφθηκαν για αυτή τη θέση εργασίας κατά φάση της στρατολόγησης."
+
+#. module: hybrid
+#: help:hybrid.job,no_of_recruitment:0
+msgid "Number of new employees you expect to recruit."
+msgstr "Ο αριθμός των νέων υπαλλήλων που αναμένετε να στρατολογήσετε"
+
+#. module: hybrid
+#: field:hybrid.user,work_location:0
+msgid "Office Location"
+msgstr "Τοποθεσία γραφείου"
+
+#. module: hybrid
+#: model:ir.actions.client,name:hybrid.action_client_hybrid_menu
+msgid "Open HR Menu"
+msgstr "Άνοιγμα Μενού HR"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_evaluation:0
+msgid "Organize employees periodic evaluation"
+msgstr "Οργάνωση περιοδικής αξιολόγησης των εργαζομένων"
+
+#. module: hybrid
+#: field:hybrid.user,otherid:0
+msgid "Other Id"
+msgstr "Άλλη Ταυτότητα"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Other Information ..."
+msgstr "Λοιπές πληροφορίες ..."
+
+#. module: hybrid
+#: field:hybrid.department,parent_id:0
+msgid "Parent Department"
+msgstr "Γονικό Παραστατικό"
+
+#. module: hybrid
+#: field:hybrid.cloud,parent_id:0
+msgid "Parent Employee Tag"
+msgstr "Μητρική Ετικέτα Υπαλλήλου"
+
+#. module: hybrid
+#: field:hybrid.user,passport_id:0
+msgid "Passport No"
+msgstr "Αριθμός Διαβατηρίου"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_payroll_modules
+msgid "Payroll"
+msgstr "Μισθοδοσία"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Personal Information"
+msgstr "Προσωπικές Πληροφορίες"
+
+#. module: hybrid
+#: field:hybrid.user,image:0
+msgid "Photo"
+msgstr "Φωτογραφία"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Position"
+msgstr "Θέση"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Public Information"
+msgstr "Δημόσιες Πληροφορίες"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_contract:0
+msgid "Record contracts per employee"
+msgstr "Αρχείο συμβάσεων ανά εργαζόμενο"
+
+#. module: hybrid
+#: selection:hybrid.job,state:0
+msgid "Recruitment Closed"
+msgstr "Κρυφή Στρατολόγηση"
+
+#. module: hybrid
+#: selection:hybrid.job,state:0
+msgid "Recruitment in Progress"
+msgstr "Στελέχωση σε Εξέλιξη"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Related User"
+msgstr "Σχετικός Χρήστης"
+
+#. module: hybrid
+#: field:res.users,employee_ids:0
+msgid "Related employees"
+msgstr "Σχετικοί εργαζόμενοι"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_reporting_timesheet
+msgid "Reports"
+msgstr "Αναφορές"
+
+#. module: hybrid
+#: field:hybrid.job,requirements:0
+msgid "Requirements"
+msgstr "Απαιτήσεις"
+
+#. module: hybrid
+#: field:hybrid.user,resource_id:0
+msgid "Resource"
+msgstr "Πηγή"
+
+#. module: hybrid
+#: field:hybrid.user,sinid:0
+msgid "SIN No"
+msgstr "Αριθμός Ασφαλισμένου"
+
+#. module: hybrid
+#: field:hybrid.user,ssnid:0
+msgid "SSN No"
+msgstr "Αρ. Κοινωνικών Παροχών"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Single"
+msgstr "Άγαμος"
+
+#. module: hybrid
+#: field:hybrid.user,image_small:0
+msgid "Small-sized photo"
+msgstr "Μικρού μεγέθους φωτογραφία"
+
+#. module: hybrid
+#: help:hybrid.user,image_small:0
+msgid ""
+"Small-sized photo of the employee. It is automatically resized as a 64x64px "
+"image, with aspect ratio preserved. Use this field anywhere a small image is"
+" required."
+msgstr "Μικρού μεγέθους φωτογραφία του εργαζόμενου. Αυτόματη αλλαγή μεγέθους σε μια εικόνα 64x64px, με την αναλογία των διαστάσεων να διατηρείται. Χρήση αυτού του πεδίου οπουδήποτε μια μικρή εικόνα απαιτείται"
+
+#. module: hybrid
+#: help:hybrid.user,sinid:0
+msgid "Social Insurance Number"
+msgstr "Αριθμός Κονωνικής Ασφάλισης"
+
+#. module: hybrid
+#: help:hybrid.user,ssnid:0
+msgid "Social Security Number"
+msgstr "Αριθμός Κοινωνικής Ασφάλισης"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form view:hybrid.job:hybrid.view_job_filter
+#: field:hybrid.job,state:0
+msgid "Status"
+msgstr "Κατάσταση"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "Stop Recruitment"
+msgstr "Διακοπή Στελέχωσης"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.action2
+msgid "Subordinate Hierarchy"
+msgstr "Ιεραρχία Υφισταμένων"
+
+#. module: hybrid
+#: field:hybrid.user,child_ids:0
+msgid "Subordinates"
+msgstr "Υφιστάμενοι"
+
+#. module: hybrid
+#. openerp-web
+#: code:addons/hybrid_cloud/static/src/xml/suggestions.xml:15
+#, python-format
+msgid "Suggested Employees"
+msgstr "Προτεινόμενοι Εργαζόμενοι"
+
+#. module: hybrid
+#: field:hybrid.user,message_summary:0 field:hybrid.job,message_summary:0
+msgid "Summary"
+msgstr "Περίληψη"
+
+#. module: hybrid
+#: field:hybrid.user,category_ids:0
+msgid "Tags"
+msgstr "Ετικέτες"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Talent Management"
+msgstr "Διαχείριση Ταλέντων"
+
+#. module: hybrid
+#: sql_constraint:hybrid.job:0
+msgid "The name of the job position must be unique per department in company!"
+msgstr "Το όνομα της θέσης εργασίας θα πρέπει να είναι μοναδικό ανά τμήμα στην εταιρεία!"
+
+#. module: hybrid
+#: help:hybrid.user,image:0
+msgid ""
+"This field holds the image used as photo for the employee, limited to "
+"1024x1024px."
+msgstr "Αυτό το πεδίο περιέχει μια εικόνα που χρησιμοποιείται ως φωτογραφία του εργαζόμενου, περιορίζεται σε 1024x1024px."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_account_analytic_analysis:0
+msgid ""
+"This installs the module account_analytic_analysis, which will install sales"
+" management too."
+msgstr "Αυτό εγκαθιστά το άρθρωμα λογαριασμός_ανάλυση, το οποίο θα εγκαταστήσει τη διαχείριση των πωλήσεων επίσης."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_attendance:0
+msgid "This installs the module hybrid_attendance."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_attendance."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_contract:0
+msgid "This installs the module hybrid_contract."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_contract."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_evaluation:0
+msgid "This installs the module hybrid_evaluation."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_evaluation."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_expense:0
+msgid "This installs the module hybrid_expense."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_expense."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_gamification:0
+msgid "This installs the module hybrid_gamification."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_gamification."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_holidays:0
+msgid "This installs the module hybrid_holidays."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_holidays."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_payroll:0
+msgid "This installs the module hybrid_payroll."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_payroll."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_recruitment:0
+msgid "This installs the module hybrid_recruitment."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_recruitment."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_timesheet:0
+msgid "This installs the module hybrid_timesheet."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_timesheet."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_timesheet_sheet:0
+msgid "This installs the module hybrid_timesheet_sheet."
+msgstr "Εγκαθιστά την εφαρμογή hybrid_timesheet_sheet."
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Time Tracking"
+msgstr "Καταγραφή Χρόνου"
+
+#. module: hybrid
+#: field:hybrid.job,expected_employees:0
+msgid "Total Forecasted Employees"
+msgstr "Σύνολο Προβλεπόμενων Υπαλλήλων"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+msgid "Unfollow"
+msgstr "Άρση ακολούθησης"
+
+#. module: hybrid
+#: field:hybrid.user,message_unread:0 field:hybrid.job,message_unread:0
+msgid "Unread Messages"
+msgstr "Αδιάβαστα Μυνήματα"
+
+#. module: hybrid
+#: field:hybrid.job,write_date:0
+msgid "Update Date"
+msgstr "Ενημέρωση Ημερομηνίας"
+
+#. module: hybrid
+#: model:ir.model,name:hybrid.model_res_users
+msgid "Users"
+msgstr "Χρήστες"
+
+#. module: hybrid
+#: code:addons/hybrid/hybrid.py:273
+#, python-format
+msgid "Welcome to %s! Please help him/her take the first steps with Odoo!"
+msgstr "Καλωσόρισμα στο %s! Παρακαλούμε βοηθήστε τον/την να κάνει τα πρώτα βήματα με το Odoo!"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Widower"
+msgstr "Χήρος"
+
+#. module: hybrid
+#: field:hybrid.user,work_email:0
+msgid "Work Email"
+msgstr "Email εργασίας"
+
+#. module: hybrid
+#: field:hybrid.user,mobile_phone:0
+msgid "Work Mobile"
+msgstr "Κινητή Εργασία"
+
+#. module: hybrid
+#: field:hybrid.user,work_phone:0
+msgid "Work Phone"
+msgstr "Τηλ. Εργασίας"
+
+#. module: hybrid
+#: field:hybrid.user,address_id:0
+msgid "Working Address"
+msgstr "Διεύθυνση Εργασίας"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_form
+msgid "department"
+msgstr "τμήμα"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "e.g. Part Time"
+msgstr "π.χ. Μερικής Απασχόλησης"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "new employee(s) expected"
+msgstr "Νέος/οι εργαζόμενος(οι) αναμένεται/αναμένονται"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "or"
+msgstr "ή"

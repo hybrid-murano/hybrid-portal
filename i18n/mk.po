@@ -1,0 +1,982 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * hybrid
+# 
+# Translators:
+# Anica Milanova, 2015
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-01-21 14:07+0000\n"
+"PO-Revision-Date: 2015-07-31 08:13+0000\n"
+"Last-Translator: Martin Trigaux\n"
+"Language-Team: Macedonian (http://www.transifex.com/odoo/odoo-8/language/mk/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Language: mk\n"
+"Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
+
+#. module: hybrid
+#: code:addons/hybrid/hybrid.py:158
+#, python-format
+msgid "%s (copy)"
+msgstr "%s (копија)"
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.open_view_employee_list_my
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to add a new employee.\n"
+"              </p><p>\n"
+"                With just a quick glance on the Odoo employee screen, you\n"
+"                can easily find all the information you need for each person;\n"
+"                contact data, job position, availability, etc.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\n                Кликнете да додадете нов вработен.\n              </p><p>\n                Со само брз поглед на Odoo екранот за вработени, вие\n                можете лесно да ги најдете сите информации што ви требат за секое лице;\n                податоци за контакт, работна позиција, достапност, итн.\n              </p>\n            "
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.open_module_tree_department
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to create a department.\n"
+"              </p><p>\n"
+"                Odoo's department structure is used to manage all documents\n"
+"                related to employees by departments: expenses, timesheets,\n"
+"                leaves and holidays, recruitments, etc.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\n                Кликнете да креирате оддел.\n              </p><p>\n                Структурата на оддели на Odoo се користи за управување со сите документи\n                кои се однесуваат на вработени по оддели: трошоци, распореди,\n                одсуства и празници, регрутирања, итн.\n              </p>\n            "
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.view_department_form_installer
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to define a new department.\n"
+"              </p><p>\n"
+"                Your departments structure is used to manage all documents\n"
+"                related to employees by departments: expenses and timesheets,\n"
+"                leaves and holidays, recruitments, etc.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\n                Кликнете за да креирате ново одделение.\n              </p><p>\n                Структурата на одделенија се користи за да се менаџираат сите документи\n                поврзани со вработените по одделенија: трошоци, распореди,\n                отсуства и одмори, вработувања, и др.\n              </p>\n            "
+
+#. module: hybrid
+#: model:ir.actions.act_window,help:hybrid.action_hybrid_job
+msgid ""
+"<p class=\"oe_view_nocontent_create\">\n"
+"                Click to define a new job position.\n"
+"              </p><p>\n"
+"                Job Positions are used to define jobs and their requirements.\n"
+"                You can keep track of the number of employees you have per job\n"
+"                position and follow the evolution according to what you planned\n"
+"                for the future.\n"
+"              </p><p>\n"
+"                You can attach a survey to a job position. It will be used in\n"
+"                the recruitment process to evaluate the applicants for this job\n"
+"                position.\n"
+"              </p>\n"
+"            "
+msgstr "<p class=\"oe_view_nocontent_create\">\n                Кликнете за да дефинирате нова работна позиција.\n              </p><p>\n                Работните позиции се користат за да се дефинираат работните места и нивните барања.\n                Може да го следите бројот на вработени кои ги имате по работна позиција и да ја следите евоулуцијата во согласност со тоа што планирате за во иднина.\n                              </p><p>\n                Може да прикачите анкета на работната позиција. Таа ќе биде употребена во процесот на вработување за да ги евалуирате апликантите за оваа работна позиција\n                             </p>\n            "
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Active"
+msgstr "Активно"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Additional Features"
+msgstr "Дополнителни карактеристики"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_account_analytic_analysis:0
+msgid ""
+"Allow invoicing based on timesheets (the sale application will be installed)"
+msgstr "Дозволи фактурирање врз основа на распореди (Апликацијата за продажба ќе биде инсталирана)"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_timesheet_sheet:0
+msgid "Allow timesheets validation by managers"
+msgstr "Дозволи валидација на временските таблици од менаџерите"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Apply"
+msgstr "Примени"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_open_view_attendance_reason_new_config
+msgid "Attendance"
+msgstr "Присутност"
+
+#. module: hybrid
+#: field:hybrid.user,bank_account_id:0
+msgid "Bank Account Number"
+msgstr "Број на банкарска сметка"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Birth"
+msgstr "Раѓање"
+
+#. module: hybrid
+#: help:hybrid.job,state:0
+msgid ""
+"By default 'Closed', set it to 'In Recruitment' if recruitment process is "
+"going on for this job position."
+msgstr "Стандардно „Затворено“ поставете го на „Во регрутација“ ако процесот на регрутација тече за ова работно место."
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Cancel"
+msgstr "Откажи"
+
+#. module: hybrid
+#: field:hybrid.cloud,child_ids:0
+msgid "Child Categories"
+msgstr "Категории дете"
+
+#. module: hybrid
+#: field:hybrid.department,child_ids:0
+msgid "Child Departments"
+msgstr "Одделенија дете"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Citizenship & Other Info"
+msgstr "Државјанство & Други информации"
+
+#. module: hybrid
+#: field:hybrid.user,city:0
+msgid "City"
+msgstr "Град"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter field:hybrid.user,coach_id:0
+msgid "Coach"
+msgstr "Тренер"
+
+#. module: hybrid
+#: field:hybrid.user,color:0
+msgid "Color Index"
+msgstr "Индекс на бои"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_tree
+msgid "Companies"
+msgstr "Компании"
+
+#. module: hybrid
+#: field:hybrid.department,company_id:0 view:hybrid.user:hybrid.view_employee_filter
+#: view:hybrid.job:hybrid.view_job_filter field:hybrid.job,company_id:0
+msgid "Company"
+msgstr "Компанија"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_configuration
+msgid "Configuration"
+msgstr "Конфигурација"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+#: model:ir.actions.act_window,name:hybrid.action_hybrid_cloud_configuration
+msgid "Configure Hybrid Cloud"
+msgstr "Конфигурирај човечки ресурси"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Contact Information"
+msgstr "Контакт информации"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Contracts"
+msgstr "Договори"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.view_department_form_installer
+msgid "Create Your Departments"
+msgstr "Креирајте Ваши оддели"
+
+#. module: hybrid
+#: field:hybrid.config.settings,create_uid:0 field:hybrid.department,create_uid:0
+#: field:hybrid.user,create_uid:0 field:hybrid.cloud,create_uid:0
+#: field:hybrid.job,create_uid:0
+msgid "Created by"
+msgstr "Креирано од"
+
+#. module: hybrid
+#: field:hybrid.config.settings,create_date:0 field:hybrid.department,create_date:0
+#: field:hybrid.user,create_date:0 field:hybrid.cloud,create_date:0
+#: field:hybrid.job,create_date:0
+msgid "Created on"
+msgstr "Креирано на"
+
+#. module: hybrid
+#: field:hybrid.job,no_of_employee:0
+msgid "Current Number of Employees"
+msgstr "Моментален број на вработени"
+
+#. module: hybrid
+#: field:hybrid.user,birthday:0
+msgid "Date of Birth"
+msgstr "Датум на раѓање"
+
+#. module: hybrid
+#: help:hybrid.user,message_last_post:0 help:hybrid.job,message_last_post:0
+msgid "Date of the last message posted on the record."
+msgstr "Датум на испраќање на последната порака"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_filter
+#: view:hybrid.user:hybrid.view_employee_filter field:hybrid.user,department_id:0
+#: view:hybrid.job:hybrid.view_job_filter field:hybrid.job,department_id:0
+msgid "Department"
+msgstr "Оддел"
+
+#. module: hybrid
+#: field:hybrid.department,name:0
+msgid "Department Name"
+msgstr "Име на оддел"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_filter
+#: model:ir.actions.act_window,name:hybrid.open_module_tree_department
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_department_tree
+msgid "Departments"
+msgstr "Оддели"
+
+#. module: hybrid
+#: field:res.users,display_employees_suggestions:0
+msgid "Display Employees Suggestions"
+msgstr "Прикажи предлози за вработени"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Divorced"
+msgstr "Разведен"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_gamification:0
+msgid "Drive engagement with challenges and badges"
+msgstr ""
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+#: model:ir.model,name:hybrid.model_hybrid_user
+msgid "Employee"
+msgstr "Вработен"
+
+#. module: hybrid
+#: view:hybrid.cloud:hybrid.view_employee_category_form
+#: model:ir.model,name:hybrid.model_hybrid_cloud
+msgid "Employee Category"
+msgstr "Категорија на вработен"
+
+#. module: hybrid
+#: field:hybrid.cloud,name:0
+msgid "Employee Tag"
+msgstr "Ознака на вработен"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_view_categ_form
+#: model:ir.ui.menu,name:hybrid.menu_view_employee_category_form
+msgid "Employee Tags"
+msgstr "Ознаки за вработен"
+
+#. module: hybrid
+#: help:hybrid.user,bank_account_id:0
+msgid "Employee bank salary account"
+msgstr "Банкарска сметка за плата на вработен"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter
+#: view:hybrid.user:hybrid.view_employee_tree
+#: view:hybrid.user:hybrid.view_partner_tree2
+#: field:hybrid.cloud,employee_ids:0 field:hybrid.job,employee_ids:0
+#: model:ir.actions.act_window,name:hybrid.hybrid_user_normal_action_tree
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_list
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_list_my
+#: model:ir.ui.menu,name:hybrid.menu_open_view_employee_list_my
+msgid "Employees"
+msgstr "Вработени"
+
+#. module: hybrid
+#: view:hybrid.cloud:hybrid.view_employee_category_list
+#: view:hybrid.cloud:hybrid.view_employee_category_tree
+msgid "Employees Categories"
+msgstr "Категории на вработени"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_view_employee_tree
+msgid "Employees Structure"
+msgstr "Структура на вработени"
+
+#. module: hybrid
+#: constraint:hybrid.cloud:0
+msgid "Error! You cannot create recursive Categories."
+msgstr "Грешка! Не може да креирате рекурсивни Категории."
+
+#. module: hybrid
+#: constraint:hybrid.department:0
+msgid "Error! You cannot create recursive departments."
+msgstr "Грешка! Не може да креирате рекурсивни одделенија."
+
+#. module: hybrid
+#: constraint:hybrid.user:0
+msgid "Error! You cannot create recursive hierarchy of Employee(s)."
+msgstr "Грешка! Не може да креирате рекурсивна хиерархија на вработени."
+
+#. module: hybrid
+#: field:hybrid.job,no_of_recruitment:0
+msgid "Expected New Employees"
+msgstr "Очекувани нови вработени"
+
+#. module: hybrid
+#: help:hybrid.job,expected_employees:0
+msgid ""
+"Expected number of employees for this job position after new recruitment."
+msgstr "Очекуван број на вработени за оваа работна позиција после новото вработување."
+
+#. module: hybrid
+#: selection:hybrid.user,gender:0
+msgid "Female"
+msgstr "Женско"
+
+#. module: hybrid
+#. openerp-web
+#: code:addons/hybrid_cloud/static/src/xml/suggestions.xml:29
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+#, python-format
+msgid "Follow"
+msgstr "Следи"
+
+#. module: hybrid
+#: field:hybrid.user,message_follower_ids:0
+#: field:hybrid.job,message_follower_ids:0
+msgid "Followers"
+msgstr "Следбеници"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+msgid "Following"
+msgstr "Следи"
+
+#. module: hybrid
+#: field:hybrid.user,gender:0
+msgid "Gender"
+msgstr "Пол"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter view:hybrid.job:hybrid.view_job_filter
+msgid "Group By"
+msgstr "Групирање според"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "HR Settings"
+msgstr "Подесување на човечки ресурси"
+
+#. module: hybrid
+#: field:hybrid.job,no_of_hired_employee:0
+msgid "Hired Employees"
+msgstr "Ангажирани вработени"
+
+#. module: hybrid
+#: help:hybrid.user,message_summary:0 help:hybrid.job,message_summary:0
+msgid ""
+"Holds the Chatter summary (number of messages, ...). This summary is "
+"directly in html format in order to be inserted in kanban views."
+msgstr "Прикажува резиме на конверзација (број на пораки, ...). Ова резиме е директно во html формат со цел да биде вметнато во kanban преглед."
+
+#. module: hybrid
+#: field:hybrid.user,address_home_id:0
+msgid "Home Address"
+msgstr "Домашна адреса"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_main
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_reporting
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_root
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_cloud_configuration
+msgid "Hybrid Cloud"
+msgstr "Човечки ресурси"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Hybrid Cloud Management"
+msgstr "Менаџмент на човечки ресурси"
+
+#. module: hybrid
+#: field:hybrid.config.settings,id:0 field:hybrid.department,id:0
+#: field:hybrid.user,id:0 field:hybrid.cloud,id:0 field:hybrid.job,id:0
+msgid "ID"
+msgstr "ID"
+
+#. module: hybrid
+#: field:hybrid.user,identification_id:0
+msgid "Identification No"
+msgstr "Број за идентификација"
+
+#. module: hybrid
+#: help:hybrid.user,message_unread:0 help:hybrid.job,message_unread:0
+msgid "If checked new messages require your attention."
+msgstr "Доколку се означени новите пораки потребно е да обрнете внимание."
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_job_filter
+msgid "In Position"
+msgstr "Во позиција"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_job_filter
+msgid "In Recruitment"
+msgstr "При вработување"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_attendance:0
+msgid "Install attendances feature"
+msgstr "Инсталирај карактеристика на присуства"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Install your country's payroll"
+msgstr "Инсталирајте го платниот список на вашата земја"
+
+#. module: hybrid
+#: field:hybrid.user,message_is_follower:0 field:hybrid.job,message_is_follower:0
+msgid "Is a Follower"
+msgstr "Е следбеник"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_filter view:hybrid.job:hybrid.view_hybrid_job_form
+#: view:hybrid.job:hybrid.view_hybrid_job_tree view:hybrid.job:hybrid.view_job_filter
+msgid "Job"
+msgstr "Работно место"
+
+#. module: hybrid
+#: field:hybrid.job,description:0
+msgid "Job Description"
+msgstr "Опис на работно место"
+
+#. module: hybrid
+#: field:hybrid.job,name:0
+msgid "Job Name"
+msgstr "Име на работно место"
+
+#. module: hybrid
+#: model:ir.model,name:hybrid.model_hybrid_job
+msgid "Job Position"
+msgstr "Работна позиција"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.action_hybrid_job
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_job_position
+msgid "Job Positions"
+msgstr "Работни позиции"
+
+#. module: hybrid
+#: field:hybrid.user,job_id:0
+msgid "Job Title"
+msgstr "Звање"
+
+#. module: hybrid
+#: field:hybrid.department,jobs_ids:0 view:hybrid.job:hybrid.view_job_filter
+msgid "Jobs"
+msgstr "Работни места"
+
+#. module: hybrid
+#: field:hybrid.user,message_last_post:0 field:hybrid.job,message_last_post:0
+msgid "Last Message Date"
+msgstr "Датум на последна порака"
+
+#. module: hybrid
+#: field:hybrid.config.settings,write_uid:0 field:hybrid.department,write_uid:0
+#: field:hybrid.user,write_uid:0 field:hybrid.cloud,write_uid:0
+#: field:hybrid.job,write_uid:0
+msgid "Last Updated by"
+msgstr "Последно ажурирање од"
+
+#. module: hybrid
+#: field:hybrid.config.settings,write_date:0 field:hybrid.department,write_date:0
+#: field:hybrid.user,write_date:0 field:hybrid.cloud,write_date:0
+msgid "Last Updated on"
+msgstr "Последно ажурирање на"
+
+#. module: hybrid
+#: field:hybrid.user,last_login:0
+msgid "Latest Connection"
+msgstr "Последна конекција"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "Launch Recruitment"
+msgstr "Започни регрутација"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_open_view_attendance_reason_config
+msgid "Leaves"
+msgstr "Отсуства"
+
+#. module: hybrid
+#: field:hybrid.user,login:0
+msgid "Login"
+msgstr "Логирање"
+
+#. module: hybrid
+#: selection:hybrid.user,gender:0
+msgid "Male"
+msgstr "Машко"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_expense:0
+msgid "Manage employees expenses"
+msgstr "Управување со трошоците на вработените"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_holidays:0
+msgid "Manage holidays, leaves and allocation requests"
+msgstr "Управување со одмори, отсуства и барања за распределување"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_payroll:0
+msgid "Manage payroll"
+msgstr "Менаџирање на платен список"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_recruitment:0
+msgid "Manage the recruitment process"
+msgstr "Управување со процесот на вработување"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_timesheet:0
+msgid "Manage timesheets"
+msgstr "Менаџирање на распореди"
+
+#. module: hybrid
+#: field:hybrid.department,manager_id:0 view:hybrid.user:hybrid.view_employee_filter
+#: field:hybrid.user,parent_id:0
+msgid "Manager"
+msgstr "Менаџер"
+
+#. module: hybrid
+#: field:hybrid.user,marital:0
+msgid "Marital Status"
+msgstr "Брачен статус"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Married"
+msgstr "Во брак"
+
+#. module: hybrid
+#: field:hybrid.user,image_medium:0
+msgid "Medium-sized photo"
+msgstr "Фотографија со средна големина"
+
+#. module: hybrid
+#: help:hybrid.user,image_medium:0
+msgid ""
+"Medium-sized photo of the employee. It is automatically resized as a "
+"128x128px image, with aspect ratio preserved. Use this field in form views "
+"or some kanban views."
+msgstr "Слика на вработениот со средна големина. Автоматски се променува големината на сликата како 128x128px слика, со зачуван сооднос. Use this field in form views or some kanban views."
+
+#. module: hybrid
+#: field:hybrid.department,member_ids:0
+msgid "Members"
+msgstr "Членови"
+
+#. module: hybrid
+#: field:hybrid.user,message_ids:0 field:hybrid.job,message_ids:0
+msgid "Messages"
+msgstr "Пораки"
+
+#. module: hybrid
+#: help:hybrid.user,message_ids:0 help:hybrid.job,message_ids:0
+msgid "Messages and communication history"
+msgstr "Историја на пораки и комуникација"
+
+#. module: hybrid
+#: field:hybrid.department,complete_name:0 field:hybrid.user,name_related:0
+#: field:hybrid.cloud,complete_name:0
+msgid "Name"
+msgstr "Име"
+
+#. module: hybrid
+#: field:hybrid.user,country_id:0
+msgid "Nationality"
+msgstr "Националност"
+
+#. module: hybrid
+#: field:hybrid.department,note:0
+msgid "Note"
+msgstr "Белешка"
+
+#. module: hybrid
+#: field:hybrid.user,notes:0
+msgid "Notes"
+msgstr "Белешки"
+
+#. module: hybrid
+#: help:hybrid.job,no_of_employee:0
+msgid "Number of employees currently occupying this job position."
+msgstr "Број на вработени кои моментално ја зафаќаат оваа работна позиција."
+
+#. module: hybrid
+#: sql_constraint:hybrid.job:0
+msgid ""
+"Number of hired employee must be less than expected number of employee in "
+"recruitment."
+msgstr "Бројот на ангажирани вработени треба да биде помал од бројор на очекувани вработени во регрутација"
+
+#. module: hybrid
+#: help:hybrid.job,no_of_hired_employee:0
+msgid ""
+"Number of hired employees for this job position during recruitment phase."
+msgstr "Број на ангажирани вработени на ова работно место за време на фазата на регрутација."
+
+#. module: hybrid
+#: help:hybrid.job,no_of_recruitment:0
+msgid "Number of new employees you expect to recruit."
+msgstr "Број на нови вработени кои очекувате да бидат вработени."
+
+#. module: hybrid
+#: field:hybrid.user,work_location:0
+msgid "Office Location"
+msgstr "Локација на канцеларија"
+
+#. module: hybrid
+#: model:ir.actions.client,name:hybrid.action_client_hybrid_menu
+msgid "Open HR Menu"
+msgstr "Отвори мени Човечки ресурси"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_evaluation:0
+msgid "Organize employees periodic evaluation"
+msgstr "Организирај периодична евалуација на вработените"
+
+#. module: hybrid
+#: field:hybrid.user,otherid:0
+msgid "Other Id"
+msgstr "Друг Id"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Other Information ..."
+msgstr "Други информации..."
+
+#. module: hybrid
+#: field:hybrid.department,parent_id:0
+msgid "Parent Department"
+msgstr "Одделение родител"
+
+#. module: hybrid
+#: field:hybrid.cloud,parent_id:0
+msgid "Parent Employee Tag"
+msgstr ""
+
+#. module: hybrid
+#: field:hybrid.user,passport_id:0
+msgid "Passport No"
+msgstr "Број на пасош"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.open_payroll_modules
+msgid "Payroll"
+msgstr "Платен список"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Personal Information"
+msgstr "Лични информации"
+
+#. module: hybrid
+#: field:hybrid.user,image:0
+msgid "Photo"
+msgstr "Фотографија"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Position"
+msgstr "Позиција"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Public Information"
+msgstr "Јавна информација"
+
+#. module: hybrid
+#: field:hybrid.config.settings,module_hybrid_contract:0
+msgid "Record contracts per employee"
+msgstr "Запиши договори по вработен"
+
+#. module: hybrid
+#: selection:hybrid.job,state:0
+msgid "Recruitment Closed"
+msgstr "Регрутацијата е затворена"
+
+#. module: hybrid
+#: selection:hybrid.job,state:0
+msgid "Recruitment in Progress"
+msgstr "Регрутација во тек"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "Related User"
+msgstr "Поврзан корисник"
+
+#. module: hybrid
+#: field:res.users,employee_ids:0
+msgid "Related employees"
+msgstr "Поврзани вработени"
+
+#. module: hybrid
+#: model:ir.ui.menu,name:hybrid.menu_hybrid_reporting_timesheet
+msgid "Reports"
+msgstr "Извештаи"
+
+#. module: hybrid
+#: field:hybrid.job,requirements:0
+msgid "Requirements"
+msgstr "Барања"
+
+#. module: hybrid
+#: field:hybrid.user,resource_id:0
+msgid "Resource"
+msgstr "Ресурс"
+
+#. module: hybrid
+#: field:hybrid.user,sinid:0
+msgid "SIN No"
+msgstr "SIN No"
+
+#. module: hybrid
+#: field:hybrid.user,ssnid:0
+msgid "SSN No"
+msgstr "SSN No"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Single"
+msgstr "Самец"
+
+#. module: hybrid
+#: field:hybrid.user,image_small:0
+msgid "Small-sized photo"
+msgstr "Слика со мала димензија"
+
+#. module: hybrid
+#: help:hybrid.user,image_small:0
+msgid ""
+"Small-sized photo of the employee. It is automatically resized as a 64x64px "
+"image, with aspect ratio preserved. Use this field anywhere a small image is"
+" required."
+msgstr "Слика на вработен со мала големина. Таа автоматски ја променува големината како 64x64px слика, со зачувување на соодносот. Користете го ова поле секаде каде што се бара помала слика."
+
+#. module: hybrid
+#: help:hybrid.user,sinid:0
+msgid "Social Insurance Number"
+msgstr "Број на социјално осигурување"
+
+#. module: hybrid
+#: help:hybrid.user,ssnid:0
+msgid "Social Security Number"
+msgstr "Број на социјално осигурување"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form view:hybrid.job:hybrid.view_job_filter
+#: field:hybrid.job,state:0
+msgid "Status"
+msgstr "Статус"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "Stop Recruitment"
+msgstr "Прекини вработување"
+
+#. module: hybrid
+#: model:ir.actions.act_window,name:hybrid.action2
+msgid "Subordinate Hierarchy"
+msgstr "Хиерархија на подредени"
+
+#. module: hybrid
+#: field:hybrid.user,child_ids:0
+msgid "Subordinates"
+msgstr "Подредени"
+
+#. module: hybrid
+#. openerp-web
+#: code:addons/hybrid_cloud/static/src/xml/suggestions.xml:15
+#, python-format
+msgid "Suggested Employees"
+msgstr "Предложени Вработени"
+
+#. module: hybrid
+#: field:hybrid.user,message_summary:0 field:hybrid.job,message_summary:0
+msgid "Summary"
+msgstr "Резиме"
+
+#. module: hybrid
+#: field:hybrid.user,category_ids:0
+msgid "Tags"
+msgstr "Ознаки"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Talent Management"
+msgstr "Управување со таленти"
+
+#. module: hybrid
+#: sql_constraint:hybrid.job:0
+msgid "The name of the job position must be unique per department in company!"
+msgstr "Името на работното место мора да биде уникатно по оддел во компанијата!"
+
+#. module: hybrid
+#: help:hybrid.user,image:0
+msgid ""
+"This field holds the image used as photo for the employee, limited to "
+"1024x1024px."
+msgstr "Ова поле ја држи сликата која се користи како фотографија на вработениот, ограничено на 1024x1024px."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_account_analytic_analysis:0
+msgid ""
+"This installs the module account_analytic_analysis, which will install sales"
+" management too."
+msgstr "Ова го инсталира модулот конто_аналитика_анализи, кој исто така ќе го инсталира и менаџментот за продажби."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_attendance:0
+msgid "This installs the module hybrid_attendance."
+msgstr "Ова го инсталира модулот човечки ресурси_присуство."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_contract:0
+msgid "This installs the module hybrid_contract."
+msgstr "Ова го инсталира модулот човечки ресурси_договор."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_evaluation:0
+msgid "This installs the module hybrid_evaluation."
+msgstr "Ова го инсталира модулот човечки ресурси_евалуација."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_expense:0
+msgid "This installs the module hybrid_expense."
+msgstr "Ова го инсталира модулот човечки ресурси_трошок."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_gamification:0
+msgid "This installs the module hybrid_gamification."
+msgstr "Ова го инсталира модулот hybrid_gamification."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_holidays:0
+msgid "This installs the module hybrid_holidays."
+msgstr "Ова го инсталира модулот човечки ресурси_одмори."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_payroll:0
+msgid "This installs the module hybrid_payroll."
+msgstr "Ова го инсталира модулот човечки ресурси_платен список."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_recruitment:0
+msgid "This installs the module hybrid_recruitment."
+msgstr "Ова го инсталира модулот човечки ресурси_Вработување."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_timesheet:0
+msgid "This installs the module hybrid_timesheet."
+msgstr "Ова го инсталира модулот човечки ресурси_распоред."
+
+#. module: hybrid
+#: help:hybrid.config.settings,module_hybrid_timesheet_sheet:0
+msgid "This installs the module hybrid_timesheet_sheet."
+msgstr "Ова го инсталира модулот hybrid_timesheet_sheet."
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "Time Tracking"
+msgstr "Следење на време"
+
+#. module: hybrid
+#: field:hybrid.job,expected_employees:0
+msgid "Total Forecasted Employees"
+msgstr "Вкупно предвидени вработени"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.hybrid_kanban_view_employees
+msgid "Unfollow"
+msgstr "Прекини со следење"
+
+#. module: hybrid
+#: field:hybrid.user,message_unread:0 field:hybrid.job,message_unread:0
+msgid "Unread Messages"
+msgstr "Непрочитани пораки"
+
+#. module: hybrid
+#: field:hybrid.job,write_date:0
+msgid "Update Date"
+msgstr "Датум на ажуруирање"
+
+#. module: hybrid
+#: model:ir.model,name:hybrid.model_res_users
+msgid "Users"
+msgstr "Корисници"
+
+#. module: hybrid
+#: code:addons/hybrid/hybrid.py:273
+#, python-format
+msgid "Welcome to %s! Please help him/her take the first steps with Odoo!"
+msgstr "Добредојде на %s! Ве молиме помогнете му/ú во првите чекори со Odoo!"
+
+#. module: hybrid
+#: selection:hybrid.user,marital:0
+msgid "Widower"
+msgstr "Вдовец"
+
+#. module: hybrid
+#: field:hybrid.user,work_email:0
+msgid "Work Email"
+msgstr "Службен Емаил"
+
+#. module: hybrid
+#: field:hybrid.user,mobile_phone:0
+msgid "Work Mobile"
+msgstr "Службен мобилен телефон"
+
+#. module: hybrid
+#: field:hybrid.user,work_phone:0
+msgid "Work Phone"
+msgstr "Службен телефон"
+
+#. module: hybrid
+#: field:hybrid.user,address_id:0
+msgid "Working Address"
+msgstr "Адреса на работа"
+
+#. module: hybrid
+#: view:hybrid.department:hybrid.view_department_form
+msgid "department"
+msgstr "оддел"
+
+#. module: hybrid
+#: view:hybrid.user:hybrid.view_employee_form
+msgid "e.g. Part Time"
+msgstr "на пр. пола работно време"
+
+#. module: hybrid
+#: view:hybrid.job:hybrid.view_hybrid_job_form
+msgid "new employee(s) expected"
+msgstr "нов вработен(и) очекуван"
+
+#. module: hybrid
+#: view:hybrid.config.settings:hybrid.view_hybrid_cloud_configuration
+msgid "or"
+msgstr "или"

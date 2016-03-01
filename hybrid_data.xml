@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <!-- notify all employees of module installation -->
+        <record model="mail.message" id="module_install_notification">
+            <field name="model">mail.group</field>
+            <field name="res_id" ref="mail.group_all_employees"/>
+            <field name="type">notification</field>
+            <field name="subtype_id" ref="mail.mt_comment"/>
+            <field name="subject">Hybrid Cloud application installed!</field>
+            <field name="body"><![CDATA[<p>Manage your hybrid cloud with Odoo: clients and their clouds.</p>]]></field>
+        </record>
+
+        <record id="employee" model="hybrid.user">
+            <field name="name">Administrator</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="image" type="base64" file="hybrid_cloud/static/img/employee-image.png"/>
+        </record>
+
+    </data>
+</openerp>
