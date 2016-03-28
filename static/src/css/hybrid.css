@@ -1,3 +1,6 @@
+a:focus{
+  outline: none;
+}
 .oe_employee_vignette {
   padding: 8px 8px;
   min-height: 100px;
@@ -72,4 +75,180 @@
 .openerp .oe_employee_vignette .oe_followers {
   width: auto;
   float: none;
+}
+#oe_main_menu_navbar{
+  background: #444;
+  padding-left:calc(40px + (100vw - 100%));
+  padding-right:40px
+}
+#oe_main_menu_navbar li a{
+  dispay:block;
+  margin-top:0;
+  padding:0 25px;
+  line-height:60px;
+  font-size:16px
+}
+
+#oe_main_menu_navbar .dropdown-menu li a{
+  padding:0 10px;
+}
+.openerp.openerp_webclient_container{
+  padding-left:calc(40px + (100vw - 100%));
+  padding-right:40px
+}
+#oe_main_menu_placeholder{
+  padding:0;
+}
+.navbar-nav > li{
+  height:60px;
+}
+.oe_systray li a{
+	width: 30px;
+	height: 30px;
+	line-height:30px!important;
+	border-radius: 50%;
+	background: #343434;
+	text-align:center;
+	margin:15px 15px 0 0 !important;
+	padding:0!important;
+}
+.oe_systray #oe_topbar_imbutton_icon{
+	color: #aaa!important;
+}
+.oe_systray li a:hover{background: #4b4b4b!important}
+.oe_systray li a:hover #oe_topbar_imbutton_icon{
+color: #fff!important;
+}
+.oe_topbar_avatar{
+    width: 30px!important;
+	max-height: 30px!important;
+	border-radius: 50%;
+	display: block;
+	margin:15px 5px 0 0;
+	float:left;
+}
+.navbar .oe_topbar_name{
+	height:auto!important;
+	display:inline!important;
+	padding:0 6px;
+}
+.dropdown-menu{
+	width:100%;
+	min-width:100%;
+	overflow:hidden;
+	background: #4b4b4b!important;
+}
+.dropdown-menu li a{
+	font-size:12px!important;
+	height:32px;
+	line-height:32px!important;
+	text-overflow: ellipsis;
+	color: #aaa;
+}
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus{
+	background: #4b4b4b!important;
+}
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus{
+	background: #343434!important;
+}
+.openerp .oe_secondary_submenu li{
+    line-height: 42px!important;
+    text-align:left;
+}
+.openerp .oe_secondary_submenu li a{
+ 	padding: 0 4px 0 23px!important;
+ 	border-bottom: 1px solid #e5e5e5;
+}
+.openerp .oe_leftbar{
+    border: 1px solid #e5e5e5;
+    border-top: 0;
+    border-bottom: 0;
+    background: #fafafa!important;
+    text-align:center;
+}
+.oe_secondary_menu{
+}
+.openerp .nav-pills > li.active{
+	background: #fff!important;
+	width:222px;
+}
+.openerp .nav-pills > li.active > a, .openerp a.list-group-item.active > a{
+	border-left:3px solid #7c7bad;
+	background: #fff!important;
+	color:#7c7bad;
+	font-weight: bold
+}
+.openerp .oe_secondary_submenu .oe_menu_text{
+	display: inline;
+}
+.nav-stacked > li + li{
+	margin-top: 0!important;
+}
+.openerp .oe_application{
+	padding:30px 0 0 30px
+}
+.openerp .oe_view_manager table.oe_view_manager_header{
+	margin-bottom: 30px;
+	border:0!important;
+	background: #f3f3f3!important;
+	box-shadow:none!important;
+}
+.openerp .oe_view_manager_current > .oe_view_manager_header .oe_header_row td{
+   padding: 16px;
+}
+.openerp .oe_searchview{
+   margin-top: 6px;
+}
+.openerp .oe_list_content{
+   border: 1px solid #ddd;
+}
+.openerp .oe_list_content td, .openerp .oe_list_content th{
+   padding: 10px 6px;
+}
+.openerp .oe_list_content th.oe_sortable div{
+   text-align: center;
+}
+.openerp .oe_list_content > tbody > tr > td.oe_list_field_cell{
+   line-height: 36px;
+}
+.openerp .oe_loading{
+   top:16px;border-radius: 8px;
+}
+.openerp .oe_secondary_menu_section{
+   padding: 12px 0;
+   font-size: 18px;
+   margin-left: 0!important;
+}
+.openerp .oe_secondary_submenu{
+   border-top:1px solid #e5e5e5;
+   margin-bottom:0!important;
+   margin-top: 0!important;
+}
+.oe_secondary_menus_container{
+  right:auto!important;
+}
+.openerp .oe_secondary_submenu .oe_menu_toggler:before{
+  margin-top: 18px
+}
+.modal-dialog{
+  margin:200px auto 0;
+}
+.openerp .oe_secondary_submenu .oe_secondary_submenu li{
+  margin-left: 0!important;
+  text-align: center;
+}
+.openerp .oe_secondary_submenu .oe_secondary_submenu li a{
+  padding:0!important;
+}
+.oe_menu_opened{
+  font-weight: bold;
+}
+.oe_menu_opened,.openerp .nav-pills li > a:hover{
+  color:#7C7BAD!important;
+  }
+  .openerp .oe_view_manager table.oe_view_manager_header .oe_header_row:first-child td{
+   padding-top:10px!important;
+  }
+.oe_secondary_menu {
+    width: 221px;
 }
