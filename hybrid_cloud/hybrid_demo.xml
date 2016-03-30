@@ -34,7 +34,7 @@
           <field name="az">ap-southeast-1a</field>
           <field name="ak">AKXXXXXXX</field>
           <field name="sk">SKYYYYYYY</field>
-          <field name="endpoint">http://162.3.111.181</field>
+          <field name="endpoint">http://205.177.226.131</field>
       </record>
 
     <!--Employees-->

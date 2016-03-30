@@ -11,6 +11,25 @@
             <field name="body"><![CDATA[<p>Manage your hybrid cloud with Odoo: clients and their clouds.</p>]]></field>
         </record>
 
+        <record id="base.main_company" model="res.company">
+            <field name="name">HUAWEI</field>
+            <field name="rml_footer">Phone: +86 755 2878 0808 | Email: gzyjchen@163.com | Website: www.huawei.com</field>
+            <field name="email">gzyjchen@163.com</field>
+            <field name="phone">+86 755 2878 0808</field>
+        </record>
+
+        <record id="base.main_partner" model="res.partner">
+            <field name="name">HUAWEI</field>
+            <field name="street">LONGGANG BANTIAN HUAWEI SCIENCE PARK</field>
+            <field name="country_id" ref="base.cn"/>
+            <field name="city">Shenzhen</field>
+            <field name="zip">518129</field>
+            <field name="phone">+86 2878 0808</field>
+            <field name="email">gzyjchen@163.com</field>
+            <field name="website">www.huawei.com</field>
+            <field name="image" type="base64" file="hybrid_cloud/static/img/huawei-image.png"/>
+        </record>
+
         <record id="employee" model="hybrid.user">
             <field name="name">Administrator</field>
             <field name="user_id" ref="base.user_root"/>

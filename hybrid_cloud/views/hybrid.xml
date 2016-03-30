@@ -35,7 +35,7 @@
 
         <template id="logo" inherit_id="web.menu_secondary" name="Logo">
             <xpath expr="//a[@class='oe_logo']" position="replace">
-                <img src='/hybrid_cloud/static/src/img/huawei-logo.png'/>
+                <img src='/hybrid_cloud/static/img/huawei-image.png'/>
             </xpath>
             <xpath expr="//div[@class='oe_footer']" position="replace">
             </xpath>
