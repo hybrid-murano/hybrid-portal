@@ -66,19 +66,11 @@
         </template>
 
         <template id="website_signin" inherit_id="website.layout" name="Website Signin">
-<!--            <xpath expr="//a[@t-attf-href='/web/login']" position="replace">
+            <xpath expr="//a[@t-attf-href='/web/login']" position="replace">
 	            <a t-attf-href="/web/login?redirect=/">
 	                <b>Sign in</b>
 	            </a>
-            </xpath>  -->
-		    <xpath expr="//ul[@id='top_menu']" position="inside">
-		        <li class="divider" groups="base.group_public"/>
-		        <li groups="base.group_public">
-		            <a t-attf-href="/web/login?redirect=/">
-		                <b>Sign in</b>
-		            </a>
-		        </li>
-		    </xpath>
+            </xpath>
         </template>
 
 		<template id="website_copyright" inherit_id="website.layout_footer_copyright" name="Website Copyright">

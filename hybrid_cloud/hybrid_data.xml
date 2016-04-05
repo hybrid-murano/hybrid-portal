@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="1">
+        <!-- Default template user for new users signing in -->
+        <record id="auth_signup.default_template_user" model="res.users">
+            <field name="name">Hybrid User</field>
+            <field name="active" eval="False"/>
+            <!-- Avoid auto-including this user in any default group, just like a typical portal member -->
+            <field name="groups_id" eval="[(6, 0,  [ref('base.group_portal')])]"/>
+            <!-- allow signuped users to have a alias -->
+            <field name="alias_name">_hybridtemplate</field>
+        </record>
+
+        <record id="auth_signup.default_template_user_config" model="ir.config_parameter">
+            <field name="key">auth_signup.template_user_id</field>
+            <field name="value" ref="auth_signup.default_template_user"/>
+        </record>
+
+        <record id="enable_signup" model="ir.config_parameter">
+            <field name="key">auth_signup.allow_uninvited</field>
+            <field name="value">True</field>
+        </record>
+
+        <record id="enable_reset" model="ir.config_parameter">
+            <field name="key">auth_signup.reset_password</field>
+            <field name="value">True</field>
+        </record>
+
         <!-- notify all employees of module installation -->
         <record model="mail.message" id="module_install_notification">
             <field name="model">mail.group</field>
@@ -29,12 +54,5 @@
             <field name="website">www.huawei.com</field>
             <field name="image" type="base64" file="hybrid_cloud/static/img/huawei-image.png"/>
         </record>
-
-        <record id="employee" model="hybrid.user">
-            <field name="name">Administrator</field>
-            <field name="user_id" ref="base.user_root"/>
-            <field name="image" type="base64" file="hybrid_cloud/static/img/employee-image.png"/>
-        </record>
-
     </data>
 </openerp>
