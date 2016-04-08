@@ -2,30 +2,6 @@
 <openerp>
     <data noupdate="1">
 
-    <!--Users-->
-
-    <!--Department-->
-
-      <record id="dep_management" model="hybrid.department">
-          <field name="name">Management</field>
-      </record>
-
-      <record id="dep_rd" model="hybrid.department">
-          <field name="name">Research &amp; Development</field>
-      </record>
-
-      <record id="dep_ps" model="hybrid.department">
-          <field name="name">Professional Services</field>
-      </record>
-
-      <record id="dep_administration" model="hybrid.department">
-          <field name="name">Administration</field>
-      </record>
-
-      <record id="dep_sales" model="hybrid.department">
-          <field name="name">Sales</field>
-      </record>
-
     <!-- Hybrid Cloud -->
 
       <record id="cloud_1" model="hybrid.cloud">

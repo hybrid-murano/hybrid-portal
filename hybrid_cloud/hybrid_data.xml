@@ -3,12 +3,8 @@
     <data noupdate="1">
         <!-- Default template user for new users signing in -->
         <record id="auth_signup.default_template_user" model="res.users">
-            <field name="name">Hybrid User</field>
-            <field name="active" eval="False"/>
             <!-- Avoid auto-including this user in any default group, just like a typical portal member -->
-            <field name="groups_id" eval="[(6, 0,  [ref('base.group_portal')])]"/>
-            <!-- allow signuped users to have a alias -->
-            <field name="alias_name">_hybridtemplate</field>
+            <field name="groups_id" eval="[(6, 0,  [ref('base.group_portal'), ref('base.group_hybrid_user')])]"/>
         </record>
 
         <record id="auth_signup.default_template_user_config" model="ir.config_parameter">
@@ -24,6 +20,26 @@
         <record model="ir.config_parameter">
             <field name="key">auth_signup.reset_password</field>
             <field name="value">True</field>
+        </record>
+
+        <record id="dep_management" model="hybrid.department">
+            <field name="name">Management</field>
+        </record>
+
+        <record id="dep_rd" model="hybrid.department">
+            <field name="name">Research &amp; Development</field>
+        </record>
+
+        <record id="dep_ps" model="hybrid.department">
+            <field name="name">Professional Services</field>
+        </record>
+
+        <record id="dep_administration" model="hybrid.department">
+            <field name="name">Administration</field>
+        </record>
+
+        <record id="dep_sales" model="hybrid.department">
+            <field name="name">Sales</field>
         </record>
 
         <!-- notify all employees of module installation -->
