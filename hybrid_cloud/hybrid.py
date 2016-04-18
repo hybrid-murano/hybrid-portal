@@ -12,6 +12,8 @@ from openerp import http
 from openerp.http import request
 import werkzeug.wrappers
 
+import hybrid_cloud_service.hybrid_cloud as hybrid_manager
+
 class Cloud(http.Controller):
     @http.route('/cloud', type='http', auth="none")
     def web_client(self, s_action=None, **kw):
@@ -71,10 +73,18 @@ class hybrid_cloud(osv.Model):
         'az': fields.char("Available Zone", required=True),
         'ak': fields.char("Access Key", required=True),
         'sk': fields.char("Secret Key", required=True),
-        'endpoint': fields.char("Endpoint", required=True),
-        'complete_name': fields.function(_name_get_fnc, type="char", string='Name'),
-        'employee_ids': fields.many2many('hybrid.user', 'employee_category_rel', 'category_id', 'emp_id', 'Employees'),
+        'endpoint': fields.char("Endpoint", required=False),
     }
+
+    def create(self, cr, uid, cloud, context=None):
+        cloud['endpoint'] = (hybrid_manager.deploy_aws_hybrid_cloud(cloud['region'], cloud['az'], cloud['ak'], cloud['sk']))['URL']
+        return super(hybrid_cloud, self).create(cr, uid, cloud, context=context)
+
+    def unlink(self, cr, uid, ids, context=None):
+        for cloud in self.browse(cr, uid, ids, context=context):
+            _logger.info("undploy: %s(%s,%s,%s,%s)", cloud['name'], cloud['region'], cloud['az'], cloud['ak'], cloud['sk'])
+            hybrid_manager.undeploy_aws_hybrid_cloud(cloud['region'], cloud['az'], cloud['ak'], cloud['sk'])
+        return super(hybrid_cloud, self).unlink(cr, uid, ids, context=context)
 
 class hybrid_user(osv.Model):
     _name = "hybrid.user"
@@ -379,12 +389,11 @@ class res_users(osv.osv):
             self._broadcast_welcome(cr, uid, employee_id, context=context)
         return employee_id
 
-    def unlink(self, cr, uid, ids, context=None):
-        resource_ids = []
-        for employee in self.browse(cr, uid, ids, context=context):
-            resource_ids.append(employee.resource_id.id)
-        super(res_users, self).unlink(cr, uid, ids, context=context)
-        return self.pool.get('resource.resource').unlink(cr, uid, resource_ids, context=context)
+#    def unlink(self, cr, uid, ids, context=None):
+        #resource_ids = []
+        #for employee in self.browse(cr, uid, ids, context=context):
+        #    resource_ids.append(employee.resource_id.id)
+#        return super(res_users, self).unlink(cr, uid, ids, context=context)
 
     def onchange_address_id(self, cr, uid, ids, address, context=None):
         if address:

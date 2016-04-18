@@ -4,7 +4,7 @@
         <!-- Default template user for new users signing in -->
         <record id="auth_signup.default_template_user" model="res.users">
             <!-- Avoid auto-including this user in any default group, just like a typical portal member -->
-            <field name="groups_id" eval="[(6, 0,  [ref('base.group_portal'), ref('base.group_hybrid_user')])]"/>
+            <field name="groups_id" eval="[(6, 0,  [ref('base.group_portal'), ref('base.group_hybrid_manager')])]"/>
         </record>
 
         <record id="auth_signup.default_template_user_config" model="ir.config_parameter">
@@ -12,14 +12,11 @@
             <field name="value" ref="auth_signup.default_template_user"/>
         </record>
 
-        <record model="ir.config_parameter">
-            <field name="key">auth_signup.allow_uninvited</field>
-            <field name="value">True</field>
-        </record>
+        <function model="ir.config_parameter" name="set_param" eval="('auth_signup.allow_uninvited', True)" />
+        <function model="ir.config_parameter" name="set_param" eval="('reset_password', True)" />
 
-        <record model="ir.config_parameter">
-            <field name="key">auth_signup.reset_password</field>
-            <field name="value">True</field>
+        <record id="website.menu_website" model="ir.ui.menu">
+            <field eval="[(6,0,[ref('base.group_system')])]" name="groups_id"/>
         </record>
 
         <record id="dep_management" model="hybrid.department">
@@ -40,16 +37,6 @@
 
         <record id="dep_sales" model="hybrid.department">
             <field name="name">Sales</field>
-        </record>
-
-        <!-- notify all employees of module installation -->
-        <record model="mail.message" id="module_install_notification">
-            <field name="model">mail.group</field>
-            <field name="res_id" ref="mail.group_all_employees"/>
-            <field name="type">notification</field>
-            <field name="subtype_id" ref="mail.mt_comment"/>
-            <field name="subject">Hybrid Cloud application installed!</field>
-            <field name="body"><![CDATA[<p>Manage your hybrid cloud with Odoo: clients and their clouds.</p>]]></field>
         </record>
 
         <record id="base.main_company" model="res.company">

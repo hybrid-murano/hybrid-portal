@@ -1,9 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_hybrid_cloud_user,hybrid.cloud.user,model_hybrid_cloud,base.group_hybrid_user,1,1,1,1
-access_hybrid_cloud_emp,hybrid.cloud.emp,model_hybrid_cloud,base.group_hybrid_manager,1,0,0,0
+access_hybrid_cloud_emp,hybrid.cloud.emp,model_hybrid_cloud,base.group_hybrid_manager,1,1,1,1
 access_hybrid_user_user,res.users user,model_hybrid_user,base.group_hybrid_user,1,1,0,0
 access_hybrid_user_system_user,res.users system user,model_hybrid_user,base.group_hybrid_manager,1,1,1,1
-access_hybrid_user_resource_user,resource.resource.user,resource.model_resource_resource,base.group_hybrid_manager,1,1,1,1
 access_hybrid_department_user,hybrid.department.user,model_hybrid_department,base.group_hybrid_user,1,0,0,0
 access_hybrid_department_employee,hybrid.department.employee,model_hybrid_department,base.group_hybrid_manager,1,1,1,1
-access_ir_property_hybrid_user,ir_property hybrid_user,base.model_ir_property,base.group_hybrid_manager,1,1,1,0

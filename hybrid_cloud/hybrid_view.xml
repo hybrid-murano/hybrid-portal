@@ -190,7 +190,11 @@
             <field name="arch" type="xml">
                 <tree string="Employees">
                     <field name="name"/>
+                    <field name="work_phone"/>
+                    <field name="work_email"/>
                     <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="department_id"/>
+                    <field name="coach_id" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -215,7 +219,7 @@
         </ir_set>
 
         <!-- Employee Category -->
-       <record id="view_employee_category_form" model="ir.ui.view">
+       <record id="view_cloud_category_form" model="ir.ui.view">
             <field name="name">hybrid.cloud.form</field>
             <field name="model">hybrid.cloud</field>
             <field name="arch" type="xml">
@@ -232,23 +236,7 @@
             </field>
         </record>
 
-        <record id="view_employee_category_list" model="ir.ui.view">
-            <field name="name">hybrid.cloud.list</field>
-            <field name="model">hybrid.cloud</field>
-            <field eval="8" name="priority"/>
-            <field name="arch" type="xml">
-                <tree string="Hybrid Clouds">
-                      <field name="complete_name" widget="endpoint"/>
-                      <field name="region" widget="endpoint"/>
-                      <field name="az" widget="endpoint"/>
-                      <field name="ak" widget="endpoint"/>
-                      <field name="sk" widget="endpoint"/>
-                      <field name="endpoint" invisible="1"/>
-                </tree>
-            </field>
-        </record>
-
-        <record id="view_employee_category_tree" model="ir.ui.view">
+        <record id="view_cloud_category_tree" model="ir.ui.view">
             <field name="name">hybrid.cloud.tree</field>
             <field name="model">hybrid.cloud</field>
             <field name="field_parent">child_ids</field>
@@ -271,7 +259,7 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem action="open_view_categ_form" id="menu_view_employee_category_form" parent="menu_hybrid_main" sequence="1"/>
+        <menuitem action="open_view_categ_form" id="menu_view_cloud_category_form" parent="menu_hybrid_main" sequence="1"/>
 
         <record id="hybrid_user_normal_action_tree" model="ir.actions.act_window">
             <field name="name">Employees</field>
