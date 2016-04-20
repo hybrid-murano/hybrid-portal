@@ -1,5 +1,9 @@
 <openerp>
     <data>
+        <record id="website.login_layout" model="ir.ui.view">
+        	<field name="inherit_id"></field>
+        </record>
+
         <template id="assets_backend" name="hybrid assets" inherit_id="web.assets_backend">
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="/hybrid_cloud/static/src/css/hybrid.css"/>
