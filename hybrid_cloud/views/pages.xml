@@ -2,25 +2,22 @@
 	<data>
 
 <!-- === Services Page === -->
-<template name="Services page" id="website.services" page="True">
+<template id="website.homepage" name="Homepage" page="True" priority="29">
   <t t-call="website.layout">
-   <div id="wrap">
-     <div class="container">
-       <h1>Our Services</h1>
-       <ul class="services">
-         <li>Cloud Hosting</li>
-         <li>Support</li>
-         <li>Unlimited space</li>
-       </ul>
-       <!-- === Snippets' area === -->
-       <div class="oe_structure" />
-     </div>
-   </div>
-  </t>
-</template>
-
-<template name="Hybrid Cloud" id="website.hybrid_cloud" page="True">
-  <t t-call="website.layout">
+    <div id="wrap" class="oe_structure oe_empty">
+      <section class="oe_dark mt0 mb0" style="">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12 text-center mt0 mb0">
+              <h2>Hybrid Cloud As A Service</h2>
+            </div>
+            <div class="col-md-12">
+              <img alt="Odoo CMS - a big picture" class="img img-responsive" src="/hybrid_cloud/static/img/hybrid-cloud.jpg" style="margin: 0px auto; animation-play-state: paused; transition: none 0s ease 0s"/>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
   </t>
 </template>
 
