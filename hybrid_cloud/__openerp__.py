@@ -1,7 +1,7 @@
 {
     'name': 'Hybrid Cloud',
     'version': '1.0',
-    'author': 'chenyujie',
+    'author': 'HUAWEI',
     'category': 'Hybrid Cloud',
     'sequence': 10,
     'website': 'https://github.com/Hybrid-Cloud/hybrid_cloud/wiki',
@@ -34,6 +34,7 @@ You can manage:
         'hybrid_data.xml',
         'views/hybrid.xml',
         'views/pages.xml',
+        'views/editor.xml',
     ],
     'demo': ['hybrid_demo.xml'],
     'test': [

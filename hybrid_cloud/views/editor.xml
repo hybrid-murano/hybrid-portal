@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp><data>
+
+<template name="Modeler" id="website.editor" page="True">&lt;!DOCTYPE html&gt;
+<html>
+<head>
+<title>Modeler</title>
+<!-- libraries -->
+<script src="/hybrid_cloud/static/libs/prototype-1.5.1.js" type="text/javascript" />
+<script src="/hybrid_cloud/static/libs/path_parser.js" type="text/javascript" />
+<script src="/hybrid_cloud/static/libs/ext-2.0.2/adapter/ext/ext-base.js" type="text/javascript" />
+<script src="/hybrid_cloud/static/libs/ext-2.0.2/ext-all-debug.js" type="text/javascript" />
+<script src="/hybrid_cloud/static/libs/ext-2.0.2/color-field.js" type="text/javascript" />
+<style media="screen" type="text/css">
+@import url("/hybrid_cloud/static/libs/ext-2.0.2/resources/css/ext-all.css");
+@import url("/hybrid_cloud/static/libs/ext-2.0.2/resources/css/xtheme-darkgray.css");
+</style>
+<link rel="Stylesheet" media="screen" href="/hybrid_cloud/static/editor/css/theme_norm.css" type="text/css" />
+<link rel="Stylesheet" media="screen" href="/hybrid_cloud/static/editor/css/theme_norm_signavio.css" type="text/css" />
+<link rel="Stylesheet" media="screen" href="/hybrid_cloud/static/explorer/src/css/xtheme-smoky.css" type="text/css" />
+<link rel="Stylesheet" media="screen" href="/hybrid_cloud/static/explorer/src/css/custom-style.css" type="text/css" />
+<!-- oryx editor -->
+<!-- language files -->
+<script src="/hybrid_cloud/static/editor/i18n/translation_en_us.js" type="text/javascript" />
+<script src="/hybrid_cloud/static/editor/i18n/translation_signavio_en_us.js" type="text/javascript" />
+<script src="/hybrid_cloud/static/libs/utils.js" type="text/javascript" />
+<script src="/hybrid_cloud/static/editor/oryx.debug.js" type="text/javascript" />
+</head>
+<body style="overflow:hidden;">
+</body>
+</html>
+</template>
+
+<record id="modeler_link" model="website.menu">
+  <field name="name">Modeler</field>
+  <field name="url">/page/editor</field>
+  <field name="parent_id" ref="website.main_menu" />
+  <field name="sequence" type="int">12</field>
+</record>
+
+</data></openerp>
