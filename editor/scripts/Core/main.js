@@ -64,7 +64,7 @@ function init() {
 			modelUrl = modelUrl.replace("/self","/json");
 		} else {
 			var modelId = window.location.search.substring(4);
-			modelUrl = "/hybrid_cloud/static/explorer/model.json";
+			modelUrl = "/hybrid_cloud/static/explorer/model.json?"+(new Date()).getTime();
 		}
 
         ORYX.Editor.createByUrl(modelUrl, {

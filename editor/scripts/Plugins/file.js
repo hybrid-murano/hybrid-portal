@@ -413,7 +413,7 @@ ORYX.Plugins.Save = Clazz.extend({
 		
 		var modelMeta = this.facade.getModelMetaData();
 		
-		new Ajax.Request("/hybrid_cloud/static/explorer/model.json", {
+		new Ajax.Request("/hybrid_cloud/static/explorer/model.json?"+(new Date()).getTime(), {
             method: 'get',
             asynchronous: true,
 			requestHeaders: {
