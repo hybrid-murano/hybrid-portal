@@ -243,7 +243,7 @@ ORYX = Object.extend(ORYX, {
 	_loadPlugins: function() {
 
 		// load plugin configuration file.
-		var source = ORYX.CONFIG.PLUGINS_CONFIG;
+		var source = ORYX.CONFIG.PLUGINS_CONFIG + (new Date()).getTime();
 
 		ORYX.Log.debug("Loading plugin configuration from '%0'.", source);
 	

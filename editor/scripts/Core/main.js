@@ -391,7 +391,7 @@ ORYX.Editor = {
 		}
 		
 		//Generates the ORYX-Header
-		this._generateHeader();
+		//this._generateHeader();
 		
 		
 		// Set the editor to the center, and refresh the size

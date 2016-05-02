@@ -69,7 +69,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 		if(ORYX.CONFIG.BACKEND_SWITCH) {
 			this._baseUrl = "/hybrid_cloud/static/editor/stencilsets/bpmn2.0/";
 			this._source = "../stencilsets/bpmn2.0/bpmn2.0.json";
-			new Ajax.Request("/hybrid_cloud/static/explorer/stencilset.json", {
+			new Ajax.Request("/hybrid_cloud/static/explorer/stencilset.json?"+(new Date()).getTime(), {
 	            asynchronous: false,
 	            method: 'get',
 	            onSuccess: this._init.bind(this),
