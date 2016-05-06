@@ -35,6 +35,7 @@ You can manage:
         'views/hybrid.xml',
         'views/pages.xml',
         'views/editor.xml',
+        'views/meter.xml',
     ],
     'demo': ['hybrid_demo.xml'],
     'test': [
