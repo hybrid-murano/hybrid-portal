@@ -1,5 +1,4 @@
-<openerp>
-	<data>
+<openerp><data>
 
 <!-- === Services Page === -->
 <template id="website.homepage" name="Homepage" page="True" priority="29">
@@ -28,5 +27,4 @@
   <field name="sequence" type="int">11</field>
 </record>
 
-	</data>
-</openerp>
+</data></openerp>
