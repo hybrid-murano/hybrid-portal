@@ -150,11 +150,11 @@ ORYX = Object.extend(ORYX, {
 		ORYX.Log.debug("Oryx begins loading procedure.");
 		
 		// check for prototype
-		if( (typeof Prototype=='undefined') ||
-			(typeof Element == 'undefined') ||
-			(typeof Element.Methods=='undefined') ||
-			parseFloat(Prototype.Version.split(".")[0] + "." +
-				Prototype.Version.split(".")[1]) < 1.5)
+		if( (typeof PROTOTYPE.Prototype=='undefined') ||
+			(typeof PROTOTYPE.Element == 'undefined') ||
+			(typeof PROTOTYPE.Element.Methods=='undefined') ||
+			parseFloat(PROTOTYPE.Prototype.Version.split(".")[0] + "." +
+				PROTOTYPE.Prototype.Version.split(".")[1]) < 1.5)
 
 			throw("Application requires the Prototype JavaScript framework >= 1.5.3");
 		
@@ -247,7 +247,7 @@ ORYX = Object.extend(ORYX, {
 
 		ORYX.Log.debug("Loading plugin configuration from '%0'.", source);
 	
-		new Ajax.Request(source, {
+		new PROTOTYPE.Ajax.Request(source, {
 			asynchronous: false,
 			method: 'get',
 			onSuccess: function(result) {
@@ -267,15 +267,15 @@ ORYX = Object.extend(ORYX, {
 				// TODO: Describe how properties are handled.
 				// Get the globale Properties
 				var globalProperties = [];
-				var preferences = $A(resultXml.getElementsByTagName("properties"));
+				var preferences = PROTOTYPE.$A(resultXml.getElementsByTagName("properties"));
 				preferences.each( function(p) {
 
-					var props = $A(p.childNodes);
+					var props = PROTOTYPE.$A(p.childNodes);
 					props.each( function(prop) {
-						var property = new Hash(); 
+						var property = new PROTOTYPE.Hash(); 
 						
 						// get all attributes from the node and set to global properties
-						var attributes = $A(prop.attributes)
+						var attributes = PROTOTYPE.$A(prop.attributes)
 						attributes.each(function(attr){property[attr.nodeName] = attr.nodeValue});				
 						if(attributes.length > 0) { globalProperties.push(property) };				
 					});
@@ -285,12 +285,12 @@ ORYX = Object.extend(ORYX, {
 				// TODO Why are we using XML if we don't respect structure anyway?
 				// for each plugin element in the configuration..
 				var plugin = resultXml.getElementsByTagName("plugin");
-				$A(plugin).each( function(node) {
+				PROTOTYPE.$A(plugin).each( function(node) {
 					
 					// get all element's attributes.
-					// TODO: What about: var pluginData = $H(node.attributes) !?
-					var pluginData = new Hash();
-					$A(node.attributes).each( function(attr){
+					// TODO: What about: var pluginData = PROTOTYPE.$H(node.attributes) !?
+					var pluginData = new PROTOTYPE.Hash();
+					PROTOTYPE.$A(node.attributes).each( function(attr){
 						pluginData[attr.nodeName] = attr.nodeValue});				
 					
 					// ensure there's a name attribute.
@@ -308,11 +308,11 @@ ORYX = Object.extend(ORYX, {
 					// Get all private Properties
 					var propertyNodes = node.getElementsByTagName("property");
 					var properties = [];
-					$A(propertyNodes).each(function(prop) {
-						var property = new Hash(); 
+					PROTOTYPE.$A(propertyNodes).each(function(prop) {
+						var property = new PROTOTYPE.Hash(); 
 						
 						// Get all Attributes from the Node			
-						var attributes = $A(prop.attributes)
+						var attributes = PROTOTYPE.$A(prop.attributes)
 						attributes.each(function(attr){property[attr.nodeName] = attr.nodeValue});				
 						if(attributes.length > 0) { properties.push(property) };	
 					
@@ -327,8 +327,8 @@ ORYX = Object.extend(ORYX, {
 					// Get the RequieredNodes
 					var requireNodes = node.getElementsByTagName("requires");
 					var requires;
-					$A(requireNodes).each(function(req) {			
-						var namespace = $A(req.attributes).find(function(attr){ return attr.name == "namespace"})
+					PROTOTYPE.$A(requireNodes).each(function(req) {			
+						var namespace = PROTOTYPE.$A(req.attributes).find(function(attr){ return attr.name == "namespace"})
 						if( namespace && namespace.nodeValue ){
 							if( !requires ){
 								requires = {namespaces:[]}
@@ -347,8 +347,8 @@ ORYX = Object.extend(ORYX, {
 					// Get the RequieredNodes
 					var notUsesInNodes = node.getElementsByTagName("notUsesIn");
 					var notUsesIn;
-					$A(notUsesInNodes).each(function(not) {			
-						var namespace = $A(not.attributes).find(function(attr){ return attr.name == "namespace"})
+					PROTOTYPE.$A(notUsesInNodes).each(function(not) {			
+						var namespace = PROTOTYPE.$A(not.attributes).find(function(attr){ return attr.name == "namespace"})
 						if( namespace && namespace.nodeValue ){
 							if( !notUsesIn ){
 								notUsesIn = {namespaces:[]}

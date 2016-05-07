@@ -55,10 +55,10 @@ ORYX.Plugins.PropertyWindow = {
 		this.properties = [];
 		
 		/* The currently selected shapes whos properties will shown */
-		this.shapeSelection = new Hash();
+		this.shapeSelection = new PROTOTYPE.Hash();
 		this.shapeSelection.shapes = new Array();
 		this.shapeSelection.commonProperties = new Array();
-		this.shapeSelection.commonPropertiesValues = new Hash();
+		this.shapeSelection.commonPropertiesValues = new PROTOTYPE.Hash();
 		
 		this.updaterFlag = false;
 
@@ -238,7 +238,7 @@ ORYX.Plugins.PropertyWindow = {
 		
 		var key = this.dataSource.getAt(option.row).data.gridProperties.propId;
 		
-		this.oldValues = new Hash();
+		this.oldValues = new PROTOTYPE.Hash();
 		this.shapeSelection.shapes.each(function(shape){
 			this.oldValues[shape.getId()] = shape.properties[key];
 		}.bind(this)); 
@@ -374,7 +374,7 @@ ORYX.Plugins.PropertyWindow = {
 	 * is left empty in the property window.
 	 */
 	setCommonPropertiesValues: function() {
-		this.shapeSelection.commonPropertiesValues = new Hash();
+		this.shapeSelection.commonPropertiesValues = new PROTOTYPE.Hash();
 		this.shapeSelection.commonProperties.each(function(property){
 			var key = property.prefix() + "-" + property.id();
 			var emptyValue = false;
@@ -398,7 +398,7 @@ ORYX.Plugins.PropertyWindow = {
 	 * Returns the set of stencils used by the passed shapes.
 	 */
 	getStencilSetOfSelection: function() {
-		var stencils = new Hash();
+		var stencils = new PROTOTYPE.Hash();
 		
 		this.shapeSelection.shapes.each(function(shape) {
 			stencils[shape.getStencil().id()] = shape.getStencil();
@@ -424,9 +424,9 @@ ORYX.Plugins.PropertyWindow = {
 		if(comparingStencils.length == 0) {
 			this.shapeSelection.commonProperties = firstStencil.properties();
 		} else {
-			var properties = new Hash();
+			var properties = new PROTOTYPE.Hash();
 			
-			/* put all properties of on stencil in a Hash */
+			/* put all properties of on stencil in a PROTOTYPE.Hash */
 			firstStencil.properties().each(function(property){
 				properties[property.namespace() + '-' + property.id() 
 							+ '-' + property.type()] = property;
@@ -435,7 +435,7 @@ ORYX.Plugins.PropertyWindow = {
 			/* Calculate intersection of properties. */
 			
 			comparingStencils.each(function(stencil){
-				var intersection = new Hash();
+				var intersection = new PROTOTYPE.Hash();
 				stencil.properties().each(function(property){
 					if(properties[property.namespace() + '-' + property.id()
 									+ '-' + property.type()]){
@@ -935,7 +935,7 @@ Ext.extend(Ext.form.ComplexListField, Ext.form.TriggerField,  {
 	 * @param {Object} items      The initial items of the grid (columns)
 	 */
 	buildInitial: function(recordType, items) {
-		var initial = new Hash();
+		var initial = new PROTOTYPE.Hash();
 		
 		for (var i = 0; i < items.length; i++) {
 			var id = items[i].id();
@@ -1354,7 +1354,7 @@ Ext.extend(Ext.form.MultipleComplexListField, Ext.form.TriggerField,  {
 	 * @param {Object} items      The initial items of the grid (columns)
 	 */
 	buildInitial: function(recordType, items) {
-		var initial = new Hash();
+		var initial = new PROTOTYPE.Hash();
 		
 		for (var i = 0; i < items.length; i++) {
 			var id = items[i].id();

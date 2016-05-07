@@ -60,14 +60,14 @@ ORYX.Core.Edge = {
 		
 		this._dockerUpdated = false;
         
-        this._markers = new Hash(); //a hash map of SVGMarker objects where keys are the marker ids
+        this._markers = new PROTOTYPE.Hash(); //a hash map of SVGMarker objects where keys are the marker ids
         this._paths = [];
         this._interactionPaths = [];
-        this._dockersByPath = new Hash();
-        this._markersByPath = new Hash();
+        this._dockersByPath = new PROTOTYPE.Hash();
+        this._markersByPath = new PROTOTYPE.Hash();
 		
 		/* Data structures to store positioning information of attached child nodes */ 
-		this.attachedNodePositionData = new Hash();
+		this.attachedNodePositionData = new PROTOTYPE.Hash();
         
         //TODO was muss hier initial erzeugt werden?
         var stencilNode = this.node.childNodes[0].childNodes[0];
@@ -944,7 +944,7 @@ ORYX.Core.Edge = {
 	 *  @param {ORYX.Core.Controls.Docker} endDocker
 	 *  	The docker defining the begin of the segment.
 	 *  
-	 *  @return {Hash} attachedNodePositionData
+	 *  @return {PROTOTYPE.Hash} attachedNodePositionData
 	 *  	Child elements matching the segment
 	 */
 	getAttachedNodePositionDataForSegment: function(startDocker, endDocker) {
@@ -961,7 +961,7 @@ ORYX.Core.Edge = {
 						nodePositionData.value.segment.docker2 === endDocker;
 			});
 		
-		/* Return a Hash in each case */
+		/* Return a PROTOTYPE.Hash in each case */
 		if(!elementsOfSegment) {return [];}
 		
 		return elementsOfSegment;
@@ -1197,7 +1197,7 @@ ORYX.Core.Edge = {
 	 * (key is the removed position of the docker, value is docker themselve)
 	 */
 	removeUnusedDockers:function(){
-		var marked = $H({});
+		var marked = PROTOTYPE.$H({});
 		
 		this.dockers.each(function(docker, i){
 			if (i==0||i==this.dockers.length-1){ return }
@@ -1242,14 +1242,14 @@ ORYX.Core.Edge = {
         var defs = svgDocument.getElementsByTagNameNS(NAMESPACE_SVG, "defs");
         if (defs.length > 0) {
             defs = defs[0];
-            var markerElements = $A(defs.getElementsByTagNameNS(NAMESPACE_SVG, "marker"));
+            var markerElements = PROTOTYPE.$A(defs.getElementsByTagNameNS(NAMESPACE_SVG, "marker"));
             var marker;
             var me = this;
             markerElements.each(function(markerElement){
                 try {
                     marker = new ORYX.Core.SVG.SVGMarker(markerElement.cloneNode(true));
                     me._markers[marker.id] = marker;
-                    var textElements = $A(marker.element.getElementsByTagNameNS(NAMESPACE_SVG, "text"));
+                    var textElements = PROTOTYPE.$A(marker.element.getElementsByTagNameNS(NAMESPACE_SVG, "text"));
                     var label;
                     textElements.each(function(textElement){
                         label = new ORYX.Core.SVG.Label({
@@ -1276,7 +1276,7 @@ ORYX.Core.Edge = {
         
         var isFirst = true;
         
-        $A(g.childNodes).each((function(path, index){
+        PROTOTYPE.$A(g.childNodes).each((function(path, index){
             if (ORYX.Editor.checkClassType(path, SVGPathElement)) {
                 path = path.cloneNode(false);
                 
@@ -1420,7 +1420,7 @@ ORYX.Core.Edge = {
 		/**initialize labels*/
         var textElems = svgDocument.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'text');
         
-		$A(textElems).each((function(textElem){
+		PROTOTYPE.$A(textElems).each((function(textElem){
             var label = new ORYX.Core.SVG.Label({
                 textElement: textElem,
 				shapeId: this.id

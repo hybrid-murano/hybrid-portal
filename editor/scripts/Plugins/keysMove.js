@@ -137,13 +137,13 @@ ORYX.Plugins.KeysMove = ORYX.Plugins.AbstractPlugin.extend({
 	 *
 	 */
 	selectAll: function(e){
-    	Event.stop(e.event);
+    	PROTOTYPE.Event.stop(e.event);
 		this.facade.setSelection(this.facade.getCanvas().getChildShapes(true))
 	},
 	
 	move: function(key, far, e) {
 		
-    	Event.stop(e.event);
+    	PROTOTYPE.Event.stop(e.event);
 
 		// calculate the distance to move the objects and get the selection.
 		var distance = far? 20 : 5;

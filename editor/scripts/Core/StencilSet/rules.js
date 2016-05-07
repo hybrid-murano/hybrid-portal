@@ -45,19 +45,19 @@ ORYX.Core.StencilSet.Rules = {
 		this._stencils = [];
 		this._containerStencils = [];
 		
-		this._cachedConnectSET = new Hash();
-		this._cachedConnectSE = new Hash();
-		this._cachedConnectTE = new Hash();
-		this._cachedCardSE = new Hash();
-		this._cachedCardTE = new Hash();
-		this._cachedContainPC = new Hash();
-		this._cachedMorphRS = new Hash();
+		this._cachedConnectSET = new PROTOTYPE.Hash();
+		this._cachedConnectSE = new PROTOTYPE.Hash();
+		this._cachedConnectTE = new PROTOTYPE.Hash();
+		this._cachedCardSE = new PROTOTYPE.Hash();
+		this._cachedCardTE = new PROTOTYPE.Hash();
+		this._cachedContainPC = new PROTOTYPE.Hash();
+		this._cachedMorphRS = new PROTOTYPE.Hash();
 		
-		this._connectionRules = new Hash();
-		this._cardinalityRules = new Hash();
-		this._containmentRules = new Hash();
-		this._morphingRules = new Hash();
-		this._layoutRules = new Hash();
+		this._connectionRules = new PROTOTYPE.Hash();
+		this._cardinalityRules = new PROTOTYPE.Hash();
+		this._containmentRules = new PROTOTYPE.Hash();
+		this._morphingRules = new PROTOTYPE.Hash();
+		this._layoutRules = new PROTOTYPE.Hash();
 	},
 	
 	/**
@@ -82,19 +82,19 @@ ORYX.Core.StencilSet.Rules = {
 			this._stencils = [];
 			this._containerStencils = [];
 			
-			this._cachedConnectSET = new Hash();
-			this._cachedConnectSE = new Hash();
-			this._cachedConnectTE = new Hash();
-			this._cachedCardSE = new Hash();
-			this._cachedCardTE = new Hash();
-			this._cachedContainPC = new Hash();
-			this._cachedMorphRS = new Hash();
+			this._cachedConnectSET = new PROTOTYPE.Hash();
+			this._cachedConnectSE = new PROTOTYPE.Hash();
+			this._cachedConnectTE = new PROTOTYPE.Hash();
+			this._cachedCardSE = new PROTOTYPE.Hash();
+			this._cachedCardTE = new PROTOTYPE.Hash();
+			this._cachedContainPC = new PROTOTYPE.Hash();
+			this._cachedMorphRS = new PROTOTYPE.Hash();
 			
-			this._connectionRules = new Hash();
-			this._cardinalityRules = new Hash();
-			this._containmentRules = new Hash();
-			this._morphingRules = new Hash();
-			this._layoutRules = new Hash();
+			this._connectionRules = new PROTOTYPE.Hash();
+			this._cardinalityRules = new PROTOTYPE.Hash();
+			this._containmentRules = new PROTOTYPE.Hash();
+			this._morphingRules = new PROTOTYPE.Hash();
+			this._layoutRules = new PROTOTYPE.Hash();
 			
 			stencilsets.each(function(ss){
 				this.initializeRules(ss);
@@ -104,7 +104,7 @@ ORYX.Core.StencilSet.Rules = {
 		else {
 			this._stencilSets.push(stencilSet);
 			
-			var jsonRules = new Hash(stencilSet.jsonRules());
+			var jsonRules = new PROTOTYPE.Hash(stencilSet.jsonRules());
 			var namespace = stencilSet.namespace();
 			var stencils = stencilSet.stencils();
 			
@@ -131,12 +131,12 @@ ORYX.Core.StencilSet.Rules = {
 				jsonRules.connectionRules.each((function(rules){
 					if (this._isRoleOfOtherNamespace(rules.role)) {
 						if (!cr[rules.role]) {
-							cr[rules.role] = new Hash();
+							cr[rules.role] = new PROTOTYPE.Hash();
 						}
 					}
 					else {
 						if (!cr[namespace + rules.role]) 
-							cr[namespace + rules.role] = new Hash();
+							cr[namespace + rules.role] = new PROTOTYPE.Hash();
 					}
 					
 					rules.connects.each((function(connect){
@@ -194,7 +194,7 @@ ORYX.Core.StencilSet.Rules = {
 						}
 					}
 					
-					var oe = new Hash();
+					var oe = new PROTOTYPE.Hash();
 					if (rules.outgoingEdges) {
 						rules.outgoingEdges.each((function(rule){
 							if (this._isRoleOfOtherNamespace(rule.role)) {
@@ -206,7 +206,7 @@ ORYX.Core.StencilSet.Rules = {
 						}).bind(this));
 					}
 					cardr[cardrKey].outgoingEdges = oe;
-					var ie = new Hash();
+					var ie = new PROTOTYPE.Hash();
 					if (rules.incomingEdges) {
 						rules.incomingEdges.each((function(rule){
 							if (this._isRoleOfOtherNamespace(rule.role)) {
@@ -328,14 +328,14 @@ ORYX.Core.StencilSet.Rules = {
 			var source = this._cachedConnectSET[args.sourceStencil.id()];
 			
 			if(!source) {
-				source = new Hash();
+				source = new PROTOTYPE.Hash();
 				this._cachedConnectSET[args.sourceStencil.id()] = source;
 			}
 			
 			var edge = source[args.edgeStencil.id()];
 			
 			if(!edge) {
-				edge = new Hash();
+				edge = new PROTOTYPE.Hash();
 				source[args.edgeStencil.id()] = edge;
 			}
 			
@@ -345,7 +345,7 @@ ORYX.Core.StencilSet.Rules = {
 			var source = this._cachedConnectSE[args.sourceStencil.id()];
 			
 			if(!source) {
-				source = new Hash();
+				source = new PROTOTYPE.Hash();
 				this._cachedConnectSE[args.sourceStencil.id()] = source;
 			}
 			
@@ -355,7 +355,7 @@ ORYX.Core.StencilSet.Rules = {
 			var target = this._cachedConnectTE[args.targetStencil.id()];
 			
 			if(!target) {
-				target = new Hash();
+				target = new PROTOTYPE.Hash();
 				this._cachedConnectTE[args.targetStencil.id()] = target;
 			}
 			
@@ -371,7 +371,7 @@ ORYX.Core.StencilSet.Rules = {
 			var source = this._cachedCardSE[args.sourceStencil.id()]
 			
 			if(!source) {
-				source = new Hash();
+				source = new PROTOTYPE.Hash();
 				this._cachedCardSE[args.sourceStencil.id()] = source;
 			}
 			
@@ -386,7 +386,7 @@ ORYX.Core.StencilSet.Rules = {
 			var target = this._cachedCardTE[args.targetStencil.id()]
 			
 			if(!target) {
-				target = new Hash();
+				target = new PROTOTYPE.Hash();
 				this._cachedCardTE[args.targetStencil.id()] = target;
 			}
 			
@@ -409,7 +409,7 @@ ORYX.Core.StencilSet.Rules = {
 		var children = this._cachedContainPC[args.containingStencil.id()];
 		
 		if(!children) {
-			children = new Hash();
+			children = new PROTOTYPE.Hash();
 			this._cachedContainPC[args.containingStencil.id()] = children;
 		}
 		
@@ -1298,11 +1298,11 @@ ORYX.Core.StencilSet.Rules = {
 	 * @param {ORYX.Core.StencilSet.Stencil}
 	 *            edgeStencil
 	 * 
-	 * @return {Hash} Returns a hash map of all connection rules for
+	 * @return {PROTOTYPE.Hash} Returns a hash map of all connection rules for
 	 *         edgeStencil.
 	 */
 	_getConnectionRulesOfEdgeStencil: function(edgeStencil) {
-		var edgeRules = new Hash();
+		var edgeRules = new PROTOTYPE.Hash();
 		edgeStencil.roles().each((function(role) {
 			if(this._connectionRules[role]) {
 				this._connectionRules[role].each(function(cr) {

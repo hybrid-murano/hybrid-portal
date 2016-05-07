@@ -60,7 +60,7 @@ ORYX.Core.StencilSet.Stencil = {
 			this._jsonStencil.position = defaultPosition;
 		
 		this._view;
-		this._properties = new Hash();
+		this._properties = new PROTOTYPE.Hash();
 
 		// check stencil consistency and set defaults.
 		/*with(this._jsonStencil) {
@@ -134,7 +134,7 @@ ORYX.Core.StencilSet.Stencil = {
 		// override content type when this is webkit.
 		
 		/*
-		if(Prototype.Browser.WebKit) {
+		if(PROTOTYPE.Prototype.Browser.WebKit) {
 			
 			var req = new XMLHttpRequest;
 			req.open("GET", url, false);
@@ -157,7 +157,7 @@ ORYX.Core.StencilSet.Stencil = {
 				
 				//updating link to images
 				var imageElems = this._view.getElementsByTagNameNS("http://www.w3.org/2000/svg", "image");
-				$A(imageElems).each((function(imageElem) {
+				PROTOTYPE.$A(imageElems).each((function(imageElem) {
 					var link = imageElem.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href");
 					if(link && link.value.indexOf("://") == -1) {
 						link.textContent = this._source + "view/" + link.value;
@@ -167,7 +167,7 @@ ORYX.Core.StencilSet.Stencil = {
 				throw "ORYX.Core.StencilSet.Stencil(_loadSVGOnSuccess): The response is not a SVG document."
 			}
 		} else {
-			new Ajax.Request(
+			new PROTOTYPE.Ajax.Request(
 				url, {
 					asynchronous:false, method:'get',
 					onSuccess:this._loadSVGOnSuccess.bind(this),
@@ -272,7 +272,7 @@ ORYX.Core.StencilSet.Stencil = {
 	
 	getRepositoryEntries: function() {
 		return (this._jsonStencil.repositoryEntries) ?
-			$A(this._jsonStencil.repositoryEntries) : $A([]);
+			PROTOTYPE.$A(this._jsonStencil.repositoryEntries) : PROTOTYPE.$A([]);
 	},
 	
 	properties: function() {
@@ -358,7 +358,7 @@ ORYX.Core.StencilSet.Stencil = {
 			
 			//updating link to images
 			var imageElems = this._view.getElementsByTagNameNS("http://www.w3.org/2000/svg", "image");
-			$A(imageElems).each((function(imageElem) {
+			PROTOTYPE.$A(imageElems).each((function(imageElem) {
 				var link = imageElem.getAttributeNodeNS("http://www.w3.org/1999/xlink", "href");
 				if(link && link.value.indexOf("://") == -1) {
 					link.textContent = this._source + "view/" + link.value;

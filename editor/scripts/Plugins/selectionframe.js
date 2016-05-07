@@ -61,7 +61,7 @@ if(!ORYX.Plugins)
 			}
 
 			// Set the new Position
-			this.setPos({x: Event.pointerX(event)-this.offsetPosition.x, y:Event.pointerY(event)-this.offsetPosition.y});
+			this.setPos({x: PROTOTYPE.Event.pointerX(event)-this.offsetPosition.x, y:PROTOTYPE.Event.pointerY(event)-this.offsetPosition.y});
 			// Reset the size
 			this.resize({width:0, height:0});
 			this.moveCallback = this.handleMouseMove.bind(this);
@@ -78,7 +78,7 @@ if(!ORYX.Plugins)
 
 		}
 
-		Event.stop(event);
+		PROTOTYPE.Event.stop(event);
 	},
 
 	handleMouseUp: function(event) {
@@ -128,8 +128,8 @@ if(!ORYX.Plugins)
 	handleMouseMove: function(event) {
 		// Calculate the size
 		var size = {
-			width	: Event.pointerX(event) - this.position.x - this.offsetPosition.x,
-			height	: Event.pointerY(event) - this.position.y - this.offsetPosition.y,
+			width	: PROTOTYPE.Event.pointerX(event) - this.position.x - this.offsetPosition.x,
+			height	: PROTOTYPE.Event.pointerY(event) - this.position.y - this.offsetPosition.y,
 		}
 
 		var scrollNode 	= this.facade.getCanvas().rootNode.parentNode.parentNode;
@@ -139,7 +139,7 @@ if(!ORYX.Plugins)
 		// Set the size
 		this.resize(size);
 
-		Event.stop(event);
+		PROTOTYPE.Event.stop(event);
 	},
 
 	hide: function() {

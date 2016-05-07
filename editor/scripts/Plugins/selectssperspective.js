@@ -224,7 +224,7 @@ ORYX.Plugins.SelectStencilSetPerspective = {
 		
 		if (perspective.extensions && !perspective.addExtensions && !perspective.removeExtensions) {
 			var combined = [].concat(addExtensions).concat(removeExtensions).compact();
-			$H(loadedExtensions).each(function(extension){
+			PROTOTYPE.$H(loadedExtensions).each(function(extension){
 				var key = extension.key;
 				if (!extension.value.includeAlways&&!combined.any(function(r){ return r.namespace == key })) {
 					removeExtensions.push(this.extensions[key]);

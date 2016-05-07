@@ -83,7 +83,7 @@ ORYX.Plugins.Deployer = ORYX.Plugins.AbstractPlugin.extend({
 		var data = this.facade.getSerializedJSON();
         
         // Send the request to the server.
-        new Ajax.Request(ORYX.CONFIG.DEPLOY_URL, {
+        new PROTOTYPE.Ajax.Request(ORYX.CONFIG.DEPLOY_URL, {
             method: 'POST',
             asynchronous: false,
             parameters: {

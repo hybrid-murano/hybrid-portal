@@ -56,20 +56,20 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
             source = source.substr(0, source.length - 1);
         }
 		
-		this._extensions = new Hash();
+		this._extensions = new PROTOTYPE.Hash();
         
         this._source = source;
         this._baseUrl = source.substring(0, source.lastIndexOf("/") + 1);
         
         this._jsonObject = {};
         
-        this._stencils = new Hash();
-		this._availableStencils = new Hash();
+        this._stencils = new PROTOTYPE.Hash();
+		this._availableStencils = new PROTOTYPE.Hash();
         
 		if(ORYX.CONFIG.BACKEND_SWITCH) {
 			this._baseUrl = "/hybrid_cloud/static/editor/stencilsets/bpmn2.0/";
 			this._source = "../stencilsets/bpmn2.0/bpmn2.0.json";
-			new Ajax.Request("/hybrid_cloud/static/explorer/stencilset.json?"+(new Date()).getTime(), {
+			new PROTOTYPE.Ajax.Request("/hybrid_cloud/static/explorer/stencilset.json?"+(new Date()).getTime(), {
 	            asynchronous: false,
 	            method: 'get',
 	            onSuccess: this._init.bind(this),
@@ -77,7 +77,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 	        });
 			
 		} else {
-			new Ajax.Request(source, {
+			new PROTOTYPE.Ajax.Request(source, {
 	            asynchronous: false,
 	            method: 'get',
 	            onSuccess: this._init.bind(this),
@@ -222,7 +222,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 	
 	addExtension: function(url) {
 		
-		new Ajax.Request(url, {
+		new PROTOTYPE.Ajax.Request(url, {
             method: 'GET',
             asynchronous: false,
 			onSuccess: (function(transport) {
@@ -252,7 +252,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 				var defaultPosition = this._stencils.keys().size();
 				//load new stencils
 				if(jsonExtension.stencils) {
-					$A(jsonExtension.stencils).each(function(stencil) {
+					PROTOTYPE.$A(jsonExtension.stencils).each(function(stencil) {
 						defaultPosition++;
 						var oStencil = new ORYX.Core.StencilSet.Stencil(stencil, this.namespace(), this._baseUrl, this, undefined, defaultPosition);            
 						this._stencils[oStencil.id()] = oStencil;
@@ -298,7 +298,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 				
 				//remove stencils
 				if(jsonExtension.removestencils) {
-					$A(jsonExtension.removestencils).each(function(remstencil) {
+					PROTOTYPE.$A(jsonExtension.removestencils).each(function(remstencil) {
 						delete this._availableStencils[jsonExtension["extends"] + remstencil];
 					}.bind(this));
 				}
@@ -314,7 +314,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 			
 			//unload extension's stencils
 			if(jsonExtension.stencils) {
-				$A(jsonExtension.stencils).each(function(stencil) {
+				PROTOTYPE.$A(jsonExtension.stencils).each(function(stencil) {
 					var oStencil = new ORYX.Core.StencilSet.Stencil(stencil, this.namespace(), this._baseUrl, this);            
 					delete this._stencils[oStencil.id()]; // maybe not ??
 					delete this._availableStencils[oStencil.id()];
@@ -350,9 +350,9 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 				jsonExtension.removeproperties.each(function(remprop) {
 					var stencil = this.stencil(jsonExtension["extends"] + remprop.stencil);
 					if(stencil) {
-						var stencilJson = $A(this._jsonObject.stencils).find(function(s) { return s.id == stencil.id() });
+						var stencilJson = PROTOTYPE.$A(this._jsonObject.stencils).find(function(s) { return s.id == stencil.id() });
 						remprop.properties.each(function(propId) {
-							var propertyJson = $A(stencilJson.properties).find(function(p) { return p.id == propId });
+							var propertyJson = PROTOTYPE.$A(stencilJson.properties).find(function(p) { return p.id == propId });
 							stencil.addProperty(propertyJson, this.namespace());
 						}.bind(this));
 					}
@@ -361,7 +361,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 			
 			//restore removed stencils
 			if(jsonExtension.removestencils) {
-				$A(jsonExtension.removestencils).each(function(remstencil) {
+				PROTOTYPE.$A(jsonExtension.removestencils).each(function(remstencil) {
 					var sId = jsonExtension["extends"] + remstencil;
 					this._availableStencils[sId] = this._stencils[sId];
 				}.bind(this));
@@ -419,11 +419,11 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
         // init and check consistency.
         this.__handleStencilset(response);
 		
-		var pps = new Hash();
+		var pps = new PROTOTYPE.Hash();
 		
 		// init property packages
 		if(this._jsonObject.propertyPackages) {
-			$A(this._jsonObject.propertyPackages).each((function(pp) {
+			PROTOTYPE.$A(this._jsonObject.propertyPackages).each((function(pp) {
 				pps[pp.name] = pp.properties;
 			}).bind(this));
 		}
@@ -431,7 +431,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 		var defaultPosition = 0;
 		
         // init each stencil
-        $A(this._jsonObject.stencils).each((function(stencil){
+        PROTOTYPE.$A(this._jsonObject.stencils).each((function(stencil){
         	defaultPosition++;
         	
             // instantiate normally.

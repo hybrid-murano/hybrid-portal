@@ -52,8 +52,8 @@ ORYX.Core.Shape = {
 		
 		this._dockerChangedCallback = this._dockerChanged.bind(this);
 		
-		//Hash map for all labels. Labels are not treated as children of shapes.
-		this._labels = new Hash();
+		//PROTOTYPE.Hash map for all labels. Labels are not treated as children of shapes.
+		this._labels = new PROTOTYPE.Hash();
 		
 		// create SVG node
 		this.node = ORYX.Editor.graft("http://www.w3.org/2000/svg",
@@ -121,7 +121,7 @@ ORYX.Core.Shape = {
 							//if the choice's items are referencing SVG elements
 							// show the selected and hide all other referenced SVG
 							// elements
-							var refreshedSvgElements = new Hash();
+							var refreshedSvgElements = new PROTOTYPE.Hash();
 							property.items().each((function(item) {
 								item.refToView().each((function(itemRef) {
 									if(itemRef == "") { return; }
@@ -165,7 +165,7 @@ ORYX.Core.Shape = {
 									if(property.type() === ORYX.CONFIG.TYPE_URL || property.type() === ORYX.CONFIG.TYPE_DIAGRAM_LINK) {
 										var svgElems = this.node.ownerDocument.getElementsByTagNameNS('http://www.w3.org/2000/svg', 'a');
 										
-										svgElem = $A(svgElems).find(function(elem) {
+										svgElem = PROTOTYPE.$A(svgElems).find(function(elem) {
 											return elem.getAttributeNS(null, 'id') === refId;
 										});
 										
@@ -218,7 +218,7 @@ ORYX.Core.Shape = {
 													
 													// If there is no value, set opaque
 													if (svgElem.parentNode.tagName.toLowerCase() === "radialgradient"){
-														$A(svgElem.parentNode.getElementsByTagName('stop')).each(function(stop){
+														PROTOTYPE.$A(svgElem.parentNode.getElementsByTagName('stop')).each(function(stop){
 															stop.setAttributeNS(null, "stop-opacity", prop ? stop.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, 'default-stop-opacity') || 1 : 0);
 														}.bind(this))
 													}

@@ -30,7 +30,7 @@ ORYX.Plugins.ShapeMenuPlugin = {
 	construct: function(facade) {
 		this.facade = facade;
 		
-		this.alignGroups = new Hash();
+		this.alignGroups = new PROTOTYPE.Hash();
 
 		var containerNode = this.facade.getCanvas().getHTMLContainer();
 
@@ -866,11 +866,11 @@ ORYX.Plugins.ShapeMenu = {
 		this.buttons = [];
 		this.isVisible = false;
 
-		this.node = ORYX.Editor.graft("http://www.w3.org/1999/xhtml", $(parentNode),
+		this.node = ORYX.Editor.graft("http://www.w3.org/1999/xhtml", PROTOTYPE.$(parentNode),
 			['div', {id: ORYX.Editor.provideId(), 'class':'Oryx_ShapeMenu'}]);
 		
-		this.alignContainers = new Hash();
-		this.numberOfButtonsPerLevel = new Hash();
+		this.alignContainers = new PROTOTYPE.Hash();
+		this.numberOfButtonsPerLevel = new PROTOTYPE.Hash();
 	},
 
 	addButton: function(button) {
@@ -1134,7 +1134,7 @@ ORYX.Plugins.ShapeMenuButton = {
 
 		// graft the button.
 		var buttonClassName = this.option.caption ? "Oryx_button_with_caption" : "Oryx_button";
-		this.node = ORYX.Editor.graft("http://www.w3.org/1999/xhtml", $(this.parentId),
+		this.node = ORYX.Editor.graft("http://www.w3.org/1999/xhtml", PROTOTYPE.$(this.parentId),
 			['div', {'class':buttonClassName}]);
 
 		var imgOptions = {src:this.option.icon};

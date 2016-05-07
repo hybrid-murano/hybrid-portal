@@ -89,7 +89,7 @@ var ERDF = {
 		var metas = heads[0].getElementsByTagNameNS(XMLNS.XHTML, 'meta');
 
 		// process links first, since they could contain schema definitions.
-		$A(links).each(function(link) {
+		PROTOTYPE.$A(links).each(function(link) {
 			var properties = link.getAttribute('rel');
 			var reversedProperties = link.getAttribute('rev');
 			var value = link.getAttribute('href');
@@ -106,7 +106,7 @@ var ERDF = {
 		});
 
 		// continue with metas.
-		$A(metas).each(function(meta) {
+		PROTOTYPE.$A(metas).each(function(meta) {
 			var property = meta.getAttribute('name');
 			var value = meta.getAttribute('content');
 			
@@ -213,7 +213,7 @@ var ERDF = {
 
 		// parse all children that are element nodes.
 		var children = node.childNodes;
-		if(children) $A(children).each(function(_node) {
+		if(children) PROTOTYPE.$A(children).each(function(_node) {
 			if(_node.nodeType == _node.ELEMENT_NODE)
 				ERDF._parseFromTag(_node, subject, depth+1); });
 	},

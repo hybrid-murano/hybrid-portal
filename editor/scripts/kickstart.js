@@ -95,4 +95,4 @@ var Kickstart = {
 
 // register kickstart as the new onload event listener on current window.
 // previous listener(s) are triggered to launch with kickstart.
-Event.observe(window, 'load', Kickstart.load);
+PROTOTYPE.Event.observe(window, 'load', Kickstart.load);

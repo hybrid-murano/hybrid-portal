@@ -244,7 +244,7 @@ new function(){
 		
 		onClick: function(e){
 			
-			if( this.disabled ){ Event.stop(e); return; }
+			if( this.disabled ){ PROTOTYPE.Event.stop(e); return; }
 			
 			// Toggle the button
 			if( this.toggle ){
@@ -264,7 +264,7 @@ new function(){
 			if( this.click instanceof Function )
 				this.click.apply(this.click, [this, e]); 
 			 
-			Event.stop(e)
+			PROTOTYPE.Event.stop(e)
 		},
 	    
 	    setText: function(t, encode){

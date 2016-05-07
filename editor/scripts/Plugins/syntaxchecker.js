@@ -141,7 +141,7 @@ ORYX.Plugins.SyntaxChecker = ORYX.Plugins.AbstractPlugin.extend({
 		}
         
         // Send the request to the server.
-        new Ajax.Request(ORYX.CONFIG.SYNTAXCHECKER_URL, {
+        new PROTOTYPE.Ajax.Request(ORYX.CONFIG.SYNTAXCHECKER_URL, {
             method: 'POST',
             asynchronous: false,
             parameters: {
@@ -156,7 +156,7 @@ ORYX.Plugins.SyntaxChecker = ORYX.Plugins.AbstractPlugin.extend({
                 Ext.Msg.hide();
                 
                 if (resp instanceof Object) {
-                    resp = $H(resp)
+                    resp = PROTOTYPE.$H(resp)
                     if (resp.size() > 0) {
                         if(options.showErrors) this.showErrors(resp);
                  
@@ -189,7 +189,7 @@ ORYX.Plugins.SyntaxChecker = ORYX.Plugins.AbstractPlugin.extend({
     /**
      * Shows overlays for each given error
      * @methodOf ORYX.Plugins.SyntaxChecker.prototype
-     * @param {Hash|Object} errors
+     * @param {PROTOTYPE.Hash|Object} errors
      * @example
      * showErrors({
      *     myShape1: "This has an error!",
@@ -198,8 +198,8 @@ ORYX.Plugins.SyntaxChecker = ORYX.Plugins.AbstractPlugin.extend({
      */
     showErrors: function(errors){
         // If normal object is given, convert to hash
-        if(!(errors instanceof Hash)){
-            errors = new Hash(errors);
+        if(!(errors instanceof PROTOTYPE.Hash)){
+            errors =  PROTOTYPE.$H(errors) ;
         }
         
         // Get all Valid ResourceIDs and collect all shapes

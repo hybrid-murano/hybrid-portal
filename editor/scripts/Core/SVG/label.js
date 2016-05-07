@@ -570,7 +570,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	
 	_checkFittingToReferencedElem: function() {
 		try {
-			var tspans = $A(this.node.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan'));
+			var tspans = PROTOTYPE.$A(this.node.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan'));
 			
 			//only do this in firefox 3. all other browsers do not support word wrapping!!!!!
 			//if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent) && new Number(RegExp.$1)>=3) {
@@ -679,7 +679,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 			x = Math.floor(x); y = Math.floor(y);
 			
 			var i = 0, indic = []; // Cache indices if the _positionText is called again, before update is called 
-			var is =(this.indices || $R(0,tspans.length-1).toArray());
+			var is =(this.indices || PROTOTYPE.$R(0,tspans.length-1).toArray());
 			var length = is.length;
 			is.each((function(index){
 				if ("undefined" == typeof index){

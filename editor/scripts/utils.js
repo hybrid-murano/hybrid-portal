@@ -56,7 +56,7 @@ ORYX.Utils = {
 		
 			var col = reference.getAttributeNS(null, "stop-color") || "#ffffff";
 			
-			$A(gradient.getElementsByTagName("stop")).each(function(stop){
+			PROTOTYPE.$A(gradient.getElementsByTagName("stop")).each(function(stop){
 				if (stop == reference){ return; }
 				stop.setAttributeNS(null, "stop-color", col);
 			})

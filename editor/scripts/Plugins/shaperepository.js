@@ -104,7 +104,7 @@ ORYX.Plugins.ShapeRepository = {
 			// Get Stencils from Stencilset
 			var stencils = sset.stencils(this.facade.getCanvas().getStencil(),
 										 this.facade.getRules());	
-			var treeGroups = new Hash();
+			var treeGroups = new PROTOTYPE.Hash();
 			
 			// Sort the stencils according to their position and add them to the repository
 			stencils = stencils.sortBy(function(value) { return value.position(); } );
@@ -177,7 +177,7 @@ ORYX.Plugins.ShapeRepository = {
 		// Register the Stencil on Drag and Drop
 		Ext.dd.Registry.register(ui.elNode, {
 				node: 		ui.node,
-		        handles: 	[ui.elNode, ui.textNode].concat($A(ui.elNode.childNodes)), // Set the Handles
+		        handles: 	[ui.elNode, ui.textNode].concat(PROTOTYPE.$A(ui.elNode.childNodes)), // Set the Handles
 		        isHandle: 	false,
 				type:		stencil.id(),			// Set Type of stencil 
 				namespace:	stencil.namespace()		// Set Namespace of stencil

@@ -93,7 +93,7 @@ if(!ORYX) {var ORYX = {};}
 ORYX.Editor = {
     /** @lends ORYX.Editor.prototype */
 	// Defines the global dom event listener 
-	DOMEventListeners: new Hash(),
+	DOMEventListeners: new PROTOTYPE.Hash(),
 
 	// Defines the selection
 	selection: [],
@@ -642,7 +642,7 @@ ORYX.Editor = {
 		if( ORYX.MashupAPI && ORYX.MashupAPI.loadablePlugins && ORYX.MashupAPI.loadablePlugins instanceof Array ){
 		
 			// Get the plugins from the available plugins (those who are in the plugins.xml)
-			ORYX.availablePlugins = $A(ORYX.availablePlugins).findAll(function(value){
+			ORYX.availablePlugins = PROTOTYPE.$A(ORYX.availablePlugins).findAll(function(value){
 										return ORYX.MashupAPI.loadablePlugins.include( value.name )
 									})
 			
@@ -940,7 +940,7 @@ ORYX.Editor = {
 				this.facade = facade;
 				this.shapes;
 				this.connections = [];
-				this.parents = new Hash();
+				this.parents = new PROTOTYPE.Hash();
 				this.selection = this.facade.getSelection();
 				this.loadSerialized = loadSerializedCB;
 			},			
@@ -1091,7 +1091,7 @@ ORYX.Editor = {
 		try {
 			var xsl = "";
 			var source=ORYX.PATH + "lib/extract-rdf.xsl";
-			new Ajax.Request(source, {
+			new PROTOTYPE.Ajax.Request(source, {
 				asynchronous: false,
 				method: 'get',
 				onSuccess: function(transport){
@@ -1118,7 +1118,7 @@ ORYX.Editor = {
             // Firefox 2 to 3 problem?!
             serialized_rdf = !serialized_rdf.startsWith("<?xml") ? "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + serialized_rdf : serialized_rdf;
 
-        var req = new Ajax.Request(ORYX.CONFIG.ROOT_PATH+"rdf2json", {
+        var req = new PROTOTYPE.Ajax.Request(ORYX.CONFIG.ROOT_PATH+"rdf2json", {
           method: 'POST',
           asynchronous: false,
           onSuccess: function(transport) {
@@ -1971,7 +1971,7 @@ ORYX.Editor = Clazz.extend(ORYX.Editor);
 ORYX.Editor.createByUrl = function(modelUrl, config){
     if(!config) config = {};
     
-    new Ajax.Request(modelUrl, {
+    new PROTOTYPE.Ajax.Request(modelUrl, {
       method: 'GET',
       onSuccess: function(transport) {
         var editorConfig = Ext.decode(transport.responseText);

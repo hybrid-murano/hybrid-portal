@@ -54,8 +54,8 @@ ORYX.Core.StencilSet.ComplexPropertyItem = Clazz.extend({
 		this._jsonItem = jsonItem;
 		this._namespace = namespace;
 		this._property = property;
-		this._items = new Hash();
-		this._complexItems = new Hash();
+		this._items = new PROTOTYPE.Hash();
+		this._complexItems = new PROTOTYPE.Hash();
 		
 		//init all values
 		if(!jsonItem.name) {

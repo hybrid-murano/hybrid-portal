@@ -100,7 +100,7 @@ ORYX.Plugins.FileRepositorySave = Clazz.extend({
 		
 		// try to load available information
 		if (this.modelUri) {
-			var request = new Ajax.Request(ORYX.Config.SignavioFileRepositoryModelHandler + this.modelUri.replace(/^\/?/,"") + "/info", {
+			var request = new PROTOTYPE.Ajax.Request(ORYX.Config.SignavioFileRepositoryModelHandler + this.modelUri.replace(/^\/?/,"") + "/info", {
 				method: "GET",
 				asynchronous: false
 			});
@@ -167,8 +167,8 @@ ORYX.Plugins.FileRepositorySave = Clazz.extend({
 			    	text: ORYX.I18N.Save.saveBtn,
 			    	handler: function(){
 			    	
-			    		modelData.name = $("edit_model_title").value.strip(); 
-			    		modelData.description = $("edit_model_summary").value.strip()
+			    		modelData.name = PROTOTYPE.$("edit_model_title").value.strip(); 
+			    		modelData.description = PROTOTYPE.$("edit_model_summary").value.strip()
 
 			    		this.submit(modelData, true);
 						win.close();
@@ -202,7 +202,7 @@ ORYX.Plugins.FileRepositorySave = Clazz.extend({
         });
 		
 		if (_saveAs) {
-			new Ajax.Request(ORYX.Config.SignavioFileRepositoryModelHandler, {
+			new PROTOTYPE.Ajax.Request(ORYX.Config.SignavioFileRepositoryModelHandler, {
 				method: "POST",
 				parameters: params,
 				asynchronous: true,
@@ -228,7 +228,7 @@ ORYX.Plugins.FileRepositorySave = Clazz.extend({
 			});
 		}
 		else {			
-			new Ajax.Request(ORYX.Config.SignavioFileRepositoryModelHandler + this.modelUri, {
+			new PROTOTYPE.Ajax.Request(ORYX.Config.SignavioFileRepositoryModelHandler + this.modelUri, {
 				method: "PUT",
 				parameters: params,
 				asynchronous: true,

@@ -5,6 +5,8 @@
  *  For details, see the Prototype web site: http://www.prototypejs.org/
  *
 /*--------------------------------------------------------------------------*/
+var PROTOTYPE = {};
+(function() {
 
 var Prototype = {
   Version: '1.5.1',
@@ -1281,7 +1283,7 @@ if (Prototype.BrowserFeatures.XPath) {
 
 /*--------------------------------------------------------------------------*/
 
-if (!window.Element) var Element = {};
+if (!Element) var Element = {};
 
 Element.extend = function(element) {
   var F = Prototype.BrowserFeatures;
@@ -2043,7 +2045,7 @@ Element.ClassNames.prototype = {
 };
 
 Object.extend(Element.ClassNames.prototype, Enumerable);
-/* Portions of the Selector class are derived from Jack Slocum�۪s DomQuery,
+/* Portions of the Selector class are derived from Jack Slocum�۪s DomQuery,
  * part of YUI-Ext version 0.40, distributed under the terms of an MIT-style
  * license.  Please see http://www.yui-ext.com/ for more information. */
 
@@ -2932,7 +2934,7 @@ Form.EventObserver.prototype = Object.extend(new Abstract.EventObserver(), {
     return Form.serialize(this.element);
   }
 });
-if (!window.Event) {
+if (!Event) {
   var Event = new Object();
 }
 
@@ -3269,3 +3271,16 @@ if (Prototype.Browser.WebKit) {
 }
 
 Element.addMethods();
+
+this.Hash = Hash;
+this.Event = Event;
+this.Element = Element;
+this.Ajax = Ajax;
+this.$A = $A;
+this.$H = $H;
+this.$R = $R;
+this.$w = $w;
+this.$ = $;
+this.Prototype = Prototype;
+//this.Event = Event;
+}).apply(PROTOTYPE);

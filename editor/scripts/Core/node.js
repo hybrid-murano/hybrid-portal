@@ -449,7 +449,7 @@ ORYX.Core.Node = {
 				result.push({
 					name: 'docker',
 					prefix: 'oryx',
-					value: $H(center).values().join(','),
+					value: PROTOTYPE.$H(center).values().join(','),
 					type: 'literal'
 				});
 			}
@@ -700,7 +700,7 @@ ORYX.Core.Node = {
         
         if (magnets && magnets.length > 0) {
         
-            magnets = $A(magnets[0].getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_ORYX, "magnet"));
+            magnets = PROTOTYPE.$A(magnets[0].getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_ORYX, "magnet"));
             
             var me = this;
             magnets.each(function(magnetElem){
@@ -795,7 +795,7 @@ ORYX.Core.Node = {
         
         /**initialize labels*/
         var textElems = svgNode.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'text');
-        $A(textElems).each((function(textElem){
+        PROTOTYPE.$A(textElems).each((function(textElem){
             var label = new ORYX.Core.SVG.Label({
                 textElement: textElem,
 				shapeId: this.id

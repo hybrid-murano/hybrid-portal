@@ -287,7 +287,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 		
 		// Add all Attributes which have relation to another node in this document and concate the pure id out of it
 		// This is for example important for the markers of a edge
-		childs.each(function(e){ ids.push( $A(e.attributes).findAll(function(attr){ return attr.nodeValue.startsWith('url(#')}) )})
+		childs.each(function(e){ ids.push( PROTOTYPE.$A(e.attributes).findAll(function(attr){ return attr.nodeValue.startsWith('url(#')}) )})
 		ids = ids.flatten().compact();
 		ids = ids.collect(function(s){return s.nodeValue}).uniq();
 		ids = ids.collect(function(s){return s.slice(5, s.length-1)})
@@ -295,14 +295,14 @@ ORYX.Plugins.Overlay = Clazz.extend({
 		// Add the node ID to the id
 		ids.unshift( node.id + ' .me')
 		
-		var attr				= $H(attributes);
+		var attr				= PROTOTYPE.$H(attributes);
         var attrValue			= attr.toJSON().gsub(',', ';').gsub('"', '');
         var attrMarkerValue		= attributes.stroke ? attrValue.slice(0, attrValue.length-1) + "; fill:" + attributes.stroke + ";}" : attrValue;
         var attrTextValue;
         if( attributes.fill ){
             var copyAttr        = Object.clone(attributes);
         	copyAttr.fill		= "black";
-        	attrTextValue		= $H(copyAttr).toJSON().gsub(',', ';').gsub('"', '');
+        	attrTextValue		= PROTOTYPE.$H(copyAttr).toJSON().gsub(',', ';').gsub('"', '');
         }
                 	
         // Create the CSS-Tags Style out of the ids and the attributes
@@ -325,7 +325,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 	deleteAttributes: function( node ) {
 				
 		// Get all children which contains the node id		
-		var delEl = $A(this.styleNode.childNodes)
+		var delEl = PROTOTYPE.$A(this.styleNode.childNodes)
 					 .findAll(function(e){ return e.textContent.include( '#' + node.id ) });
 		
 		// Remove all of them
@@ -336,9 +336,9 @@ ORYX.Plugins.Overlay = Clazz.extend({
 	
 	getAllChilds: function( node ){
 		
-		var childs = $A(node.childNodes)
+		var childs = PROTOTYPE.$A(node.childNodes)
 		
-		$A(node.childNodes).each(function( e ){ 
+		PROTOTYPE.$A(node.childNodes).each(function( e ){ 
 		        childs.push( this.getAllChilds( e ) )
 		}.bind(this))
 

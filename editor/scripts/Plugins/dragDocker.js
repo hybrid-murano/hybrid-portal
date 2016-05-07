@@ -448,7 +448,7 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 				},
 				rollback: function(){
 					this.dock( this.oldDockedShape, this.oldPosition );
-					(this.removedDockers||$H({})).each(function(d){
+					(this.removedDockers||PROTOTYPE.$H({})).each(function(d){
 						this.shape.add(d.value, Number(d.key));
 						this.shape._update(true);
 					}.bind(this))

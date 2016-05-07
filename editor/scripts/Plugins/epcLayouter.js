@@ -49,7 +49,7 @@ ORYX.Plugins.EPCLayouter = ORYX.Plugins.AbstractPlugin.extend({
         });
 		
 		
-		new Ajax.Request(ORYX.CONFIG.EPC_LAYOUTER, {
+		new PROTOTYPE.Ajax.Request(ORYX.CONFIG.EPC_LAYOUTER, {
 			method : 'POST',
 			asynchronous : false,
 			parameters : {

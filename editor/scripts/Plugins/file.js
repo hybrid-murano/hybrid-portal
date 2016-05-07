@@ -53,7 +53,7 @@ ORYX.Plugins.Save = Clazz.extend({
 		
 		document.addEventListener("keydown", function(e){
 			if (e.ctrlKey&&e.keyCode === 83){
-				Event.stop(e);
+				PROTOTYPE.Event.stop(e);
 			}
 		}, false)
 		
@@ -211,7 +211,7 @@ ORYX.Plugins.Save = Clazz.extend({
 						// Replace SVG
 						if (entry.property.refToView() && entry.property.refToView().length > 0) {
 							entry.property.refToView().each(function(ref){
-								var node = $(entry.shape.id+""+ref);
+								var node = PROTOTYPE.$(entry.shape.id+""+ref);
 								if (node)
 									node.setAttribute("oryx:glossaryIds", entry.glossary + ";")
 							})
@@ -374,7 +374,7 @@ ORYX.Plugins.Save = Clazz.extend({
 					
 					window.setTimeout(function(){
 						
-						callback($('edit_model'));
+						callback(PROTOTYPE.$('edit_model'));
 						
 					}.bind(this), 10);			
 				},
@@ -413,7 +413,7 @@ ORYX.Plugins.Save = Clazz.extend({
 		
 		var modelMeta = this.facade.getModelMetaData();
 		
-		new Ajax.Request("/hybrid_cloud/static/explorer/model.json?"+(new Date()).getTime(), {
+		new PROTOTYPE.Ajax.Request("/hybrid_cloud/static/explorer/model.json?"+(new Date()).getTime(), {
             method: 'get',
             asynchronous: true,
 			requestHeaders: {

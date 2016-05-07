@@ -107,8 +107,8 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		// Set the offset position of dragging
 		var upL = this.dragBounds.upperLeft();
 		this.offSetPosition =  {
-			x: Event.pointerX(event) - (upL.x * this.faktorXY.x),
-			y: Event.pointerY(event) - (upL.y * this.faktorXY.y)};
+			x: PROTOTYPE.Event.pointerX(event) - (upL.x * this.faktorXY.x),
+			y: PROTOTYPE.Event.pointerY(event) - (upL.y * this.faktorXY.y)};
 		
 		this.offsetScroll	= {x:this.scrollNode.scrollLeft,y:this.scrollNode.scrollTop};
 			
@@ -284,8 +284,8 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 			
 		// Calculate the new position
 		var position = {
-			x: Event.pointerX(event) - this.offSetPosition.x,
-			y: Event.pointerY(event) - this.offSetPosition.y}
+			x: PROTOTYPE.Event.pointerX(event) - this.offSetPosition.x,
+			y: PROTOTYPE.Event.pointerY(event) - this.offSetPosition.y}
 
 		position.x 	-= this.offsetScroll.x - this.scrollNode.scrollLeft; 
 		position.y 	-= this.offsetScroll.y - this.scrollNode.scrollTop;
@@ -326,7 +326,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		this.isAttachingAllowed = false;
 
 		//check, if a node can be added to the underlying node
-		var underlyingNodes = $A(this.facade.getCanvas().getAbstractShapesAtPosition(this.facade.eventCoordinates(event)));
+		var underlyingNodes = PROTOTYPE.$A(this.facade.getCanvas().getAbstractShapesAtPosition(this.facade.eventCoordinates(event)));
 		
 		var checkIfAttachable = this.toMoveShapes.length == 1 && this.toMoveShapes[0] instanceof ORYX.Core.Node && this.toMoveShapes[0].dockers.length > 0
 		checkIfAttachable	= checkIfAttachable && underlyingNodes.length != 1
@@ -987,7 +987,7 @@ ORYX.Plugins.SelectedRect = Clazz.extend({
 
 		this.parentId = parentId;
 
-		this.node = ORYX.Editor.graft("http://www.w3.org/2000/svg", $(parentId),
+		this.node = ORYX.Editor.graft("http://www.w3.org/2000/svg", PROTOTYPE.$(parentId),
 					['g']);
 
 		this.dashedArea = ORYX.Editor.graft("http://www.w3.org/2000/svg", this.node,
@@ -1032,7 +1032,7 @@ ORYX.Plugins.GridLine = Clazz.extend({
 		}
 		
 	
-		this.parent = $(parentId);
+		this.parent = PROTOTYPE.$(parentId);
 		this.direction = direction;
 		this.node = ORYX.Editor.graft("http://www.w3.org/2000/svg", this.parent,
 					['g']);
@@ -1091,7 +1091,7 @@ ORYX.Plugins.Resizer = Clazz.extend({
 		this.parentId 		= parentId;
 		this.orientation	= orientation;
 		this.facade			= facade;
-		this.node = ORYX.Editor.graft("http://www.w3.org/1999/xhtml", $(this.parentId),
+		this.node = ORYX.Editor.graft("http://www.w3.org/1999/xhtml", PROTOTYPE.$(this.parentId),
 			['div', {'class': 'resizer_'+ this.orientation, style:'left:0px; top:0px;'}]);
 
 		this.node.addEventListener(ORYX.CONFIG.EVENT_MOUSEDOWN, this.handleMouseDown.bind(this), true);
@@ -1126,8 +1126,8 @@ ORYX.Plugins.Resizer = Clazz.extend({
 		this.offsetScroll	= {x:this.scrollNode.scrollLeft,y:this.scrollNode.scrollTop};
 			
 		this.offSetPosition =  {
-			x: Event.pointerX(event) - this.position.x,
-			y: Event.pointerY(event) - this.position.y};
+			x: PROTOTYPE.Event.pointerX(event) - this.position.x,
+			y: PROTOTYPE.Event.pointerY(event) - this.position.y};
 		
 		this.resizeStartCallbacks.each((function(value) {
 			value(this.bounds);
@@ -1154,8 +1154,8 @@ ORYX.Plugins.Resizer = Clazz.extend({
 		}
 
 		var position = {
-			x: Event.pointerX(event) - this.offSetPosition.x,
-			y: Event.pointerY(event) - this.offSetPosition.y}
+			x: PROTOTYPE.Event.pointerX(event) - this.offSetPosition.x,
+			y: PROTOTYPE.Event.pointerY(event) - this.offSetPosition.y}
 
 
 		position.x 	-= this.offsetScroll.x - this.scrollNode.scrollLeft; 
@@ -1238,7 +1238,7 @@ ORYX.Plugins.Resizer = Clazz.extend({
 			value(this.bounds);
 		}).bind(this));
 
-		Event.stop(event);
+		PROTOTYPE.Event.stop(event);
 
 	},
 	

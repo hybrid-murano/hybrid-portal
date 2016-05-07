@@ -397,7 +397,7 @@ ORYX.Core.StencilSet.Property = Clazz.extend({
      * (PropertyItem objects) with id as keys.
      */
     items: function(){
-        return $H(this._items).values();
+        return PROTOTYPE.$H(this._items).values();
     },
     
     item: function(value){
@@ -413,7 +413,7 @@ ORYX.Core.StencilSet.Property = Clazz.extend({
     },
     
     complexItems: function(){
-        return $H(this._complexItems).values();
+        return PROTOTYPE.$H(this._complexItems).values();
     },
     
     complexItem: function(id){

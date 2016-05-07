@@ -192,7 +192,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 				// Sort all elements on the index of there containment
 				var sortedEl =	this.elAndIndex.sortBy( function( el ) {
 									var value 	= el.el;
-									var t 		= $A(value.node.parentNode.childNodes);
+									var t 		= PROTOTYPE.$A(value.node.parentNode.childNodes);
 									return t.indexOf(value.node);
 								}); 
 				
@@ -226,7 +226,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 
 		// Sortieren des Arrays nach dem Index des SVGKnotens im Bezug auf dem Elternknoten.
 		var tmpElem =  elements.sortBy( function(value, index) {
-			var t = $A(value.node.parentNode.childNodes);
+			var t = PROTOTYPE.$A(value.node.parentNode.childNodes);
 			return t.indexOf(value.node);
 		});
 		// Sortiertes Array wird nach oben verschoben.
@@ -244,7 +244,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 	setToBack: function(elements) {
 		// Sortieren des Arrays nach dem Index des SVGKnotens im Bezug auf dem Elternknoten.
 		var tmpElem =  elements.sortBy( function(value, index) {
-			var t = $A(value.node.parentNode.childNodes);
+			var t = PROTOTYPE.$A(value.node.parentNode.childNodes);
 			return t.indexOf(value.node);
 		});
 
@@ -264,7 +264,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 	setBackward: function(elements) {
 		// Sortieren des Arrays nach dem Index des SVGKnotens im Bezug auf dem Elternknoten.
 		var tmpElem =  elements.sortBy( function(value, index) {
-			var t = $A(value.node.parentNode.childNodes);
+			var t = PROTOTYPE.$A(value.node.parentNode.childNodes);
 			return t.indexOf(value.node);
 		});
 
@@ -289,7 +289,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 	setForward: function(elements) {
 		// Sortieren des Arrays nach dem Index des SVGKnotens im Bezug auf dem Elternknoten.
 		var tmpElem =  elements.sortBy( function(value, index) {
-			var t = $A(value.node.parentNode.childNodes);
+			var t = PROTOTYPE.$A(value.node.parentNode.childNodes);
 			return t.indexOf(value.node);
 		});
 

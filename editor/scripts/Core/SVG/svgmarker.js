@@ -155,7 +155,7 @@ ORYX.Core.SVG.SVGMarker = Clazz.extend({
 		if(svgElement.hasChildNodes) {
 			var svgShapes = [];
 			var me = this;
-			$A(svgElement.childNodes).each(function(svgChild) {
+			PROTOTYPE.$A(svgElement.childNodes).each(function(svgChild) {
 				try {
 					var svgShape = new ORYX.Core.SVG.SVGShape(svgChild);
 					svgShapes.push(svgShape);

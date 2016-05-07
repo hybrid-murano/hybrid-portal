@@ -169,15 +169,15 @@ var DataManager = {
 		
 	__forceExistance: function(shape) {
 		
-		if(!$(shape.resourceId)) {
+		if(!PROTOTYPE.$(shape.resourceId)) {
 			
-			if(!$$('.' + PROCESSDATA_REF)[0])
+			if(!PROTOTYPE.$$('.' + PROCESSDATA_REF)[0])
 				DataManager.graft(XMLNS.XHTML,
 					document.getElementsByTagNameNS(XMLNS.XHTML, 'body').item(0), ['div', {'class': PROCESSDATA_REF, 'style':'display:none;'}]);
 				
 			// object is literal
 			DataManager.graft(XMLNS.XHTML,
-				$$('.' + PROCESSDATA_REF)[0], [
+				PROTOTYPE.$$('.' + PROCESSDATA_REF)[0], [
 				
 				'div', {
                     'id': shape.resourceId,
@@ -187,8 +187,8 @@ var DataManager = {
 			]);
 			
 		} else {
-			var resource = $(shape.resourceId)
-			var children = $A(resource.childNodes)
+			var resource = PROTOTYPE.$(shape.resourceId)
+			var children = PROTOTYPE.$A(resource.childNodes)
 			children.each( function(child) {
 				resource.removeChild(child);
 			});
@@ -243,13 +243,13 @@ var DataManager = {
 		
 		DataManager.__renderCanvas(facade);
 		result += DataManager.serialize(
-				$(ERDF.__stripHashes(facade.getCanvas().resourceId)), true);
+				PROTOTYPE.$(ERDF.__stripHashes(facade.getCanvas().resourceId)), true);
 				
 		shapes.each( function(shape) {
 			
 			DataManager.__persistShape(shape);
 			result += DataManager.serialize(
-				$(ERDF.__stripHashes(shape.resourceId)), true);
+				PROTOTYPE.$(ERDF.__stripHashes(shape.resourceId)), true);
 		});
 		
 		//result += DataManager.__renderCanvas(facade);
@@ -319,7 +319,7 @@ var DataManager = {
 	__counter: 0,
 	__provideId: function() {
 		
-		while($(RESOURCE_ID_PREFIX+DataManager.__counter))
+		while(PROTOTYPE.$(RESOURCE_ID_PREFIX+DataManager.__counter))
 			DataManager.__counter++;
 			
 		return RESOURCE_ID_PREFIX+DataManager.__counter;
@@ -357,7 +357,7 @@ var DataManager = {
 
 			// select shapes without resource id.
 
-			return !($(shape.resourceId));
+			return !(PROTOTYPE.$(shape.resourceId));
 
 		}).each( function(shape) {
 
@@ -420,8 +420,8 @@ var DataManager = {
 		if (node.nodeType == node.ELEMENT_NODE) {
 			// serialize an element node.
 			
-			var children = $A(node.childNodes);
-			var attributes = $A(node.attributes);
+			var children = PROTOTYPE.$A(node.childNodes);
+			var attributes = PROTOTYPE.$A(node.attributes);
 			var clazz = new String(node.getAttribute('class'));
 			var ignore = clazz.split(' ').member('transient');
 
@@ -481,7 +481,7 @@ var DataManager = {
 		
 		// get the element which represents this triple's subject.
 		var elementId = ERDF.__stripHashes(triple.subject.value);
-		var element = $(elementId);
+		var element = PROTOTYPE.$(elementId);
 				
 		// assert the subject is inside this document.
 		if(!element)
@@ -548,7 +548,7 @@ var DataManager = {
 
 		// get the element which represents this triple's subject.
 		var elementId = ERDF.__stripHashes(triple.subject.value);
-		var element = $(elementId);
+		var element = PROTOTYPE.$(elementId);
 
 		// assert the subject is inside this document.
 		if(!element)
@@ -571,7 +571,7 @@ var DataManager = {
 			return false;
 		
 		var classes = new String(continueFrom.getAttribute('class'));
-		var children = $A(continueFrom.childNodes);
+		var children = PROTOTYPE.$A(continueFrom.childNodes);
 		
 		if(classes.include(triple.predicate.prefix + '-' + triple.predicate.name)) {
 		  
@@ -805,7 +805,7 @@ ResourceManager = {
 	
 	__corrupt: false,
 	__latelyCreatedResource: undefined,
-	__listeners: $H(),
+	__listeners: PROTOTYPE.$H(),
 	__token: 1,
 	
 	addListener: function(listener, mask) {
@@ -911,11 +911,11 @@ ResourceManager = {
 					var id = div.getAttribute('id');
 					
 					// store div in DOM
-					if(!$$('.' + PROCESSDATA_REF)[0])
+					if(!PROTOTYPE.$$('.' + PROCESSDATA_REF)[0])
 						DataManager.graft(XMLNS.XHTML,
 							document.getElementsByTagNameNS(XMLNS.XHTML, 'body').item(0), ['div', {'class': PROCESSDATA_REF, 'style':'display:none;'}]);
 				
-					$$('.' + PROCESSDATA_REF)[0].appendChild(div.cloneNode(true));
+					PROTOTYPE.$$('.' + PROCESSDATA_REF)[0].appendChild(div.cloneNode(true));
 
 					// parse local erdf data once more.
 					
@@ -1007,7 +1007,7 @@ ResourceManager = {
 		this.save = function(synchronize) {
 			var _url = this.__url;
 			var _id = this.__id;
-			data = DataManager.serialize($(_id));
+			data = DataManager.serialize(PROTOTYPE.$(_id));
 			ResourceManager.__request(
 				'PUT', _url, data,
 				function() { ResourceManager.__resourceActionSucceeded(
@@ -1042,7 +1042,7 @@ ResourceManager = {
 
 		Object.extend(options, requestOptions || {});
  		
-		var params = Hash.toQueryString(options.parameters);
+		var params = PROTOTYPE.Hash.toQueryString(options.parameters);
 		if (params) 
 			url += (url.include('?') ? '&' : '?') + params;
    
@@ -1083,7 +1083,7 @@ ResourceManager = {
 			httpRequest.onerror = error;
 		}
 		
-		var h = $H(headers)
+		var h = PROTOTYPE.$H(headers)
 		h.keys().each(function(key) {
 			
 			httpRequest.setRequestHeader(key, h[key]);
@@ -1161,11 +1161,11 @@ ResourceManager = {
 				localDiv.parentNode.removeChild(localDiv);
 				
 				// store div in DOM
-				if(!$$(PROCESSDATA_REF)[0])
+				if(!PROTOTYPE.$$(PROCESSDATA_REF)[0])
 					DataManager.graft(XMLNS.XHTML,
 						document.getElementsByTagNameNS(XMLNS.XHTML, 'body').item(0), ['div', {'class': PROCESSDATA_REF, 'style':'display:none;'}]);
 				
-				$$(PROCESSDATA_REF)[0].appendChild(div.cloneNode(true));
+				PROTOTYPE.$$(PROCESSDATA_REF)[0].appendChild(div.cloneNode(true));
 				DataManager.__synclocal();
 				break;
 

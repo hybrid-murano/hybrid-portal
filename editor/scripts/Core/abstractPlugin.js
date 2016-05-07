@@ -146,7 +146,7 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
         var parser 		= new DOMParser();
         var parsedData 	= parser.parseFromString(data, "text/xml");
 		source=stylesheet;
-		new Ajax.Request(source, {
+		new PROTOTYPE.Ajax.Request(source, {
 			asynchronous: false,
 			method: 'get',
 			onSuccess: function(transport){
@@ -301,7 +301,7 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 		try {
 			var xsl = "";
 			source=ORYX.PATH + "lib/extract-rdf.xsl";
-			new Ajax.Request(source, {
+			new PROTOTYPE.Ajax.Request(source, {
 				asynchronous: false,
 				method: 'get',
 				onSuccess: function(transport){

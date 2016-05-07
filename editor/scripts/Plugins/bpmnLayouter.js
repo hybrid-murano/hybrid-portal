@@ -49,7 +49,7 @@ ORYX.Plugins.BpmnLayouter = ORYX.Plugins.AbstractPlugin.extend({
         });
 		
 		
-		new Ajax.Request(ORYX.CONFIG.BPMN_LAYOUTER, {
+		new PROTOTYPE.Ajax.Request(ORYX.CONFIG.BPMN_LAYOUTER, {
 			method : 'POST',
 			asynchronous : false,
 			parameters : {

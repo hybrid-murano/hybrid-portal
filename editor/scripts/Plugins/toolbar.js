@@ -34,7 +34,7 @@ ORYX.Plugins.Toolbar = Clazz.extend({
 	construct: function(facade, ownPluginData) {
 		this.facade = facade;
 		
-		this.groupIndex = new Hash();
+		this.groupIndex = new PROTOTYPE.Hash();
 		ownPluginData.properties.each((function(value){
 			if(value.group && value.index != undefined) {
 				this.groupIndex[value.group] = value.index
@@ -72,7 +72,7 @@ ORYX.Plugins.Toolbar = Clazz.extend({
 		var newPlugs =  pluginsData.sortBy((function(value) {
 			return ((this.groupIndex[value.group] != undefined ? this.groupIndex[value.group] : "" ) + value.group + "" + value.index).toLowerCase();
 		}).bind(this));
-		var plugs = $A(newPlugs).findAll(function(value){
+		var plugs = PROTOTYPE.$A(newPlugs).findAll(function(value){
 										return !this.plugs.include(value) && (!value.target || value.target === ORYX.Plugins.Toolbar)
 									}.bind(this));
 		if(plugs.length<1)

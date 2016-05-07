@@ -55,13 +55,13 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 			this._stencil = stencilSet.stencil(superStencilId);
 		}
 		
-		//Hash map for all properties. Only stores the values of the properties.
-		this.properties = new Hash();
-		this.propertiesChanged = new Hash();
+		//PROTOTYPE.Hash map for all properties. Only stores the values of the properties.
+		this.properties = new PROTOTYPE.Hash();
+		this.propertiesChanged = new PROTOTYPE.Hash();
 
 		// List of properties which are not included in the stencilset, 
 		// but which gets (de)serialized
-		this.hiddenProperties = new Hash();
+		this.hiddenProperties = new PROTOTYPE.Hash();
 		
 		
 		//Initialization of property map and initial value.
@@ -236,13 +236,13 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 			var childEdges = this.getChildEdges();
 			
 			[childNodes, childEdges].each(function(ne){
-				var nodesAtPosition = new Hash();
+				var nodesAtPosition = new PROTOTYPE.Hash();
 				
 				ne.each(function(node) {
 					if(!node.isVisible){ return }
 					var candidates = node.getAbstractShapesAtPosition( x , y );
 					if(candidates.length > 0) {
-						var nodesInZOrder = $A(node.node.parentNode.childNodes);
+						var nodesInZOrder = PROTOTYPE.$A(node.node.parentNode.childNodes);
 						var zOrderIndex = nodesInZOrder.indexOf(node.node);
 						nodesAtPosition[zOrderIndex] = candidates;
 					}

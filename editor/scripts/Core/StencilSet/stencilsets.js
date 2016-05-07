@@ -36,27 +36,27 @@ if(!ORYX.Core.StencilSet) {ORYX.Core.StencilSet = {};}
  * Singleton
  */
 //storage for loaded stencil sets by namespace
-ORYX.Core.StencilSet._stencilSetsByNamespace = new Hash();
+ORYX.Core.StencilSet._stencilSetsByNamespace = new PROTOTYPE.Hash();
 
 //storage for stencil sets by url
-ORYX.Core.StencilSet._stencilSetsByUrl = new Hash();	
+ORYX.Core.StencilSet._stencilSetsByUrl = new PROTOTYPE.Hash();	
 
 //storage for stencil set namespaces by editor instances
-ORYX.Core.StencilSet._StencilSetNSByEditorInstance = new Hash();
+ORYX.Core.StencilSet._StencilSetNSByEditorInstance = new PROTOTYPE.Hash();
 
 //storage for rules by editor instances
-ORYX.Core.StencilSet._rulesByEditorInstance = new Hash();
+ORYX.Core.StencilSet._rulesByEditorInstance = new PROTOTYPE.Hash();
 
 /**
  * 
  * @param {String} editorId
  * 
- * @return {Hash} Returns a hash map with all stencil sets that are loaded by
+ * @return {PROTOTYPE.Hash} Returns a hash map with all stencil sets that are loaded by
  * 					the editor with the editorId.
  */
 ORYX.Core.StencilSet.stencilSets = function(editorId) {
 	var stencilSetNSs = ORYX.Core.StencilSet._StencilSetNSByEditorInstance[editorId];
-	var stencilSets = new Hash();
+	var stencilSets = new PROTOTYPE.Hash();
 	if(stencilSetNSs) {
 		stencilSetNSs.each(function(stencilSetNS) {
 			var stencilSet = ORYX.Core.StencilSet.stencilSet(stencilSetNS)

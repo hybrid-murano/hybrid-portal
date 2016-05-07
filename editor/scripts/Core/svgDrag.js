@@ -41,8 +41,8 @@ new function(){
 		this.scrollNode = uiObj.node.ownerSVGElement.parentNode.parentNode;
 		
 		this.offSetPosition =  {
-			x: Event.pointerX(event) - (upL.x * this.faktorXY.x),
-			y: Event.pointerY(event) - (upL.y * this.faktorXY.y)};
+			x: PROTOTYPE.Event.pointerX(event) - (upL.x * this.faktorXY.x),
+			y: PROTOTYPE.Event.pointerY(event) - (upL.y * this.faktorXY.y)};
 	
 		this.offsetScroll	= {x:this.scrollNode.scrollLeft,y:this.scrollNode.scrollTop};
 			
@@ -60,8 +60,8 @@ new function(){
 	ORYX.Core.UIDragCallback = function(event) {
 	
 		var position = {
-			x: Event.pointerX(event) - this.offSetPosition.x,
-			y: Event.pointerY(event) - this.offSetPosition.y}
+			x: PROTOTYPE.Event.pointerX(event) - this.offSetPosition.x,
+			y: PROTOTYPE.Event.pointerY(event) - this.offSetPosition.y}
 	
 		position.x 	-= this.offsetScroll.x - this.scrollNode.scrollLeft; 
 		position.y 	-= this.offsetScroll.y - this.scrollNode.scrollTop;
@@ -75,7 +75,7 @@ new function(){
 		if(this.movedCallback)
 			this.movedCallback(event);
 		
-		Event.stop(event);
+		PROTOTYPE.Event.stop(event);
 	
 	};
 	
@@ -89,7 +89,7 @@ new function(){
 		this.upCallback = undefined;
 		this.movedCallback = undefined;		
 		
-		Event.stop(event);	
+		PROTOTYPE.Event.stop(event);	
 	};
 
 
@@ -104,15 +104,15 @@ new function(){
 	 */	
 	ORYX.Core.MoveDockersCommand = ORYX.Core.Command.extend({
 		construct: function(dockers){
-			this.dockers 	= $H(dockers);
-			this.edges 		= $H({});
+			this.dockers 	= PROTOTYPE.$H(dockers);
+			this.edges 		= PROTOTYPE.$H({});
 		},
 		execute: function(){
 			if (this.changes) {
 				this.executeAgain();
 				return;
 			} else {
-				this.changes = $H({});
+				this.changes = PROTOTYPE.$H({});
 			}
 			
 			this.dockers.values().each(function(docker){

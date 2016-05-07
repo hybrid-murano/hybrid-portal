@@ -653,18 +653,18 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		} catch(e) {}
 
 		if(escapeText) {
-			$A(svgClone.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan')).each(function(elem) {
+			PROTOTYPE.$A(svgClone.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan')).each(function(elem) {
 				elem.textContent = elem.textContent.escapeHTML();
 			});
 			
-			$A(svgClone.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'text')).each(function(elem) {
+			PROTOTYPE.$A(svgClone.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'text')).each(function(elem) {
 				if(elem.childNodes.length == 0)
 					elem.textContent = elem.textContent.escapeHTML();
 			});
 		}
 		
 		// generating absolute urls for the pdf-exporter
-		$A(svgClone.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'image')).each(function(elem) {
+		PROTOTYPE.$A(svgClone.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'image')).each(function(elem) {
 			var href = elem.getAttributeNS("http://www.w3.org/1999/xlink","href");
 			
 			if(!href.match("^(http|https)://")) {
@@ -675,7 +675,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		
 		
 		// escape all links
-		$A(svgClone.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'a')).each(function(elem) {
+		PROTOTYPE.$A(svgClone.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'a')).each(function(elem) {
 			elem.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", (elem.getAttributeNS("http://www.w3.org/1999/xlink","href")||"").escapeHTML());
 		});
 		

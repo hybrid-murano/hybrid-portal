@@ -424,7 +424,7 @@ new function(){
 			var allLanes = this.getLanes(pool, true), hp;
 			var considerForDockers = allLanes.clone();
 			
-			var hashedPositions = $H({});
+			var hashedPositions = PROTOTYPE.$H({});
 			allLanes.each(function(lane){
 				hashedPositions[lane.id] = lane.bounds.upperLeft();
 			})
@@ -462,7 +462,7 @@ new function(){
 			
 			
 			// Get all deleted lanes
-			var resourceIds = $H(this.hashedBounds[pool.id]).keys();
+			var resourceIds = PROTOTYPE.$H(this.hashedBounds[pool.id]).keys();
 			var i=-1;
 			while (++i<resourceIds.length) {
 				if (!allLanes.any(function(lane){ return lane.id == resourceIds[i]})){
@@ -596,7 +596,7 @@ new function(){
 						}
 					});
 					
-					var hp2 = $H({});
+					var hp2 = PROTOTYPE.$H({});
 					allLanes.each(function(lane){
 						hp2[lane.id] = lane.bounds.upperLeft();
 					})
@@ -1219,7 +1219,7 @@ new function(){
 				
 				var depthChange = this.plugin.getDepth(this.lane, this.parent)-1;
 							
-				this.changes = $H({});
+				this.changes = PROTOTYPE.$H({});
 				
 				// Selected lane is BELOW the removed lane
 				if (laUpL.y >= shUpL.y) {				
