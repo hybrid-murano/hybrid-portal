@@ -1,0 +1,45 @@
+.container {
+    min-width: 1500px;
+    margin-top:10px
+}
+table,td,th{
+	text-align:center;
+	font-size:13px;
+}
+table{
+	margin-bottom:60px;
+}
+table img{
+	width:50px;
+	height:35px;
+	margin-right:5px;
+}
+th{
+	font-weight:400;
+	line-height:30px;
+}
+.title{
+	margin:10px 0 20px 0;
+}
+hr{
+	border-color:rgb(51,51,51);
+}
+.Application img{
+	width:50%;
+}
+.Throughput,.Application img{
+	margin-bottom:30px;
+}
+.action{
+	width:25px;
+	height:25px;
+	border:1px solid #515151;
+	border-radius:3px;
+	cursor: pointer;
+}
+.title img{
+	margin-left:10px;
+}
+.refresh{
+	margin-right:50px;
+}

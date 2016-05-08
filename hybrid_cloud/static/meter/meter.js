@@ -12,6 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Draw a table.
+function drawTable(seriesTitles, titleTypes, data, elementId, numPages, sortIndex) {
+  var dataTable = new google.visualization.DataTable();
+  for (var i = 0; i < seriesTitles.length; i++) {
+    dataTable.addColumn(titleTypes[i], seriesTitles[i]);
+  }
+  dataTable.addRows(data);
+  if (!(elementId in window.charts)) {
+    window.charts[elementId] =
+        new google.visualization.Table(document.getElementById(elementId));
+  }
+
+  var cssClassNames = {
+    'headerRow': 'hearder-row',
+    'tableRow': 'table-row',
+    'oddTableRow': 'table-row'
+  };
+  var opts = {
+    alternatingRowStyle: true,
+    page: 'enable',
+    pageSize: numPages,
+    allowHtml: true,
+    cssClassNames: cssClassNames,
+    width: '100%',
+    height: '100%'
+  };
+  if(numPages <= 0) {
+    opts.page = 'disable';
+  }
+  window.charts[elementId].draw(dataTable, opts);
+}
+
 // Draw a line chart.
 function drawLineChart(seriesTitles, data, elementId, unit) {
   var min = Infinity;
@@ -93,13 +125,25 @@ function getInterval(current, previous) {
 function getStats(callback) {
   $.getJSON('/api/meter')
   .done(function(data) { callback(data); })
-  .fail(function(jqhxr, textStatus, error) { callback([]); });
+  .fail(function(jqhxr, textStatus, error) {});
 }
 
 function getTopo(callback) {
   $.getJSON('/api/model')
   .done(function(data) { callback(data); })
-  .fail(function(jqhxr, textStatus, error) { });
+  .fail(function(jqhxr, textStatus, error) {});
+}
+
+var on_status = false;  // avoid re-entry
+function getStatus(callback) {
+  if(on_status) {
+    return;
+  }
+  
+  on_status = true;
+  $.getJSON('/api/status?env_id=5966ae8a77c747e1af43c3a4a80950f3&service_name=cluster')
+  .done(function(data) { callback(data); on_status = false; })
+  .fail(function(jqhxr, textStatus, error) { on_status = false; });
 }
 
 function drawThroughput(elementId, stats) {
@@ -130,11 +174,56 @@ function refresh() {
     $("#detail").empty();
     editor = modeler("detail", {no_plugins:true, meta:model});
   });
+  
+  getStatus(function(status){
+    if(!status.valid)  return;
+    var frontend = status.frontend;
+    if (frontend.length == 0) {
+      $('#frontend').text('No instance found');
+      return;
+    }
+    var titles = [ 'Region', 'AZ', 'Count', 'Load', 'Action' ];
+    var titleTypes = [ 'string', 'string', 'number', 'string', 'string' ];
+    var sortIndex = 1;
+    var data = [];
+    for (var i = 0; i < frontend.length; i++) {
+      var elements = [];
+      elements.push(frontend[i].region);
+      elements.push(frontend[i].az);
+      elements.push(frontend[i].nodeCount);
+      elements.push(frontend[i].load);
+      elements.push('<img class="action" src="/hybrid_cloud/static/img/green-arrows-md.png"/><img class="action" src="/hybrid_cloud/static/img/green-inward-arrows-md.png"/>')
+      data.push(elements);
+    }
+    drawTable(titles, titleTypes, data, 'frontend', 0, sortIndex);
+
+    var backend = status.backend;
+    var titles = [ 'Instance', 'Region', 'AZ', 'Status', 'Action' ];
+    var titleTypes = [ 'string', 'string', 'string', 'string', 'string' ];
+    var sortIndex = 2;
+    var data = [];
+    for (var i = 0; i < backend.length; i++) {
+      var elements = [];
+      elements.push(backend[i].inst);
+      elements.push(backend[i].region);
+      elements.push(backend[i].az);
+      elements.push(backend[i].status);
+      elements.push('<img class="action" src="/hybrid_cloud/static/img/system-shutdown-md.png"/>')
+      data.push(elements);
+    }
+    drawTable(titles, titleTypes, data, 'backend', 0, sortIndex);
+  });
 }
 
 // Executed when the page finishes loading.
 function meter() {
   window.charts = {};
   refresh();
-  setInterval(function() { refresh(); }, 10000);
+  $("#restart").click(function(){
+    $.post("/action/restart", { users:$("#users").val(), freq:$("#freq").val(), address:$("#address").val() } );
+  });
+  $("#turnover").click(function(){
+    $.post("/action/turnover");
+  });
+  setInterval(function() { refresh(); }, 30000);
 }

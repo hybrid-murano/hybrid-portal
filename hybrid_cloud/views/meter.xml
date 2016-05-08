@@ -31,19 +31,19 @@
     <div class="container">
              <div class="row">
                    <div class="col-md-4">
-                         <div class="title">Meter Parameter<img class="action pull-right" src="/hybrid_cloud/static/src/img/powerIco3.png"/><img class="action pull-right" src="/hybrid_cloud/static/src/img/powerIco2.png"/><img class="action pull-right" src="/hybrid_cloud/static/src/img/powerIco1.png"/></div> 
+                         <div class="title">Meter Parameter
+                           <img id="restart" class="action pull-right" src="/hybrid_cloud/static/img/system-reboot-md.png"/>
+                         </div> 
                          <table width="100%" border="1" cellpadding="0" cellspacing="0">
                            <tr>                                
                                 <th>Number of Users</th>
                                 <th>Request Period</th>
-                                <th>Loop</th>
                                 <th>Target Environment</th>
                            </tr>                           
                            <tr>                                
-                                <td>50</td>
-                                <td>0.1s</td>
-                                <td>forever</td>
-                                <td>emall.joinedcloud.com</td>
+                                <td><input type="number" id="users" value="50" /></td>
+                                <td><input type="text" id="freq" value="0.1" /></td>
+                                <td><input type="text" id="address" value="emall.joinedcloud.com" /></td>
                            </tr>
                         </table>
                     </div>
@@ -56,62 +56,13 @@
                    <div class="col-md-4">
                         <div class="frontend">
                             <div class="title">Frontend Docker Status</div>
-                            <table width="100%" border="1" cellpadding="0" cellspacing="0">
-                                <tr>                                
-                                    <th>Region</th>
-                                    <th>AZ</th>
-                                    <th>Count</th>
-                                    <th>Load</th>
-                                    <th>Action</th>
-                               </tr>
-                               <tr>                                
-                                    <td><img src="/hybrid_cloud/static/src/img/cloudIco1.png"/>shenzhen</td>
-                                    <td>az01</td>
-                                    <td>2</td>
-                                    <td>30%</td>
-                                    <td><img class="action" src="/hybrid_cloud/static/src/img/action.png"/><img class="action" src="/hybrid_cloud/static/src/img/action.png"/></td>
-                               </tr>
-                               <tr>                                
-                                    <td><img src="/hybrid_cloud/static/src/img/cloudIco2.png"/>shenzhen</td>
-                                    <td>az32</td>
-                                    <td>3</td>
-                                    <td>15%</td>
-                                    <td><img class="action" src="/hybrid_cloud/static/src/img/action.png"/><img class="action" src="/hybrid_cloud/static/src/img/action.png"/></td>
-                               </tr>    
-                               <tr>                                
-                                    <td><img src="/hybrid_cloud/static/src/img/cloudIco3.png"/>tokyo</td>
-                                    <td>az11</td>
-                                    <td>2</td>
-                                    <td>50%</td>
-                                    <td><img class="action" src="/hybrid_cloud/static/src/img/action.png"/><img class="action" src="/hybrid_cloud/static/src/img/action.png"/></td>
-                               </tr>                                                              
-                            </table> 
+                            <div class="frontend" id="frontend"></div>
                         </div>
                         <div class="backend">
-                            <div class="title">Backend VM Status<img class="action pull-right refresh" src="/hybrid_cloud/static/src/img/refresh.png"/></div>
-                            <table width="100%" border="1" align="center" cellpadding="0" cellspacing="0">
-                                <tr>                                
-                                    <th>Instance</th>
-                                    <th>Region</th>
-                                    <th>AZ</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                               </tr>
-                               <tr>
-                                    <td>backend-01</td>                              
-                                    <td><img src="/hybrid_cloud/static/src/img/cloudIco1.png"/>shenzhen</td>
-                                    <td>az01</td>
-                                    <td>Standby</td>
-                                    <td><img class="action" src="/hybrid_cloud/static/src/img/power.png"/></td>
-                               </tr>
-                               <tr>        
-                                      <td>backend-02</td>                        
-                                    <td><img src="/hybrid_cloud/static/src/img/cloudIco2.png"/>shenzhen</td>
-                                    <td>az11</td>
-                                    <td>Active</td>
-                                    <td><img class="action" src="/hybrid_cloud/static/src/img/power.png"/></td>
-                               </tr>                                    
-                            </table>  
+                            <div class="title">Backend VM Status
+                              <img id="turnover" class="action pull-right refresh" src="/hybrid_cloud/static/img/Refresh.png"/>
+                            </div>
+                            <div class="backend" id="backend"></div>
                         </div>                                                                    
                    </div>
                    <div class="col-md-7 col-md-offset-1">
