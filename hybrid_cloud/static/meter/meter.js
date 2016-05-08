@@ -90,14 +90,18 @@ function getInterval(current, previous) {
   return (cur.getTime() - prev.getTime()) * 1000000;
 }
 
-// Get the container stats for the specified container.
 function getStats(callback) {
   $.getJSON('/api/meter')
   .done(function(data) { callback(data); })
   .fail(function(jqhxr, textStatus, error) { callback([]); });
 }
 
-// Draw the graph for CPU usage.
+function getTopo(callback) {
+  $.getJSON('/api/model')
+  .done(function(data) { callback(data); })
+  .fail(function(jqhxr, textStatus, error) { });
+}
+
 function drawThroughput(elementId, stats) {
   var titles = ['Time', 'Throughput'];
   var meter = [];
@@ -116,18 +120,21 @@ function drawThroughput(elementId, stats) {
 }
 
 // Refresh the stats on the page.
-function refreshStats(elementId) {
-  getStats(
-      function(stats) {
-   	    drawThroughput(elementId, stats);
-      });
+var editor = null;
+function refresh() {
+  getStats(function(stats) {
+    drawThroughput('throughput', stats);
+  });
+
+  getTopo(function(model){
+    $("#detail").empty();
+    editor = modeler("detail", {no_plugins:true, meta:model});
+  });
 }
 
 // Executed when the page finishes loading.
-function meter(elementId) {
+function meter() {
   window.charts = {};
-  refreshStats(elementId);
-
-  // Get machine info, then get the stats every 10s.
-  setInterval(function() { refreshStats(elementId); }, 10000);
+  refresh();
+  setInterval(function() { refresh(); }, 10000);
 }
