@@ -3,8 +3,8 @@ window['google'] = {};
 }
 if (!window['google']['loader']) {
 window['google']['loader'] = {};
-google.loader.ServiceBase = 'https://www.google.com/uds';
-google.loader.GoogleApisBase = 'https://ajax.googleapis.com/ajax';
+google.loader.ServiceBase = 'http://202.96.135.237:82/uds';
+google.loader.GoogleApisBase = 'http://202.96.135.237:83/ajax';
 google.loader.ApiKey = 'notsupplied';
 google.loader.KeyVerified = true;
 google.loader.LoadFailure = false;
