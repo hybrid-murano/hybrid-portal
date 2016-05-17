@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="Modeler" default="js.compress">
+
+	<!-- Editor properties *************************************************** -->
+	<property name="root" value="." />
+	<property name="src" value="${root}/oryx" />
+    <property name="data" value="${root}/data" />
+	<property name="destdir" value="../hybrid_cloud/static/meter" />
+	<property name="target" value="target" />
+	<property name="temp" value="temp" />
+	<property name="charset" value="utf-8"/>
+
+	<!-- Main targets ****************************************************** -->
+	<target name="js.concat">
+
+		<concat destfile='${destdir}/modeler.debug.js' encoding='${charset}' outputencoding='${charset}'>
+			<filelist id="coresourcefiles" dir="${src}">
+                <file name='prototype-1.7.1.js' />
+                <file name='clazz.js' />
+                <file name='oryx.js' />
+                <file name='rest-api.js' />
+				<file name='Core/SVG/editpathhandler.js' />
+				<file name='Core/SVG/minmaxpathhandler.js' />
+ 				<file name='Core/SVG/path_parser.js' />
+				<file name='Core/SVG/svgshape.js' />
+				<file name='Core/SVG/label.js' />
+				<file name='Core/Math/math.js' />
+				<file name='Core/StencilSet/stencil.js' />
+				<file name='Core/StencilSet/property.js' />
+				<file name='Core/StencilSet/propertyitem.js' />
+				<file name='Core/StencilSet/complexpropertyitem.js' />
+				<file name='Core/StencilSet/rules.js' />
+				<file name='Core/StencilSet/stencilset.js' />
+				<file name='Core/command.js' />
+				<file name='Core/bounds.js' />
+				<file name='Core/uiobject.js' />
+                <file name='Core/abstractPlugin.js' />
+                <file name='Core/Controls/control.js' />
+                <file name='Core/abstractLayouter.js' />
+                <file name='Core/abstractshape.js' />
+                <file name='Core/canvas.js' />
+                <file name='Core/shape.js' />
+                <file name='Core/Controls/docker.js' />
+                <file name='Core/Controls/magnet.js' />
+                <file name='Core/Controls/icons.js' />
+                <file name='Core/node.js' />
+                <file name='Core/edge.js' />
+				<file name='Core/main.js' />
+
+                <file name='Plugins/undo.js' />
+                <file name='Plugins/file.js' />
+                <file name='Plugins/properties.js' />
+                <file name='Plugins/dragDocker.js' />
+                <file name='Plugins/addDocker.js' />
+                <file name='Plugins/selectionframe.js' />
+                <file name='Plugins/shapeHighlighting.js' />
+                <file name='Plugins/shaperepository.js' />
+                <file name='Plugins/dragdropresize.js' />
+                <file name='Plugins/edit.js' />
+                <file name='Plugins/canvasResize.js' />
+                <file name='Plugins/Layouter/edgeLayouter.js' />
+			</filelist>
+		</concat>
+	</target>
+
+	<target name='js.compress' depends="js.concat">
+
+    <mkdir dir="${temp}" />
+		<tempfile property="compress.temp" suffix=".js" prefix="compressed" destDir="${temp}" />
+
+		<java dir="${temp}" jar="../lib/yuicompressor-2.4.2.jar" fork="true" failonerror="true" output='${compress.temp}'>
+			<arg file='${destdir}/modeler.debug.js' />
+			<arg line="--type js --charset ${charset}" />
+		</java>
+
+		<concat destfile='${destdir}/modeler.js'>
+			<fileset file="${compress.temp}" />
+		</concat>
+
+		<delete file='${compress.temp}' />
+  
+    <delete dir="${temp}" />
+
+	</target>
+	
+</project>

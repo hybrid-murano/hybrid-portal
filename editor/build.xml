@@ -67,7 +67,7 @@
     <mkdir dir="${temp}" />
 		<tempfile property="compress.temp" suffix=".js" prefix="compressed" destDir="${temp}" />
 
-		<java dir="${temp}" jar="lib/yuicompressor-2.4.2.jar" fork="true" failonerror="true" output='${compress.temp}'>
+		<java dir="${temp}" jar="../lib/yuicompressor-2.4.2.jar" fork="true" failonerror="true" output='${compress.temp}'>
 			<arg file='${destdir}/oryx.debug.js' />
 			<arg line="--type js --charset ${charset}" />
 		</java>
