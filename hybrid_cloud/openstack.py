@@ -1,4 +1,12 @@
 import logging
+import json
+from time import sleep
+import os
+import sys
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
 
 from openerp import SUPERUSER_ID
 from openerp import tools
@@ -13,6 +21,7 @@ from openerp import http
 from openerp.http import request
 import werkzeug.wrappers
 
+import novaclient.client as nova
 import muranoclient.client as murano
 
 from keystoneclient.v2_0 import client as client_v2
@@ -25,6 +34,9 @@ import hashlib
 from datetime import datetime, timedelta, tzinfo
 
 from . import settings
+
+currentPath = os.path.dirname(os.path.realpath(__file__))
+
 
 def _get_endpoint_region(endpoint):
     """Common function for getting the region from endpoint.
@@ -124,6 +136,7 @@ def check(actions, request, target=None):
 class APIVersionManager(object):
     """Object to store and manage API versioning data and utility methods."""
     SETTINGS_KEY = "OPENSTACK_API_VERSIONS"
+
     def __init__(self, service_type, preferred_version=None):
         self.service_type = service_type
         self.preferred = preferred_version
@@ -136,13 +149,16 @@ class APIVersionManager(object):
         # this caused a KeyError.
         if self.preferred:
             self.supported[self.preferred] = {"version": self.preferred}
+
     @property
     def active(self):
         if self._active is None:
             self.get_active_version()
         return self._active
+
     def load_supported_version(self, version, data):
         self.supported[version] = data
+
     def get_active_version(self):
         if self._active is not None:
             return self.supported[self._active]
@@ -168,6 +184,7 @@ class APIVersionManager(object):
             raise exceptions.ConfigurationError(msg)
         self._active = key
         return self.supported[self._active]
+
     def clear_active_cache(self):
         self._active = None
 
@@ -207,7 +224,6 @@ def url_path_replace(url, old, new, count=None):
 
 _PROJECT_CACHE = {}
 
-
 import functools
 from functools import wraps, update_wrapper, WRAPPER_ASSIGNMENTS
 
@@ -239,6 +255,7 @@ def memoize_by_keyword_arg(cache, kw_keys):
     :param kw_keys: List of keyword arguments names. The values are used
                     for generating the key in the cache.
     """
+
     def _decorator(func):
         @functools.wraps(func, assigned=available_attrs(func))
         def wrapper(*args, **kwargs):
@@ -251,11 +268,13 @@ def memoize_by_keyword_arg(cache, kw_keys):
             result = func(*args, **kwargs)
             cache[mem_args] = result
             return result
+
         return wrapper
+
     return _decorator
 
 
-@memoize_by_keyword_arg(_PROJECT_CACHE, ('token', ))
+@memoize_by_keyword_arg(_PROJECT_CACHE, ('token',))
 def get_project_list(*args, **kwargs):
     if get_keystone_version() < 3:
         auth_url = url_path_replace(
@@ -283,6 +302,7 @@ class IdentityAPIVersionManager(APIVersionManager):
             user.project_id = getattr(user, "default_project_id",
                                       getattr(user, "tenantId", None))
         return user
+
     def get_project_manager(self, *args, **kwargs):
         if VERSIONS.active < 3:
             manager = keystoneclient(*args, **kwargs).tenants
@@ -294,16 +314,17 @@ class IdentityAPIVersionManager(APIVersionManager):
 VERSIONS = IdentityAPIVersionManager(
     "identity", preferred_version=get_keystone_version())
 
-
 # Import from oldest to newest so that "preferred" takes correct precedence.
 try:
     from keystoneclient.v2_0 import client as keystone_client_v2
+
     VERSIONS.load_supported_version(2.0, {"client": keystone_client_v2})
 except ImportError:
     pass
 
 try:
     from keystoneclient.v3 import client as keystone_client_v3
+
     VERSIONS.load_supported_version(3, {"client": keystone_client_v3})
 except ImportError:
     pass
@@ -321,7 +342,9 @@ def _get_endpoint_url(request, endpoint_type, catalog=None):
     url = urlparse.urljoin(url, 'v%s' % VERSIONS.active)
     return url
 
+
 KEYSTONE_CLIENT_ATTR = "_keystoneclient"
+
 
 def keystoneclient(request, admin=False):
     """Returns a client connected to the Keystone backend.
@@ -352,8 +375,8 @@ def keystoneclient(request, admin=False):
     cache_attr = "_keystoneclient_admin" if admin \
         else KEYSTONE_CLIENT_ATTR
     if (hasattr(request, cache_attr) and
-        (not user.token.id or
-         getattr(request, cache_attr).auth_token == user.token.id)):
+            (not user.token.id or
+                     getattr(request, cache_attr).auth_token == user.token.id)):
         conn = getattr(request, cache_attr)
     else:
         endpoint = _get_endpoint_url(request, endpoint_type)
@@ -371,6 +394,7 @@ def keystoneclient(request, admin=False):
         setattr(request, cache_attr, conn)
     return conn
 
+
 def muranoclient(request):
     endpoint = url_for(request, 'application_catalog')
     insecure = getattr(settings, 'MURANO_API_INSECURE', False)
@@ -379,12 +403,23 @@ def muranoclient(request):
     return murano.Client(1, endpoint=endpoint, token=token_id, insecure=insecure)
 
 
+def novaclient(request):
+    endpoint = url_for(request, 'compute')
+    token_id = request.user.token.id
+    project_id = request.user.project_id
+    client = nova.Client("2", auth_token=token_id, project_id=project_id,
+                         insecure=True)
+    client.client.set_management_url(endpoint)
+    return client
+
+
 class Token(object):
     """Token object that encapsulates the auth_ref (AccessInfo)from keystone
        client.
        Added for maintaining backward compatibility with horizon that expects
        Token object in the user object.
     """
+
     def __init__(self, auth_ref):
         # User-related attributes
         user = {}
@@ -455,6 +490,7 @@ class User(object):
     .. attribute:: domain_id
         The id of the Keystone domain scoped for the current user/token.
     """
+
     def __init__(self, id=None, token=None, user=None, tenant_id=None,
                  service_catalog=None, tenant_name=None, roles=None,
                  authorized_tenants=None, endpoint=None, enabled=False,
@@ -481,10 +517,13 @@ class User(object):
         # List of variables to be deprecated.
         self.tenant_id = self.project_id
         self.tenant_name = self.project_name
+
     def __unicode__(self):
         return self.username
+
     def __repr__(self):
         return "<%s: %s>" % (self.__class__.__name__, self.username)
+
     def is_token_expired(self, margin=None):
         """Determine if the token is expired.
         Returns ``True`` if the token is expired, ``False`` if not, and
@@ -680,6 +719,7 @@ def now():
     else:
         return datetime.now()
 
+
 def is_naive(value):
     """
     Determines if a given datetime.datetime is naive.
@@ -687,6 +727,7 @@ def is_naive(value):
     http://docs.python.org/library/datetime.html#datetime.tzinfo
     """
     return value.tzinfo is None or value.tzinfo.utcoffset(value) is None
+
 
 try:
     import pytz
@@ -700,19 +741,25 @@ utc = pytz.utc if pytz else UTC()
 
 ZERO = timedelta(0)
 
+
 class UTC(tzinfo):
     """
     UTC implementation taken from Python's docs.
     Used only when pytz isn't available.
     """
+
     def __repr__(self):
         return "<UTC>"
+
     def utcoffset(self, dt):
         return ZERO
+
     def tzname(self, dt):
         return "UTC"
+
     def dst(self, dt):
         return ZERO
+
 
 def make_aware(value, timezone):
     """
@@ -724,6 +771,7 @@ def make_aware(value, timezone):
     else:
         # may be wrong around DST changes
         return value.replace(tzinfo=timezone)
+
 
 def is_token_valid(token, margin=None):
     """Timezone-aware checking of the auth token's expiration timestamp.
@@ -757,11 +805,12 @@ def check_auth_expiry(auth_ref, margin=None):
         msg = _("The authentication token issued by the Identity service "
                 "has expired.")
         _logger.warning("The authentication token issued by the Identity "
-                    "service appears to have expired before it was "
-                    "issued. This may indicate a problem with either your "
-                    "server or client configuration.")
+                        "service appears to have expired before it was "
+                        "issued. This may indicate a problem with either your "
+                        "server or client configuration.")
         raise exceptions.ValidationError(msg)
     return True
+
 
 def authenticate(request=None, username=None, password=None, user_domain_name=None, auth_url=None, region=None):
     """Authenticates a user via the Keystone Identity API."""
@@ -773,8 +822,8 @@ def authenticate(request=None, username=None, password=None, user_domain_name=No
     if get_keystone_version() >= 3:
         if has_in_url_path(auth_url, "/v2.0"):
             _logger.warning("The settings.py file points to a v2.0 keystone "
-                        "endpoint, but v3 is specified as the API version "
-                        "to use. Using v3 endpoint for authentication.")
+                            "endpoint, but v3 is specified as the API version "
+                            "to use. Using v3 endpoint for authentication.")
             auth_url = url_path_replace(auth_url, "/v2.0", "/v3", 1)
     keystone_client = get_keystone_client()
     try:
@@ -854,11 +903,55 @@ def authenticate(request=None, username=None, password=None, user_domain_name=No
     _logger.debug('Authentication completed for user "%s".' % username)
     return user
 
+_ISO8601_TIME_FORMAT_SUBSECOND = '%Y-%m-%dT%H:%M:%S.%f'
+
+
+def getCpu(masternode_ip, mininodes_ip):
+    loads = []
+    try:
+        for ip in mininodes_ip:
+            r = os.popen('curl --connect-timeout 20 %s:8080/api/v1/proxy/nodes/%s:4194/api/v1.0/containers/ 2>/dev/null' % (masternode_ip, ip)).read()
+            cpu = json.loads(r)
+            t = cpu['stats'][0]['timestamp']
+            mch = json.loads(os.popen('curl --connect-timeout 20 %s:8080/api/v1/proxy/nodes/%s:4194/api/v1.0/machine 2>/dev/null' % (masternode_ip, ip)).read())
+            if "has_cpu" not in cpu["spec"]:
+                loads.append(None)
+            stl = len(cpu['stats'])
+            i=1
+            total = 0.0
+            cpuUsage = 0.0
+            while i < stl:
+                cur = cpu['stats'][i]
+                pre = cpu['stats'][i-1]
+                rawUsage = cur['cpu']['usage']['total'] - pre['cpu']['usage']['total']
+                interval = datetime.strptime(cur['timestamp'][:-4], _ISO8601_TIME_FORMAT_SUBSECOND) - datetime.strptime(pre['timestamp'][:-4], _ISO8601_TIME_FORMAT_SUBSECOND)
+                interval = interval.seconds*1000000000 + interval.microseconds*1000
+                cpuUsage = ((rawUsage*1.0 / interval) / mch['num_cores']) * 100
+                if cpuUsage > 100:
+                    cpuUsage = 100.0
+                total += cpuUsage
+                i += 1
+            #print cpuUsage
+            loads.append(total / (stl-1))
+        count = 0
+        cpu_load = 0.0
+        for load in loads:
+            if load is not None:
+                cpu_load += load
+                count += 1
+        return "%.2f%%" % (cpu_load/count)
+    except Exception:
+        return " %"
+
 
 class Openstack(http.Controller):
-    @http.route('/openstack', type='http', auth="none")
-    def web_client(self, s_action=None, **kw):
-        if not hasattr(request, 'user'):
+    global_backend = {}  # {"instance_id": {backend}}
+    global_meter_result = {}  # {stats:[timestamp: [{cluster: meter}]]]}
+    global_cluster = []  # {cluter: target}
+
+    @classmethod
+    def web_nova_client(cls, request):
+        if not hasattr(request, "user"):
             try:
                 domain = getattr(settings, 'OPENSTACK_KEYSTONE_DEFAULT_DOMAIN', 'Default')
                 username = settings.OS_USERNAME
@@ -874,5 +967,306 @@ class Openstack(http.Controller):
                 if request.session:
                     request.session.flush()
                 raise exc
+        client = novaclient(request)
+        return client
+
+    @classmethod
+    def web_murano_client(cls, request):
+        if not hasattr(request, "user"):
+            try:
+                domain = getattr(settings, 'OPENSTACK_KEYSTONE_DEFAULT_DOMAIN', 'Default')
+                username = settings.OS_USERNAME
+                password = settings.OS_PASSWORD
+                endpoint = settings.OPENSTACK_KEYSTONE_URL
+                region = settings.OPENSTACK_DEFAULT_REGION
+                authenticate(request, username, password, domain, endpoint, region)
+                msg = 'Login successful for user "%(username)s".' % {'username': username}
+                _logger.info(msg)
+            except exceptions.ValidationError as exc:
+                msg = 'Login failed for user "%(username)s".' % {'username': username}
+                _logger.warning(msg)
+                if request.session:
+                    request.session.flush()
+                raise exc
+
         client = muranoclient(request)
-        return 'Environment[0] is {0}'.format(client.environments.list()[0].name)
+        return client
+
+    @http.route('/api/get_status', type='http', auth='none')
+    def get_status(self, **kwargs):
+        nova_client = self.web_nova_client(request)
+        murano_client = self.web_murano_client(request)
+        env_id = kwargs["env_id"]
+        env = murano_client.environments.get(env_id)
+        services = env.services
+        # tasks = []
+        frontend = []
+        backend = []
+        cluster = []
+        # if self.frontends.get(env_id, None) is not None:
+        #     return json.dumps({"frontend": self.frontends[env_id],
+        #                        "backend": self.backends[env_id]})
+
+        for service in services:
+            if service.get("masterNode", None) is not None:
+                nodeCount = service["nodeCount"]
+                az = service["availabilityZones"][0]
+                kubernetesCluster = service["?"]["id"]
+                scale_service = ""
+                for s in services:
+                    if s.get("autoscale", None) is not None and s.get("kubernetesCluster", None)==kubernetesCluster:
+                        scale_service = s["name"]
+                # action_id = "%s_getCpuLoad" % service["?"]["id"]
+                # task_id = ""
+                # task_tries = 40
+                # while task_tries > 0:
+                #     try:
+                #         task_id = murano_client.actions.call(env_id, action_id)
+                #         break
+                #     except Exception:
+                #         sleep(5)
+                #         task_tries -= 1
+                masternode_ip = service["masterNode"]["instance"]["ipAddresses"][1]
+                mininodes = service["minionNodes"]
+                mininodes_ip = []
+                for mininode in mininodes:
+                    mininodes_ip.append(mininode["instance"]["ipAddresses"][0])
+                load = getCpu(masternode_ip, mininodes_ip)
+                frontend.append({"nodeCount": nodeCount,
+                                 "load": load,
+                                 "az": az.split(".")[0],
+                                 "region": az.split(".")[1],
+                                 "scale_service": scale_service,
+                                 "name": service["name"],
+                                 "ip": masternode_ip})
+                cluster.append(service["name"])
+                #tasks.append(task_id)
+            for node in service.get("instance_uuids", []):
+                az = node["az"]
+                instance_uuid = node["id"]
+                name = node["id"]
+                try:
+                    server = nova_client.servers.get(instance_uuid)
+                    #status = server.status
+                    if server.status == "ACTIVE":
+                        if getattr(server, 'OS-EXT-STS:task_state') is not None:
+                            status = getattr(server, 'OS-EXT-STS:task_state').lower()
+                        else:
+                            status = "active"
+                    else:
+                        if getattr(server, 'OS-EXT-STS:task_state') is not None:
+                            status = getattr(server, 'OS-EXT-STS:task_state').lower()
+                        else:
+                            status = server.status.lower()
+                except Exception:
+                    status = "error"
+                if self.global_backend.get(instance_uuid) is not None:
+                    if status == "active":
+                        if self.global_backend.get(instance_uuid)["status"] == "standby":
+                            status = "standby"
+                backend.append({"inst": name,
+                                "region": az.split(".")[1],
+                                "az": az.split(".")[0],
+                                "status": status,
+                                "instance_id": instance_uuid})
+            # self.global_backend = backend
+        # for index, task_id in enumerate(tasks):
+        #     if task_id != "":
+        #         result_tries = 40
+        #         while result_tries > 0:
+        #             result = murano_client.actions.get_result(env_id, task_id)
+        #             if result is not None:
+        #                 frontend[index]["load"] = result["result"]
+        #                 break
+        #             sleep(5)
+        #             result_tries -= 1
+
+        # self.frontends[env_id] = frontend
+        # self.backends[env_id] = backend
+        
+        if len(backend) == 2:
+            if backend[0]["status"] == "active" and backend[1]["status"] == "active":
+                backend[1]["status"] = "standby" 
+        for item in backend:
+            self.global_backend[item["instance_id"]] = item
+           
+        self.global_cluster = cluster
+        if len(self.global_meter_result):
+            self.global_meter_result["stats"] = []
+            now = datetime.utcnow()
+            for i in range(10):
+                timestamp = str(now - timedelta(seconds=i*15)).replace(" ", "T")
+                meter = {}
+                for c in self.global_cluster:
+                    meter[c] = 0
+                self.global_meter_result["stats"].append({
+                    "timestamp": timestamp,
+                    "meter": meter})
+        
+        return json.dumps({"valid": True,
+                           "frontend": frontend,
+                           "backend": backend})
+
+    @http.route('/api/scaleRcUp', type='http', auth='none')
+    def get_scaleRcUp(self, **kwargs):
+        client = self.web_murano_client(request)
+        env_id = kwargs['env_id']
+        service_name = kwargs['service_name']
+        env = client.environments.get(env_id)
+        services = env.services
+        for service in services:
+            if service["name"] == service_name:
+                action_id = "%s_scaleRcUp" % service["?"]["id"]
+                task_id = ""
+                task_tries = 40
+                while task_tries > 0:
+                    try:
+                        task_id = client.actions.call(env_id, action_id, {"rcName": service_name})
+                        break
+                    except Exception:
+                        task_tries -= 1
+                        sleep(5)
+                if task_id == "":
+                    return "Failed"
+                tries = 40
+                while tries > 0:
+                    result = client.actions.get_result(env_id, task_id)
+                    if result is not None:
+                        if result['isException'] is False:
+                            return "{0}".format(result["result"])
+                        else:
+                            return "Failed"
+                    sleep(5)
+                    tries -= 1
+        return "Failed"
+
+    @http.route('/api/scaleRcDown', type='http', auth='none')
+    def get_scaleRcDown(self, **kwargs):
+        client = self.web_murano_client(request)
+        env_id = kwargs['env_id']
+        service_name = kwargs['service_name']
+        env = client.environments.get(env_id)
+        services = env.services
+        for service in services:
+            if service["name"] == service_name:
+                action_id = "%s_scaleRcDown" % service["?"]["id"]
+                task_id = ""
+                task_tries = 40
+                while task_tries > 0:
+                    try:
+                        task_id = client.actions.call(env_id, action_id, {"rcName": service_name})
+                        break
+                    except Exception:
+                        task_tries -= 1
+                        sleep(5)
+                if task_id == "":
+                    return "Failed"
+                tries = 40
+                while tries > 0:
+                    result = client.actions.get_result(env_id, task_id)
+                    if result is not None:
+                        if result['isException'] is False:
+                            return "{0}".format(result["result"])
+                        else:
+                            return "Failed"
+                    sleep(5)
+                    tries -= 1
+        return "Failed"
+
+    @http.route('/api/stop', type='http', auth='none')
+    def stop(self, **kwargs):
+        # backend_0 = self.global_backend[0]
+        # backend_1 = self.global_backend[1]
+        nova_client = self.web_nova_client(request)
+        instance_id = kwargs["instance_id"]
+        server = nova_client.servers.get(instance_id)
+        if server.status != "ACTIVE":
+            return "stopped"
+        nova_client.servers.stop(instance_id)
+        for id, item in self.global_backend.items():
+            if id == instance_id:
+                item["status"] == 'powerinf-off'
+            else:
+                if item["status"] == "standby":
+                    item["status"] == "active"
+        # self.global_backend[instance_id]["status"] == "powering-off"
+        # if backend_0["instance_id"] == instance_id:
+        #     backend_0["status"] = "shutdown"
+        # else:
+        #     backend_1["status"] = "shutdown"
+        return "stopping"
+
+    @http.route('/api/start', type='http', auth='none')
+    def start(self, **kwargs):
+        # backend_0 = self.global_backend[0]
+        # backend_1 = self.global_backend[1]
+        nova_client = self.web_nova_client(request)
+        instance_id = kwargs["instance_id"]
+        server = nova_client.servers.get(instance_id)
+        if server.status == "ACTIVE":
+            return "started"
+        nova_client.servers.start(instance_id)
+        self.global_backend[instance_id]["status"] == "powering-on"
+        return "starting"
+
+    @http.route('/api/turn_over', type='http', auth='none')
+    def turn_over(self, **kwargs):
+        env_id = kwargs["env_id"]
+        if len(self.global_backend) < 2:
+            return json.dumps({"backend": self.global_backend.values()})
+        backend_0 = self.global_backend.values()[0]
+        backend_1 = self.global_backend.values()[1]
+        if backend_0["status"] == "active":
+            if backend_1["status"] == "standby":
+                backend_0["status"] = "standby"
+                backend_1["status"] = "active"
+        elif backend_0["status"] == "standby":
+            if backend_1["status"] == "active":
+                backend_0["status"] = "active"
+                backend_1["status"] = "standby"
+        return json.dumps({"backend": self.global_backend[env_id]})
+
+    @http.route('/api/meter_restart', type='http', auth="none")
+    def restart(self, s_action=None, **kw):
+        if request.httprequest.method == 'POST':
+            users = kw.get('users')
+            freq = kw.get('freq')
+            address = kw.get('address')
+            cluster = kw.get('cluster')
+            _logger.debug('restart:{0}, {1}, {2}'.format(users, freq, address))
+            currentPath = os.path.dirname(os.path.realpath(__file__))
+            # logfile = '%s/%s.xml' % (currentPath, address)
+            f = currentPath + '/meter.jmx'
+            tree = ET.parse(f)
+            root = tree.getroot()
+            for child in root.iter('stringProp'):
+                if child.attrib['name'] == "ThreadGroup.num_threads":
+                    child.text = users
+                elif child.attrib['name'] == "ThreadGroup.ramp_time":
+                    child.text = freq
+                elif child.attrib['name'] == "HTTPSampler.domain":
+                    child.text = address
+                elif child.attrib['name'] == "HTTPSampler.port":
+                    child.text = '80'
+                elif child.attrib['name'] == "filename":
+                    child.text = currentPath + '/' + cluster + '.xml'
+                else:
+                    continue
+            tree.write(f)
+            os.system("ps -ef|grep jmeter | awk '$8!=\"grep\"{system(\"kill -9 \" $2)}'")
+            os.system('jmeter -n -t %s &' % f)
+            os.system("ps -ef|grep sync_meter_result | awk '$8!=\"grep\"{system(\"kill -9 \" $2)}'")
+            command = 'python %s/%s' % (currentPath, 'sync_meter_result.py')
+            for c in self.global_cluster:
+                command = "%s %s" % (command, c)
+            os.system("%s &" % command)
+            return '{"ret": "success"}'
+
+    @http.route('/api/sync_meter', type='http', auth="none")
+    def meter(self, s_action=None, **kw):
+        currentPath = os.path.dirname(os.path.realpath(__file__))
+        meter_result_file = "%s/meter_result_new" % currentPath
+        with open(meter_result_file, "r") as f:
+            sync_result = json.load(f)
+        self.global_meter_result["stats"] = sync_result
+        return json.dumps(self.global_meter_result)

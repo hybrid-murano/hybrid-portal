@@ -1,4 +1,11 @@
 import logging
+from datetime import datetime
+from datetime import timedelta
+import os
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
 
 from openerp import SUPERUSER_ID
 from openerp import tools
@@ -14,14 +21,79 @@ from openerp.http import request
 import werkzeug.wrappers
 
 class Meter(http.Controller):
+    global_meter_result = {} #{target: [{timestamp, meter}]}
+    global_targets = []
+
     @http.route('/action/restart', type='http', auth="none")
     def restart(self, s_action=None, **kw):
         if request.httprequest.method == 'POST':
             users = kw.get('users')
             freq = kw.get('freq')
             address = kw.get('address')
+            now = datetime.utcnow()
+            if len(self.global_meter_result) == 0:
+                self.global_meter_result[address] = []
+                for i in range(4):
+                    ntime = now - timedelta(seconds=(i*15))
+                    self.global_meter_result[address].insert(0, {str(ntime).replace(" ", "T"): 0})
             _logger.debug('restart:{0}, {1}, {2}'.format(users, freq, address))
+            currentPath = os.path.dirname(os.path.realpath(__file__))
+            logfile = '%s/%s.xml' % (currentPath, address)
+            f = currentPath + '/meter.jmx'
+            tree = ET.parse(f)
+            root = tree.getroot()
+            for child in root.iter('stringProp'):
+                if child.attrib['name'] == "ThreadGroup.num_threads":
+                    child.text = users
+                elif child.attrib['name'] == "ThreadGroup.ramp_time":
+                    child.text = freq
+                elif child.attrib['name'] == "HTTPSampler.domain":
+                    child.text = address
+                elif child.attrib['name'] == "HTTPSampler.port":
+                    child.text = '80'
+                elif child.attrib['name'] == "filename":
+                    child.text = currentPath + '/' + address + '.xml'
+                else:
+                    continue
+            tree.write(f)
+            os.system("ps -ef|grep jmeter | awk '$8!=\"grep\"{system(\"kill -9 \" $2)}'")
+            os.system('jmeter -n -t %s &' % f)
+            os.system("ps -ef|grep sync_meter_result | awk '$8!=\"grep\"{system(\"kill -9 \" $2)}'")
+            os.system('python %s/%s %s &' % (currentPath, 'sync_meter_result.py', address))
             return '{"ret": "success"}'
+            #return '{"ret": %s}' % global_meter_result
+
+#    @http.route('/action/restart', type='http', auth="none")
+#    def restart(self, s_action=None, **kw):
+#        if request.httprequest.method == 'POST':
+#            users = kw.get('users')
+#            freq = kw.get('freq')
+#            address = kw.get('address')
+#            _logger.debug('restart:{0}, {1}, {2}'.format(users, freq, address))
+#            currentPath = os.path.dirname(os.path.realpath(__file__))
+#            for i in range(len(users)):
+#                f = currentPath + '/meter.jmx'
+#                tree = ET.parse(f)
+#                root = tree.getroot()
+#                for child in root.iter('stringProp'):
+#                    if child.attrib['name'] == "ThreadGroup.num_threads":
+#                        child.text = users
+#                    elif child.attrib['name'] == "ThreadGroup.ramp_time":
+#                        child.text = freq
+#                    elif child.attrib['name'] == "HTTPSampler.domain":
+#                        child.text = address
+#                    elif child.attrib['name'] == "HTTPSampler.port":
+#                        child.text = '80'
+#                    elif child.attrib['name'] == "filename":
+#                        child.text = currentPath + '/result%s.xml' % i
+#                    else:
+#                        continue
+#                tree.write(currentPath + '/meter%s.jmx' % i)
+#            os.system("ps -ef|grep jmeter | awk '$8!=\"grep\"{system(\"kill -9 \" $2)}'")
+#            for i in range(len(users)):
+#                configfile = currentPath + '/meter%s.jmx' % i
+#                os.system('jmeter -n -t %s &' % configfile)
+#            return '{"ret": "success"}'
     
     @http.route('/action/turnover', type='http', auth="none")
     def turnover(self, s_action=None, **kw):
@@ -39,404 +111,14 @@ class Meter(http.Controller):
 
     @http.route('/api/meter', type='http', auth="none")
     def meter(self, s_action=None, **kw):
-        return '{"stats":[{"timestamp":"2016-05-06T07:19:55.428728329Z","meter":4721689099007},{"timestamp":"2016-05-06T07:19:56.428867426Z","meter":4721743003302},{"timestamp":"2016-05-06T07:19:57.42949298Z","meter":4721768817321},{"timestamp":"2016-05-06T07:19:58.42888513Z","meter":4721796745933},{"timestamp":"2016-05-06T07:19:59.429039054Z","meter":4721814730548},{"timestamp":"2016-05-06T07:20:00.428861884Z","meter":4721876802794},{"timestamp":"2016-05-06T07:20:01.428930738Z","meter":4721903980568},{"timestamp":"2016-05-06T07:20:02.429934484Z","meter":4721945474876},{"timestamp":"2016-05-06T07:20:03.430606722Z","meter":4721963890654},{"timestamp":"2016-05-06T07:20:04.429663407Z","meter":4722037515389},{"timestamp":"2016-05-06T07:20:05.429392727Z","meter":4722142804431},{"timestamp":"2016-05-06T07:20:06.429327254Z","meter":4722221509834},{"timestamp":"2016-05-06T07:20:07.428854047Z","meter":4722248575269},{"timestamp":"2016-05-06T07:20:08.428908935Z","meter":4722277707092},{"timestamp":"2016-05-06T07:20:09.42903499Z","meter":4722296677964},{"timestamp":"2016-05-06T07:20:10.428799524Z","meter":4722370699752},{"timestamp":"2016-05-06T07:20:11.429701653Z","meter":4722400254373},{"timestamp":"2016-05-06T07:20:12.428844971Z","meter":4722425289375},{"timestamp":"2016-05-06T07:20:13.430526156Z","meter":4722444983272},{"timestamp":"2016-05-06T07:20:14.428752629Z","meter":4722530478075},{"timestamp":"2016-05-06T07:20:15.428788053Z","meter":4722634122262},{"timestamp":"2016-05-06T07:20:16.4295692Z","meter":4722700495558},{"timestamp":"2016-05-06T07:20:17.429962887Z","meter":4722726816259},{"timestamp":"2016-05-06T07:20:18.44218328Z","meter":4722762790825},{"timestamp":"2016-05-06T07:20:19.428799528Z","meter":4722788968228},{"timestamp":"2016-05-06T07:20:20.428893455Z","meter":4722849226678},{"timestamp":"2016-05-06T07:20:21.429916223Z","meter":4722864488030},{"timestamp":"2016-05-06T07:20:22.428878196Z","meter":4722888124701},{"timestamp":"2016-05-06T07:20:23.428927323Z","meter":4722906750872},{"timestamp":"2016-05-06T07:20:24.428892831Z","meter":4722984775776},{"timestamp":"2016-05-06T07:20:25.42867125Z","meter":4723107117096},{"timestamp":"2016-05-06T07:20:26.429751694Z","meter":4723181241970},{"timestamp":"2016-05-06T07:20:27.429861503Z","meter":4723202450741},{"timestamp":"2016-05-06T07:20:28.429665119Z","meter":4723230141249},{"timestamp":"2016-05-06T07:20:29.428985781Z","meter":4723252133101},{"timestamp":"2016-05-06T07:20:30.429092549Z","meter":4723307708746},{"timestamp":"2016-05-06T07:20:31.428915113Z","meter":4723328571150},{"timestamp":"2016-05-06T07:20:32.429160207Z","meter":4723344106582},{"timestamp":"2016-05-06T07:20:33.429799129Z","meter":4723361437893},{"timestamp":"2016-05-06T07:20:34.428824863Z","meter":4723474807236},{"timestamp":"2016-05-06T07:20:35.428820894Z","meter":4723592617238},{"timestamp":"2016-05-06T07:20:36.428918602Z","meter":4723686510662},{"timestamp":"2016-05-06T07:20:37.428855583Z","meter":4723747578227},{"timestamp":"2016-05-06T07:20:38.428808314Z","meter":4723796976193},{"timestamp":"2016-05-06T07:20:39.428789296Z","meter":4723849425105},{"timestamp":"2016-05-06T07:20:40.428823932Z","meter":4723955233293},{"timestamp":"2016-05-06T07:20:41.428910572Z","meter":4723990170909},{"timestamp":"2016-05-06T07:20:42.428955481Z","meter":4724055788286},{"timestamp":"2016-05-06T07:20:43.428882354Z","meter":4724088215670},{"timestamp":"2016-05-06T07:20:44.429637249Z","meter":4724193243082},{"timestamp":"2016-05-06T07:20:45.429442686Z","meter":4724339236486},{"timestamp":"2016-05-06T07:20:46.428935569Z","meter":4724434993171},{"timestamp":"2016-05-06T07:20:47.429742762Z","meter":4724476702744},{"timestamp":"2016-05-06T07:20:48.42980605Z","meter":4724535975599},{"timestamp":"2016-05-06T07:20:49.428825152Z","meter":4724580172868},{"timestamp":"2016-05-06T07:20:50.428940815Z","meter":4724672529483},{"timestamp":"2016-05-06T07:20:51.429055269Z","meter":4724716354788},{"timestamp":"2016-05-06T07:20:52.428890393Z","meter":4724769119283},{"timestamp":"2016-05-06T07:20:53.429002465Z","meter":4724826022615},{"timestamp":"2016-05-06T07:20:54.428712805Z","meter":4724945380208}]}'
+        return '''{"stats":[
+        {"timestamp":"2016-05-06T07:19:55.428728329Z","meter":{"cluster1":4721689099007,"cluster2":4721768817321}},
+        {"timestamp":"2016-05-06T07:19:56.428867426Z","meter":{"cluster1":4721743003302,"cluster2":4721796745933}},
+        {"timestamp":"2016-05-06T07:19:57.42949298Z","meter":{"cluster1":4721768817321,"cluster2":4721814730548}},
+        {"timestamp":"2016-05-06T07:19:58.42888513Z","meter":{"cluster1":4721796745933,"cluster2":4721876802794}},
+        {"timestamp":"2016-05-06T07:19:59.429039054Z","meter":{"cluster1":4721814730548,"cluster2":4721903980568}}
+        ]}'''
 
     @http.route('/api/model', type='http', auth="none")
     def model(self, s_action=None, **kw):
-        return '''{
-            "bounds" : {
-                "lowerRight" : {
-                    "x" : 1485.0,
-                    "y" : 1050.0
-                },
-                "upperLeft" : {
-                    "x" : 0.0,
-                    "y" : 0.0
-                }
-            },
-            "resourceId" : "canvas",
-            "stencil" : {
-                "id" : "BPMNDiagram"
-            },
-            "stencilset" : {
-                "namespace" : "http://b3mn.org/stencilset/bpmn2.0#",
-                "url" : "../editor/stencilsets/bpmn2.0/bpmn2.0.json"
-            },
-            "properties" : {
-                "process_id" : "vacationRequest",
-                "name" : "Vacation request",
-                "category" : "http://activiti.org/bpmn20"
-            },
-            "childShapes" : [
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 120.0,
-                            "y" : 186.0
-                        },
-                        "upperLeft" : {
-                            "x" : 90.0,
-                            "y" : 156.0
-                        }
-                    },
-                    "resourceId" : "request",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "StartNoneEvent"
-                    },
-                    "outgoing" : [ {
-                        "resourceId" : "flow1"
-                    } ]
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 172.0,
-                            "y" : 212.0
-                        },
-                        "upperLeft" : {
-                            "x" : 128.0,
-                            "y" : 212.0
-                        }
-                    },
-                    "resourceId" : "flow1",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "SequenceFlow"
-                    },
-                    "dockers" : [ {
-                        "x" : 15.0,
-                        "y" : 15.0
-                    }, {
-                        "x" : 77.0,
-                        "y" : 38.5
-                    } ],
-                    "outgoing" : [ {
-                        "resourceId" : "handleRequest"
-                    } ],
-                    "target" : {
-                        "resourceId" : "handleRequest"
-                    }
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 316.5,
-                            "y" : 209.5
-                        },
-                        "upperLeft" : {
-                            "x" : 162.5,
-                            "y" : 132.5
-                        }
-                    },
-                    "resourceId" : "handleRequest",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "UserTask"
-                    },
-                    "properties" : {
-                        "name" : "Handle vacation request"
-                    },
-                    "outgoing" : [ {
-                        "resourceId" : "flow2"
-                    } ]
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 172.0,
-                            "y" : 212.0
-                        },
-                        "upperLeft" : {
-                            "x" : 128.0,
-                            "y" : 212.0
-                        }
-                    },
-                    "resourceId" : "flow2",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "SequenceFlow"
-                    },
-                    "dockers" : [ {
-                        "x" : 77.0,
-                        "y" : 38.5
-                    }, {
-                        "x" : 16.0,
-                        "y" : 16.0
-                    } ],
-                    "outgoing" : [ {
-                        "resourceId" : "requestApprovedDecision"
-                    } ],
-                    "target" : {
-                        "resourceId" : "requestApprovedDecision"
-                    }
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 391.0,
-                            "y" : 187.5
-                        },
-                        "upperLeft" : {
-                            "x" : 359.0,
-                            "y" : 155.5
-                        }
-                    },
-                    "resourceId" : "requestApprovedDecision",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "ExclusiveGateway"
-                    },
-                    "properties" : {
-                        "name" : "Request approved?"
-                    },
-                    "outgoing" : [ {
-                        "resourceId" : "flow3"
-                    }, {
-                        "resourceId" : "flow5"
-                    } ]
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 172.0,
-                            "y" : 212.0
-                        },
-                        "upperLeft" : {
-                            "x" : 128.0,
-                            "y" : 212.0
-                        }
-                    },
-                    "resourceId" : "flow3",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "SequenceFlow"
-                    },
-                    "dockers" : [ {
-                        "x" : 16.0,
-                        "y" : 16.0
-                    }, {
-                        "x" : 375.0,
-                        "y" : 105.0
-                    }, {
-                        "x" : 70.5,
-                        "y" : 37.5
-                    } ],
-                    "outgoing" : [ {
-                        "resourceId" : "sendApprovalMail"
-                    } ],
-                    "target" : {
-                        "resourceId" : "sendApprovalMail"
-                    }
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 570.0,
-                            "y" : 142.5
-                        },
-                        "upperLeft" : {
-                            "x" : 429.0,
-                            "y" : 67.5
-                        }
-                    },
-                    "resourceId" : "sendApprovalMail",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "ManualTask"
-                    },
-                    "properties" : {
-                        "name" : "Send confirmation e-mail"
-                    },
-                    "outgoing" : [ {
-                        "resourceId" : "flow4"
-                    } ]
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 172.0,
-                            "y" : 212.0
-                        },
-                        "upperLeft" : {
-                            "x" : 128.0,
-                            "y" : 212.0
-                        }
-                    },
-                    "resourceId" : "flow4",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "SequenceFlow"
-                    },
-                    "dockers" : [ {
-                        "x" : 70.5,
-                        "y" : 37.5
-                    }, {
-                        "x" : 14.0,
-                        "y" : 14.0
-                    } ],
-                    "outgoing" : [ {
-                        "resourceId" : "theEnd1"
-                    } ],
-                    "target" : {
-                        "resourceId" : "theEnd1"
-                    }
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 644.0,
-                            "y" : 119.0
-                        },
-                        "upperLeft" : {
-                            "x" : 616.0,
-                            "y" : 91.0
-                        }
-                    },
-                    "resourceId" : "theEnd1",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "EndNoneEvent"
-                    },
-                    "outgoing" : []
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 172.0,
-                            "y" : 212.0
-                        },
-                        "upperLeft" : {
-                            "x" : 128.0,
-                            "y" : 212.0
-                        }
-                    },
-                    "resourceId" : "flow5",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "SequenceFlow"
-                    },
-                    "dockers" : [ {
-                        "x" : 16.0,
-                        "y" : 16.0
-                    }, {
-                        "x" : 375.0,
-                        "y" : 239.0
-                    }, {
-                        "x" : 69.5,
-                        "y" : 36.0
-                    } ],
-                    "outgoing" : [ {
-                        "resourceId" : "adjustVacationRequestTask"
-                    } ],
-                    "target" : {
-                        "resourceId" : "adjustVacationRequestTask"
-                    }
-                },
-                {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 570.0,
-                            "y" : 275.0
-                        },
-                        "upperLeft" : {
-                            "x" : 431.0,
-                            "y" : 203.0
-                        }
-                    },
-                    "resourceId" : "adjustVacationRequestTask",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "UserTask"
-                    },
-                    "properties" : {
-                        "name" : "Adjust vacation request"
-                    },
-                    "outgoing" : [ {
-                        "resourceId" : "flow7"
-                    }, {
-                        "resourceId" : "flow8"
-                    } ]
-                }, {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 172.0,
-                            "y" : 212.0
-                        },
-                        "upperLeft" : {
-                            "x" : 128.0,
-                            "y" : 212.0
-                        }
-                    },
-                    "resourceId" : "flow7",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "SequenceFlow"
-                    },
-                    "dockers" : [ {
-                        "x" : 69.5,
-                        "y" : 36.0
-                    }, {
-                        "x" : 500.0,
-                        "y" : 298.0
-                    }, {
-                        "x" : 239.0,
-                        "y" : 298.0
-                    }, {
-                        "x" : 77.0,
-                        "y" : 38.5
-                    } ],
-                    "outgoing" : [ {
-                        "resourceId" : "handleRequest"
-                    } ],
-                    "target" : {
-                        "resourceId" : "handleRequest"
-                    }
-                }, {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 644.0,
-                            "y" : 253.0
-                        },
-                        "upperLeft" : {
-                            "x" : 616.0,
-                            "y" : 225.0
-                        }
-                    },
-                    "resourceId" : "theEnd2",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "EndNoneEvent"
-                    },
-                    "outgoing" : []
-                }, {
-                    "bounds" : {
-                        "lowerRight" : {
-                            "x" : 172.0,
-                            "y" : 212.0
-                        },
-                        "upperLeft" : {
-                            "x" : 128.0,
-                            "y" : 212.0
-                        }
-                    },
-                    "resourceId" : "flow8",
-                    "childShapes" : [],
-                    "stencil" : {
-                        "id" : "SequenceFlow"
-                    },
-                    "dockers" : [ {
-                        "x" : 69.5,
-                        "y" : 36.0
-                    }, {
-                        "x" : 14.0,
-                        "y" : 14.0
-                    } ],
-                    "outgoing" : [ {
-                        "resourceId" : "theEnd2"
-                    } ],
-                    "target" : {
-                        "resourceId" : "theEnd2"
-                    }
-                } ]
-            }'''
+        return '{"resourceId":"canvas1","properties":{"name":"","documentation":"","process_id":"process","process_author":"","process_executable":"Yes","process_version":"","process_namespace":"http://www.activiti.org/processdef","executionlisteners":"","eventlisteners":"","dataproperties":""},"stencil":{"id":"BPMNDiagram"},"childShapes":[{"resourceId":"oryx_34DC689D-37A4-4C3C-AE17-A5DABC4B4127","properties":{"overrideid":"","name":"","documentation":"","formproperties":"","initiator":"","formkeydefinition":"","executionlisteners":""},"stencil":{"id":"StartNoneEvent"},"childShapes":[],"outgoing":[{"resourceId":"oryx_B9C0E12B-FC44-4FE2-946F-1E493F27CD8E"},{"resourceId":"oryx_1E93D0EC-E2ED-4A53-9AA7-FF27F5BABD8E"}],"bounds":{"lowerRight":{"x":227.5,"y":45},"upperLeft":{"x":197.5,"y":15}},"dockers":[]},{"resourceId":"oryx_B9C0E12B-FC44-4FE2-946F-1E493F27CD8E","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55"}],"bounds":{"lowerRight":{"x":203.41349805717107,"y":116.38909963381802},"upperLeft":{"x":147.3482206928289,"y":42.04840036618198}},"dockers":[{"x":15,"y":15},{"x":92,"y":33.5}],"target":{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55"}},{"resourceId":"oryx_1E93D0EC-E2ED-4A53-9AA7-FF27F5BABD8E","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245"}],"bounds":{"lowerRight":{"x":283.07059042913755,"y":116.41296787241336},"upperLeft":{"x":222.32003457086242,"y":42.02453212758664}},"dockers":[{"x":15,"y":15},{"x":85.50000000000001,"y":33}],"target":{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245"}},{"resourceId":"oryx_A2C1089D-0E33-4552-B3DE-1A49072E35F7","properties":{"overrideid":"","name":"cluster_shenzhen","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55","properties":{"overrideid":"","name":"az01--fusionsphere","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":"","looptype":"None","dataproperties":""},"stencil":{"id":"SubProcess"},"childShapes":[{"resourceId":"oryx_DD6F5A9E-AD94-47C3-8F21-4ACF6EDCF3DD","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":70,"y":61.5},"upperLeft":{"x":30,"y":21.5}},"dockers":[]},{"resourceId":"oryx_9742BA28-E1A5-4B01-8357-162C4F54A741","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":145,"y":61.5},"upperLeft":{"x":105,"y":21.5}},"dockers":[]}],"outgoing":[{"resourceId":"oryx_8F4C4BA3-6420-4BF0-B1A2-B2C5850E2EAB"}],"bounds":{"lowerRight":{"x":199,"y":101.5},"upperLeft":{"x":15,"y":34.5}},"dockers":[]},{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245","properties":{"overrideid":"","name":"az11--vcloud","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":"","looptype":"None","dataproperties":""},"stencil":{"id":"SubProcess"},"childShapes":[{"resourceId":"oryx_D34C6ADF-58F3-4012-856F-A3694C05D586","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":61,"y":61},"upperLeft":{"x":21,"y":21}},"dockers":[]},{"resourceId":"oryx_A991DA22-BC01-4E6B-BFE4-26E07A2C9DC0","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":145,"y":61},"upperLeft":{"x":105,"y":21}},"dockers":[]}],"outgoing":[{"resourceId":"oryx_FFA13E89-D8EA-42DD-A731-B2B15091F3F2"}],"bounds":{"lowerRight":{"x":381,"y":101},"upperLeft":{"x":210,"y":35}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":410,"y":195},"upperLeft":{"x":15,"y":82}},"dockers":[]},{"resourceId":"oryx_224A42F4-8664-4236-9BE2-26A7F73E01AE","properties":{"overrideid":"","name":"cluster_tokyo","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_7224FF2E-8113-487E-BF3C-6609473BD712","properties":{"overrideid":"","name":"az32--aws","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":"","looptype":"None","dataproperties":""},"stencil":{"id":"SubProcess"},"childShapes":[{"resourceId":"oryx_5B404C90-B3B7-467B-9C41-0914D0837F94","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":128,"y":60},"upperLeft":{"x":88,"y":20}},"dockers":[]}],"outgoing":[{"resourceId":"oryx_9D463149-F2A0-48BA-A8B6-1F27B550A531"}],"bounds":{"lowerRight":{"x":172,"y":105.5},"upperLeft":{"x":15,"y":37.5}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":603,"y":195.5},"upperLeft":{"x":420,"y":80.5}},"dockers":[]},{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"ParallelGateway"},"childShapes":[],"outgoing":[{"resourceId":"oryx_AA40CC8B-FA9A-4BA2-A253-CEA64F54982D"},{"resourceId":"oryx_553C58F1-CF81-49B8-BCE2-C2B3BD06D248"}],"bounds":{"lowerRight":{"x":330.4166717529297,"y":280},"upperLeft":{"x":290.4166717529297,"y":240}},"dockers":[]},{"resourceId":"oryx_8F4C4BA3-6420-4BF0-B1A2-B2C5850E2EAB","properties":{"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}],"bounds":{"lowerRight":{"x":297.77703100917876,"y":252.6208202868811},"upperLeft":{"x":179.53580080987868,"y":183.5901172131189}},"dockers":[{"x":92,"y":33.5},{"x":20,"y":20}],"target":{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}},{"resourceId":"oryx_FFA13E89-D8EA-42DD-A731-B2B15091F3F2","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}],"bounds":{"lowerRight":{"x":310.8380302890385,"y":239.64453835933426},"upperLeft":{"x":310.62747018493764,"y":183.8046803906657}},"dockers":[{"x":85.50000000000001,"y":33},{"x":20.5,"y":20.5}],"target":{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}},{"resourceId":"oryx_9D463149-F2A0-48BA-A8B6-1F27B550A531","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}],"bounds":{"lowerRight":{"x":449.3111814453417,"y":253.24661914584328},"upperLeft":{"x":324.45965824582044,"y":186.37838085415672}},"dockers":[{"x":78.5,"y":34},{"x":20.5,"y":20.5}],"target":{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}},{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799","properties":{"overrideid":"","name":"","documentation":"","executionlisteners":""},"stencil":{"id":"EndNoneEvent"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":260.4166717529297,"y":342},"upperLeft":{"x":232.4166717529297,"y":314}},"dockers":[]},{"resourceId":"oryx_8FA76418-B008-4272-A62D-D338E7BEE1B5","properties":{"overrideid":"","name":"","documentation":"","executionlisteners":""},"stencil":{"id":"EndNoneEvent"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":388.5833282470703,"y":342},"upperLeft":{"x":360.5833282470703,"y":314}},"dockers":[]},{"resourceId":"oryx_AA40CC8B-FA9A-4BA2-A253-CEA64F54982D","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799"}],"bounds":{"lowerRight":{"x":301.1555014813834,"y":317.78482180884686},"upperLeft":{"x":256.177842024476,"y":270.71517819115314}},"dockers":[{"x":20.5,"y":20.5},{"x":14,"y":14}],"target":{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799"}},{"resourceId":"oryx_553C58F1-CF81-49B8-BCE2-C2B3BD06D248","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"Association"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":366,"y":317},"upperLeft":{"x":321.08219182751776,"y":270.92696406502586}},"dockers":[{"x":20.5,"y":20.5},{"x":366,"y":317}]},{"resourceId":"oryx_B6FCDE7B-B394-44E8-B390-C1843F03028B","properties":{"overrideid":"","name":"","documentation":"","formproperties":"","initiator":"","formkeydefinition":"","executionlisteners":""},"stencil":{"id":"StartNoneEvent"},"childShapes":[],"outgoing":[{"resourceId":"oryx_AE06C02F-3C48-4CAE-90C6-9F34C57E6A5F"}],"bounds":{"lowerRight":{"x":526.5,"y":45},"upperLeft":{"x":496.5,"y":15}},"dockers":[]},{"resourceId":"oryx_AE06C02F-3C48-4CAE-90C6-9F34C57E6A5F","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_7224FF2E-8113-487E-BF3C-6609473BD712"}],"bounds":{"lowerRight":{"x":512.9367337597607,"y":117.64075934540261},"upperLeft":{"x":511.75076624023933,"y":45.296740654597365}},"dockers":[{"x":15,"y":15},{"x":78.5,"y":34}],"target":{"resourceId":"oryx_7224FF2E-8113-487E-BF3C-6609473BD712"}}],"bounds":{"lowerRight":{"x":1485,"y":1050},"upperLeft":{"x":0,"y":0}},"stencilset":{"url":"../stencilsets/bpmn2.0/bpmn2.0.json","namespace":"http://b3mn.org/stencilset/bpmn2.0#"},"ssextensions":[]}'

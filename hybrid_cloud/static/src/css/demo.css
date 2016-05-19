@@ -1,34 +1,58 @@
+body{
+	overflow-y:hidden;
+}
 .container {
     min-width: 1500px;
-    margin-top:10px
+    margin-top:10px;
 }
 table,td,th{
-	text-align:center;
+	text-align:center!important;
 	font-size:13px;
+	border:1px solid #515151!important;
 }
 table{
-	margin-bottom:60px;
+	margin-bottom:60px!important;
+	border-collapse:collapse!important;
 }
 table img{
 	width:50px;
 	height:35px;
-	margin-right:5px;
+	margin:0 3px!important;
 }
 th{
 	font-weight:400;
 	line-height:30px;
 }
+th,td,input{
+	height:34px;
+}
+input{
+	height:30px;
+	padding-left:10px;
+	border:1px solid #ccc;
+   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+input:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
 .title{
-	margin:10px 0 20px 0;
+	margin:15px 0 25px 0;
 }
 hr{
-	border-color:rgb(51,51,51);
+	border-color:rgb(51,51,51)!important;
 }
 .Application img{
 	width:50%;
 }
-.Throughput,.Application img{
-	margin-bottom:30px;
+.Throughput,{
+	margin-bottom:5px;
 }
 .action{
 	width:25px;
@@ -40,6 +64,21 @@ hr{
 .title img{
 	margin-left:10px;
 }
-.refresh{
-	margin-right:50px;
+#loadingDiv{
+	display:none;
+	z-index:999;
+	position:absolute;
+	width:100%;
+	height:100%;
+	top:0;
+	bottom:0;
+	background:rgba(51,51,51,0.8);
+}
+#loadingDiv img{
+    position:absolute;
+    top:50%;
+    left:50%;
+    width:62px;
+    height:62px;
+    margin:-31px 0 0 -31px;
 }

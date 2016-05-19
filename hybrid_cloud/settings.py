@@ -1,6 +1,6 @@
-OS_USERNAME='cloud_admin'
-OS_PASSWORD='FusionSphere123'
-OS_TENANT_NAME='admin'
+OS_USERNAME='chenyujie'
+OS_PASSWORD='cnp200@HW'
+OS_TENANT_NAME='chenyujie'
 
 OPENSTACK_KEYSTONE_DEFAULT_ROLE = "admin"
 OPENSTACK_DEFAULT_REGION = "cloud.hybrid"

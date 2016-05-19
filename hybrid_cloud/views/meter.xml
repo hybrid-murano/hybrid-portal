@@ -30,11 +30,12 @@
 <body>
     <div class="container">
              <div class="row">
-                   <div class="col-md-4">
-                         <div class="title">Meter Parameter
-                           <img id="restart" class="action pull-right" src="/hybrid_cloud/static/img/system-reboot-md.png"/>
+                   <div class="col-md-5">
+                         <div class="title">Meter Parameters
+                           <!-- <img id="restart" class="action pull-right" src="/hybrid_cloud/static/img/system-reboot-md.png"/> -->
                          </div> 
-                         <table width="100%" border="1" cellpadding="0" cellspacing="0">
+                         <div id="meter" class="frontend"></div>
+                         <!-- <table>
                            <tr>                                
                                 <th>Number of Users</th>
                                 <th>Request Period</th>
@@ -45,34 +46,37 @@
                                 <td><input type="text" id="freq" value="0.1" /></td>
                                 <td><input type="text" id="address" value="emall.joinedcloud.com" /></td>
                            </tr>
-                        </table>
+                        </table> -->
                     </div>
-                   <div class="col-md-7 col-md-offset-1">
+                   <div class="col-md-6 col-md-offset-1">
+                        <div class="title">Throughput</div>
                         <div class="Throughput" id='throughput'></div>
                    </div>
              </div>
              <hr/>
              <div class="row">
-                   <div class="col-md-4">
-                        <div class="frontend">
+                   <div class="col-md-5">
+                        <div class="frontend" >
                             <div class="title">Frontend Docker Status</div>
-                            <div class="frontend" id="frontend"></div>
+                            <div class="frontend" id="frontend" ></div>
                         </div>
+
                         <div class="backend">
                             <div class="title">Backend VM Status
-                              <img id="turnover" class="action pull-right refresh" src="/hybrid_cloud/static/img/Refresh.png"/>
+                              <img id="turnover" class="action pull-right" src="/hybrid_cloud/static/img/Refresh.png" title="Turn Over" />
                             </div>
                             <div class="backend" id="backend"></div>
                         </div>                                                                    
                    </div>
-                   <div class="col-md-7 col-md-offset-1">
+                   <div class="col-md-6 col-md-offset-1">
                         <h5>Application Topo</h5>
                         <div class="Application">
-                            <div id="detail" style="overflow:auto;height:500px;width:800px;border:0px"></div>
+                            <div id="detail" style="overflow:auto;height:500px;width:850px;border:0px"></div>
                         </div>
                    </div>
              </div>
          </div>
+         <div id="loadingDiv"><img src="/hybrid_cloud/static/img/loading.gif"/></div>
 </body>     
 </html>
 
