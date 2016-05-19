@@ -947,7 +947,12 @@ ORCHESTRATOR.model = {
     "id" : "StartNoneEvent",
     "title" : "Start event",
     "description" : "A start event without a specific trigger",
-    "raphael" : function(paper) { paper.setStart(); paper.circle(16,16,15).attr({fill:'white'}).data('bound',true); paper.text(16,40,'').attr({'font-size':11}); return paper.setFinish(); },
+    "raphael" : function(paper) {
+    	paper.setStart();
+    	paper.circle(16,16,16).attr({'stroke':'none','fill':'white'}).data('bound',true);
+		paper.image('/hybrid_cloud/static/img/lb.png',0,0,32,32);
+    	paper.text(16,40,'').attr({'font-size':11});
+    	return paper.setFinish(); },
     "view" : "startevent/none.svg",
     "icon" : "startevent/none.png",
     "groups" : [ "Start Events" ],
@@ -1009,14 +1014,9 @@ ORCHESTRATOR.model = {
     "description" : "A manual task assigned to a specific person",
     "raphael": function(paper) {
 		 paper.setStart();
-		 paper.rect(0,0,100,80,10).attr({fill:'#ffffcc'}).data('resize','vertical horizontal').data('bound',true);
+		 paper.rect(0,0,100,80,0).data('resize','vertical horizontal').data('bound',true);
 		 text_frame = paper.rect(1,1,94,79,10).attr({'stroke':'none','stroke-width':0}).data('anchors','bottom top right left');
 		 paper.text(50,40,'').attr({'font-size':12}).data('align','middle center').data('fittoelem',text_frame).data('id','text_name');
-		 paper.path('m9.56783,28.167l19.10017,0l0,-6.5387c0,0 -1.8503,-3.26977 -5.61751,-4.31322l-7.33615,0c-3.50311,1.11274 -6.21234,4.79988 -6.21234,4.79988l0.06583,6.05203z').data('transform','s0.7,0.7,13,10').attr({fill:'#F4F6F7'}).data('anchors','top left');
-		 paper.path('m13.86245,24.68854l0,3.33905').data('transform','s0.7,0.7,13,10').data('anchors','top left');
-		 paper.path('m24.96582,24.68854l0,3.33905').data('transform','s0.7,0.7,13,10').data('anchors','top left');
-		 paper.circle(19.41572,12.93175,4.29621).data('transform','s0.7,0.7,13,10').attr({fill:'#000000'}).data('anchors','top left');
-		 paper.path('m15.48275,13.90591c0,0 2.23178,-2.02513 4.26369,-1.50842s3.66728,-0.57849 3.66728,-0.57849c0.19827,1.40908 0.03331,3.13036 -1.15634,4.66132c0,0 0.85892,0.62607 0.85892,1.25214s0.09914,1.56518 -0.7931,2.50429s-4.36204,1.04345 -5.35341,0s-0.99137,-1.53012 -0.99137,-2.22631s0.46238,-1.04345 0.99137,-1.60024c-0.85892,-0.48667 -1.98195,-1.98256 -1.48706,-2.50429z').data('transform','s0.7,0.7,13,10').attr({fill:'#F0EFF0'}).data('anchors','top left');
 		 return paper.setFinish(); },
     "minimumSize" : {width:50, height:40},
     "magnets" : [
@@ -1190,7 +1190,7 @@ ORCHESTRATOR.model = {
     	 text_frame = paper.rect(0,0,190,160,10).attr({stroke:'none','stroke-width':0}).data('anchors','bottom top right left');
     	 paper.text(8,10,'').attr({'font-size':12}).data('align','top left').data('fittoelem',text_frame).data('anchors','top left').data('id','text_name');
     	 return paper.setFinish(); },
-	"minimumSize" : {width:120, height:100},
+	"minimumSize" : {width:60, height:50},
 	"magnets" : [
 	         {cx:1,cy:50,anchors:"left"},{cx:1,cy:80,anchors:"left"},{cx:1,cy:110,anchors:"left"},
 	         {cx:70,cy:159,anchors:"bottom"},{cx:100,cy:159,anchors:"bottom"},{cx:130,cy:159,anchors:"bottom"},
@@ -1208,6 +1208,16 @@ ORCHESTRATOR.model = {
     "id" : "EventSubProcess",
     "title" : "Event sub process",
     "description" : "A event sub process scope",
+    "raphael": function(paper) {
+         paper.setStart();
+         paper.rect(0,0,200,160,10).attr({'stroke':'black','stroke-width':1, 'stroke-dasharray':'-', 'stroke-width':2}).data('resize','vertical horizontal').data('bound',true);
+         text_frame = paper.rect(0,0,100,20,0).attr({'stroke':'none','stroke-width':0});
+         paper.text(8,10,'').attr({'font-size':12}).data('align','top left').data('fittoelem',text_frame).data('id','text_name');
+         return paper.setFinish(); },
+    "minimumSize" : {width:80, height:60},
+    "magnets" : [
+         {cx:0,cy:80,anchors:"left"},{cx:100,cy:160,anchors:"bottom"},{cx:200,cy:80,anchors:"right"}, {cx:100,cy:0,anchors:"top"},{cx:100,cy:80,defaultAnchor:"yes"}
+    ],
     "view" : "activity/event.subprocess.svg",
     "icon" : "activity/event.subprocess.png",
     "groups" : [ "Structural" ],
@@ -1261,9 +1271,8 @@ ORCHESTRATOR.model = {
     "description" : "A parallel gateway",
     "raphael": function(paper) {
 		 paper.setStart();
-		 paper.polygone([0,16,16,0,32,16,16,32]).attr({fill:'white'}).data('bound',true);
-		 paper.path('M 6.75,16 L 25.75,16 M 16,6.75 L 16,25.75').attr({fill:'black','stroke-width':3});
-		 paper.text(26,26,'').data({'align':'left top'}).data('id','text_name');
+		 paper.rect(0,0,32,32).attr({'stroke':'none','fill':'white'}).data('bound',true);
+		 paper.image('/hybrid_cloud/static/img/vip.png',0,0,32,32);
 		 return paper.setFinish(); },
     "view" : "gateway/parallel.svg",
     "icon" : "gateway/parallel.png",
@@ -1293,11 +1302,8 @@ ORCHESTRATOR.model = {
     "description" : "An event gateway",
     "raphael": function(paper) {
 			 paper.setStart();
-			 paper.polygone([0,16,16,0,32,16,16,32]).attr({fill:'white'}).data('bound',true);
-			 paper.circle(16,16,10.4).attr({fill:'none','stroke-width':0.5});
-			 paper.circle(16,16,11.7).attr({fill:'none','stroke-width':0.5});
-			 paper.path('M 20.327514,22.344972 L 11.259248,22.344216 L 8.4577203,13.719549 L 15.794545,8.389969 L 23.130481,13.720774 L 20.327514,22.344972 z').attr({fill:'none','stroke-width':1.4});
-			 paper.text(26,26,'').data({'align':'left top'}).data('id','text_name');
+			 paper.rect(0,0,44,31).attr({'stroke':'none','stroke-width':0,'fill':'white'}).data('bound',true);
+			 paper.image('/hybrid_cloud/static/img/docker.png',0,0,44,31);
 			 return paper.setFinish(); },
     "view" : "gateway/eventbased.svg",
     "icon" : "gateway/eventbased.png",
@@ -1444,7 +1450,12 @@ ORCHESTRATOR.model = {
     "id" : "EndNoneEvent",
     "title" : "End event",
     "description" : "An end event without a specific trigger",
-    "raphael": function(paper) { paper.setStart(); paper.circle(16,16,14).attr({'stroke-width':3,fill:'white'}).data('bound',true); paper.text(16,40,'').attr({'font-size':11}).data('id','text_name'); return paper.setFinish(); },
+    "raphael": function(paper) {
+    	paper.setStart();
+    	paper.rect(0,0,32,32,0).attr({'stroke':'none','fill':'white'}).data('bound',true);
+		paper.image('/hybrid_cloud/static/img/vm.png',0,0,32,32);
+    	paper.text(16,40,'').attr({'font-size':11}).data('id','text_name');
+    	return paper.setFinish(); },
     "view" : "endevent/none.svg",
     "icon" : "endevent/none.png",
     "groups" : [ "End Events" ],
