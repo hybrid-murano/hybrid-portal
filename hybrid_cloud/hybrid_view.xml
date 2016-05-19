@@ -243,11 +243,11 @@
             <field name="arch" type="xml">
                 <tree string="Hybrid Clouds">
                     <field name="name"/>
-                        <field name="region"/>
-                        <field name="az"/>
-                        <field name="ak"/>
-                        <field name="sk"/>
-                        <!--<field name="endpoint"/>-->
+                    <field name="description"/>
+                    <field name="region"/>
+                    <field name="az"/>
+                    <field name="status"/>
+                    <!--<field name="endpoint"/>-->
                 </tree>
             </field>
         </record>

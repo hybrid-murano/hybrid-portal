@@ -68,12 +68,14 @@ class hybrid_cloud(osv.Model):
     _name = "hybrid.cloud"
     _description = "Hybrid Cloud"
     _columns = {
-        'name': fields.char("Cloud Tag", required=True),
+        'name': fields.char("Name", required=True),
+        'description': fields.char("Description", required=False),
         'region': fields.selection(regions, 'Region'),
         'az': fields.char("Available Zone", required=True),
         'ak': fields.char("Access Key", required=True),
         'sk': fields.char("Secret Key", required=True),
         'endpoint': fields.char("Endpoint", required=False),
+        'status': fields.char("Status", required=False),
     }
 
     def create(self, cr, uid, cloud, context=None):
