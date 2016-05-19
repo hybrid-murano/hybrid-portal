@@ -1,20 +1,20 @@
 if(!ORCHESTRATOR) {var ORCHESTRATOR = {};}
 ORCHESTRATOR.availablePlugins = [
-		 						{name:"ORYX.Plugins.SelectionFrame"},
-		 						{name:"ORYX.Plugins.DragDocker"},
-		 						{name:"ORYX.Plugins.AddDocker"},
-		 						{name:"ORYX.Plugins.Edit"},
-		 						{name:"ORYX.Plugins.Undo"},
-		 						{name:"ORYX.Plugins.Layouter.EdgeLayouter"},
-		 						{name:"ORYX.Plugins.Save"},
-		 						{name:"ORYX.Plugins.Properties"},
-		 						{name:"ORYX.Plugins.HighlightingSelectedShapes"},
-		 						{name:"ORYX.Plugins.ShapeHighlighting"},
-		 						{name:"ORYX.Plugins.ShapeRepository"},
-		 						{name:"ORYX.Plugins.PropertyWindow"},
-		 						{name:"ORYX.Plugins.CanvasResize"},
-		 						{name:"ORYX.Plugins.ToolBar"},
-		 						{name:"ORYX.Plugins.DragDropResize"}
+//		 						{name:"ORYX.Plugins.SelectionFrame"},
+//		 						{name:"ORYX.Plugins.DragDocker"},
+//		 						{name:"ORYX.Plugins.AddDocker"},
+//		 						{name:"ORYX.Plugins.Edit"},
+//		 						{name:"ORYX.Plugins.Undo"},
+//		 						{name:"ORYX.Plugins.Layouter.EdgeLayouter"},
+//		 						{name:"ORYX.Plugins.Save"},
+//		 						{name:"ORYX.Plugins.Properties"},
+//		 						{name:"ORYX.Plugins.HighlightingSelectedShapes"},
+//		 						{name:"ORYX.Plugins.ShapeHighlighting"},
+//		 						{name:"ORYX.Plugins.ShapeRepository"},
+//		 						{name:"ORYX.Plugins.PropertyWindow"},
+//		 						{name:"ORYX.Plugins.CanvasResize"},
+//		 						{name:"ORYX.Plugins.ToolBar"},
+//		 						{name:"ORYX.Plugins.DragDropResize"}
 					 		];
 
 ORCHESTRATOR.SERVICE_PATH			= "../service";	// 必须按引用者的相对路径设置，此处为相对于editor的设置
