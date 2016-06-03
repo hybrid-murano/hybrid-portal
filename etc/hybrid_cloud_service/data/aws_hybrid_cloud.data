@@ -1,0 +1,46 @@
+{
+    "AKIAJ3HTTPBMWMJUPN7A@ap-southeast-1@ap-southeast-1a": {
+        "ext_net_eips": {
+            "52.76.180.5": "eipalloc-f020fc95", 
+            "52.74.3.170": "eipalloc-9320fcf6", 
+            "52.76.232.183": "eipalloc-3021fd55"
+        }, 
+        "vpn": {
+            "eip_allocation_id": "eipalloc-c421fda1", 
+            "tunnel_interface_id": "eni-56c17f31", 
+            "eip_public_ip": "52.76.232.253", 
+            "api_interface_id": "eni-55c17f32", 
+            "api_ip": "172.28.128.254", 
+            "tunnel_ip": "172.28.48.254", 
+            "vm_id": "i-6f8bc2cb"
+        }, 
+        "vpc": {
+            "debug_subnet_cidr": "172.28.124.0/24", 
+            "igw_id": "igw-e3de7086", 
+            "tunnel_subnet_cidr": "172.28.48.0/20", 
+            "debug_subnet_id": "subnet-795b081c", 
+            "tunnel_subnet_id": "subnet-7a5b081f", 
+            "base_subnet_cidr": "172.28.0.0/20", 
+            "rtb_id": "rtb-73c38416", 
+            "vpc_cidr": "172.28.0.0/16", 
+            "vpc_id": "vpc-aa096fcf", 
+            "base_subnet_id": "subnet-785b081d", 
+            "api_subnet_cidr": "172.28.128.0/24", 
+            "api_subnet_id": "subnet-7b5b081e"
+        }, 
+        "cascading": {
+            "base_interface_id": "eni-6ec17f09", 
+            "base_ip": "172.28.0.12", 
+            "eip_public_ip": "52.76.232.202", 
+            "eip_allocation_id": "eipalloc-bb27fbde", 
+            "debug_ip": "172.28.124.12", 
+            "api_interface_id": "eni-6cc17f0b", 
+            "api_ip": "172.28.128.50", 
+            "tunnel_ip": "172.28.48.12", 
+            "vm_id": "i-a68bc202"
+        }, 
+        "horizon": {
+            "vm_id": "i-ce8ac36a"
+        }
+    }
+}
