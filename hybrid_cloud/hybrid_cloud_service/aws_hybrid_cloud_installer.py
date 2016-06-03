@@ -5,7 +5,7 @@ import aws_hybrid_cloud_data_handler as data_handler
 import logging
 logger = logging.getLogger(__name__)
 
-_install_conf = os.path.join("/home/hybrid_cloud_service/conf",
+_install_conf = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              'hybrid_cloud_install.conf')
 
 # _install_conf = os.path.join("D:\PycharmProjects\HybridCloudaaS\etc\hybrid_cloud_service\conf",
@@ -22,12 +22,14 @@ def _read_install_conf():
 
 
 def _write_install_conf():
-    install_conf = {"cascading_image": "hybrid-cloud-cascading_v0.1",
-                    "cascading_vm_type": "c3.xlarge",
-                    "vpn_image": "hybrid-cloud-vpn_v1.2",
-                    "vpn_vm_type": "t2.micro",
-                    "horizon_image": "hybrid-cloud-horizon_v0.1",
-                    "horizon_vm_type": "t2.micro"}
+    install_conf = {
+        "cascading_image": "hybrid-cloud-cascading_v0.4_b",
+        "cascading_vm_type": "c3.xlarge",
+        "vpn_image": "hybrid-cloud-vpn_v0.2",
+        "vpn_vm_type": "t2.micro",
+        "horizon_image": "hybrid-cloud-horizon_v0.2",
+        "horizon_vm_type": "t2.micro"
+    }
 
     with open(_install_conf, 'w+') as fd:
         fd.write(json.dumps(install_conf, indent=4))
