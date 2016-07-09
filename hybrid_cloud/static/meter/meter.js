@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var env_id = "ab961d8fc37c4ba080416d6b9ffee7ed"
+var env_id = "fd5498e0f06c483d9abeb0686edb9fda"
 var users = "50";
 var freq = "5";
 function getUsersVal(index){
@@ -29,19 +29,19 @@ function reStart(address,cluster){
   });
 }
 
-function scale_up(service_name){
+function scale_up(service_name, az){
 	if(service_name === ""){
 	return;
 	}
 	$("#loadingDiv").show();
-    $.getJSON('/api/scaleRcUp?env_id='+env_id+'&service_name='+service_name).complete(function(data){
+    $.getJSON('/api/scaleRcUp?env_id='+env_id+'&service_name='+service_name+'&az='+az).complete(function(data){
       $("#loadingDiv").hide();
       confirm(data.responseText);
     });
 }
-function scale_down(service_name){
+function scale_down(service_name, az){
     $("#loadingDiv").show();
-	$.getJSON('/api/scaleRcDown?env_id='+env_id+'&service_name='+service_name).complete(function(data){
+	$.getJSON('/api/scaleRcDown?env_id='+env_id+'&service_name='+service_name+'&az='+az).complete(function(data){
       $("#loadingDiv").hide();
       confirm(data.responseText);
     });
@@ -215,8 +215,6 @@ function drawThroughput(elementId, stats) {
 }
 
 // Refresh the stats on the page.
-var targets = [];
-var meters = [];
 function refresh() {
   getTopo(function(model){
     $("#detail").empty();
@@ -230,11 +228,13 @@ function refresh() {
       $('#frontend').text('No instance found');
       return;
     }
-    var titles = [ 'Cluster', 'Region', 'AZ', 'Count', 'Load', 'Action' ];
-    var titleTypes = [ 'string', 'string', 'string', 'number', 'string', 'string' ];
+    var titles = [ 'Cluster', 'Region', 'AZ', 'Count', 'Nodes', 'Load', 'Action' ];
+    var titleTypes = [ 'string', 'string', 'string', 'number', 'number', 'string', 'string' ];
     var sortIndex = 1;
     var data = [];
     var changed = false;
+    var targets = [];
+    var meters = [];
     for (var i = 0; i < frontend.length; i++) {
       var elements = [];
       var region = frontend[i].region;
@@ -245,22 +245,23 @@ function refresh() {
     	  var row = [];
           row.push(frontend[i].name);
           row.push(frontend[i].ip);
-          row.push('<input type="number" id="users'+i+'" value="50" style="width: 100px;" onChange="getUsersVal('+i+')" />');
-          row.push('<input type="text" id="freq'+i+'" value="5" style="width: 100px;"  onChange="getFreqVal('+i+')"/>');
+          row.push('<input type="number" id="users'+i+'" value="'+users+'" style="width: 100px;" onChange="getUsersVal('+i+')" />');
+          row.push('<input type="text" id="freq'+i+'" value="'+freq+'" style="width: 100px;"  onChange="getFreqVal('+i+')"/>');
           row.push('<img id="restart" title="Restart" class="action" onclick="reStart(\''+frontend[i].ip+'\',\''+frontend[i].name+'\')" src="/hybrid_cloud/static/img/system-reboot-md.png"/>');
     	  meters.push(row);
     	  targets.push(ip);
       }
 
-      var cloudIcos ={"fusionsphere":"fs-icon.png","hws":"hws-icon.png","aws":"aws-icon.png","otc":"otc-icon.png","openstack":"openstack-icon.png"};
+      var cloudIcos ={"fusionsphere":"fs-icon.png","hws":"hws-icon.png","aws":"aws-icon.png","otc":"otc-icon.png","openstack":"openstack-icon.png","vcloud":"vcloud-icon.png"};
       var regions = frontend[i].region.split("--");
       var imgName = cloudIcos[regions[1]];
       var regionStr = '<img  src="/hybrid_cloud/static/img/'+imgName+'"/>'+regions[0];
       elements.push(regionStr);
       elements.push(frontend[i].az);
+      elements.push(frontend[i].instance);
       elements.push(frontend[i].nodeCount);
       elements.push(frontend[i].load);
-      elements.push('<img class="action" title="Scale Up" onclick="scale_up(\''+frontend[i].scale_service+'\')" src="/hybrid_cloud/static/img/green-arrows-md.png"/><img class="action" title="Scale Down" onclick="scale_down(\''+frontend[i].scale_service+'\')" src="/hybrid_cloud/static/img/green-inward-arrows-md.png"/>')
+      elements.push('<img class="action" title="Scale Up" onclick="scale_up(\''+frontend[i].scale_service+'\', \''+frontend[i].az+'\')" src="/hybrid_cloud/static/img/green-arrows-md.png"/><img class="action" title="Scale Down" onclick="scale_down(\''+frontend[i].scale_service+'\', \''+frontend[i].az+'\')" src="/hybrid_cloud/static/img/green-inward-arrows-md.png"/>')
       data.push(elements);
       changed = true;
     }
@@ -278,12 +279,16 @@ function refresh() {
     var data = [];
     for (var i = 0; i < backend.length; i++) {
       var elements = [];
+      var cloudIcos ={"fusionsphere":"fs-icon.png","hws":"hws-icon.png","aws":"aws-icon.png","otc":"otc-icon.png","openstack":"openstack-icon.png","vcloud":"vcloud-icon.png"};
+      var regions = backend[i].region.split("--");
+      var imgName = cloudIcos[regions[1]];
+      var regionStr = '<img  src="/hybrid_cloud/static/img/'+imgName+'"/>'+regions[0];
       elements.push(backend[i].inst);
-      elements.push(backend[i].region);
+      elements.push(regionStr);
       elements.push(backend[i].az);
       elements.push(backend[i].status);
       if(backend[i].status === "shutoff"){
-        elements.push('<img class="action" title="Start" onclick="power_on(\''+backend[i].instance_id+'\')" src="/hybrid_cloud/static/img/system-start-md.jpg"/>')
+        elements.push('<img class="action" title="Start" onclick="power_on(\''+backend[i].instance_id+'\')" src="/hybrid_cloud/static/img/system-start-md.png"/>')
       } else{
         elements.push('<img class="action" title="Shutdown" onclick="power_off(\''+backend[i].instance_id+'\')" src="/hybrid_cloud/static/img/system-shutdown-md.png"/>')
       }
@@ -301,6 +306,20 @@ function refresh() {
 // Executed when the page finishes loading.
 function meter() {
   window.charts = {};
+  var titles = [ 'Cluster', 'Region', 'AZ', 'Count', 'Load', 'Action' ];
+  var titleTypes = [ 'string', 'string', 'string', 'number', 'string', 'string' ];
+  var sortIndex = 1;
+  var data = [];
+  drawTable(titles, titleTypes, data, 'frontend', 0, sortIndex);
+  var titles = [ 'Instance', 'Region', 'AZ', 'Status', 'Action' ];
+  var titleTypes = [ 'string', 'string', 'string', 'string', 'string' ];
+  var sortIndex = 2;
+  var data = [];
+  drawTable(titles, titleTypes, data, 'backend', 0, sortIndex);
+  var titles = [ 'Cluster', 'Target', 'Number of Users', 'Request Period', 'Action' ];
+  var titleTypes = [ 'string', 'string', 'string', 'string', 'string' ];
+  var data = [];
+  drawTable(titles, titleTypes, data, 'meter', 0, sortIndex);
   refresh();
   /*$("#restart").click(function(){
     $.post("/action/restart", { users:$("#users").val(), freq:$("#freq").val(), address:$("#address").val() } );
