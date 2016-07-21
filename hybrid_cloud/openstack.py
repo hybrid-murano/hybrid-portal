@@ -906,33 +906,50 @@ def authenticate(request=None, username=None, password=None, user_domain_name=No
 _ISO8601_TIME_FORMAT_SUBSECOND = '%Y-%m-%dT%H:%M:%S.%f'
 
 
-def getCpu(masternode_ip, mininodes_ip):
-    loads = []
+def getCount(masternode_ip, mininodes_ip):
+    instance = 0
     try:
-        for ip in mininodes_ip:
-            r = os.popen('curl --connect-timeout 20 %s:8080/api/v1/proxy/nodes/%s:4194/api/v1.0/containers/ 2>/dev/null' % (masternode_ip, ip)).read()
-            cpu = json.loads(r)
-            t = cpu['stats'][0]['timestamp']
-            mch = json.loads(os.popen('curl --connect-timeout 20 %s:8080/api/v1/proxy/nodes/%s:4194/api/v1.0/machine 2>/dev/null' % (masternode_ip, ip)).read())
-            if "has_cpu" not in cpu["spec"]:
-                loads.append(None)
-            stl = len(cpu['stats'])
-            i=1
-            total = 0.0
-            cpuUsage = 0.0
-            while i < stl:
-                cur = cpu['stats'][i]
-                pre = cpu['stats'][i-1]
-                rawUsage = cur['cpu']['usage']['total'] - pre['cpu']['usage']['total']
-                interval = datetime.strptime(cur['timestamp'][:-4], _ISO8601_TIME_FORMAT_SUBSECOND) - datetime.strptime(pre['timestamp'][:-4], _ISO8601_TIME_FORMAT_SUBSECOND)
-                interval = interval.seconds*1000000000 + interval.microseconds*1000
-                cpuUsage = ((rawUsage*1.0 / interval) / mch['num_cores']) * 100
-                if cpuUsage > 100:
-                    cpuUsage = 100.0
-                total += cpuUsage
-                i += 1
-            #print cpuUsage
-            loads.append(total / (stl-1))
+        r = os.popen('curl --connect-timeout 3 %s:8080/api/v1/namespaces/default/pods 2>/dev/null' % (masternode_ip)).read()
+        pods = json.loads(r)
+        for pod in pods['items']:
+            if pod['spec']['nodeName'] in mininodes_ip:
+                instance = instance + 1
+        return instance
+    except Exception:
+        return instance
+
+import eventlet
+def getCpu(masternode_ip, mininodes_ip):
+    def getOneCpu(ip):
+        _logger.info('process {0}-{1}'.format(masternode_ip, ip))
+    #        for ip in mininodes_ip:
+        r = os.popen('curl --connect-timeout 3 %s:8080/api/v1/proxy/nodes/%s:4194/api/v1.0/containers/ 2>/dev/null' % (masternode_ip, ip)).read()
+        cpu = json.loads(r)
+        t = cpu['stats'][0]['timestamp']
+        mch = json.loads(os.popen('curl --connect-timeout 3 %s:8080/api/v1/proxy/nodes/%s:4194/api/v1.0/machine 2>/dev/null' % (masternode_ip, ip)).read())
+        if "has_cpu" not in cpu["spec"]:
+            loads.append(None)
+        stl = len(cpu['stats'])
+        i=1
+        total = 0.0
+        cpuUsage = 0.0
+        while i < stl:
+            cur = cpu['stats'][i]
+            pre = cpu['stats'][i-1]
+            rawUsage = cur['cpu']['usage']['total'] - pre['cpu']['usage']['total']
+            interval = datetime.strptime(cur['timestamp'][:-4], _ISO8601_TIME_FORMAT_SUBSECOND) - datetime.strptime(pre['timestamp'][:-4], _ISO8601_TIME_FORMAT_SUBSECOND)
+            interval = interval.seconds*1000000000 + interval.microseconds*1000
+            cpuUsage = ((rawUsage*1.0 / interval) / mch['num_cores']) * 100
+            if cpuUsage > 100:
+                cpuUsage = 100.0
+            total += cpuUsage
+            i += 1
+        return total / (stl-1)
+        
+    try:
+        pool = eventlet.GreenPool()
+        loads = list(pool.imap(getOneCpu, mininodes_ip))
+
         count = 0
         cpu_load = 0.0
         for load in loads:
@@ -947,7 +964,19 @@ def getCpu(masternode_ip, mininodes_ip):
 class Openstack(http.Controller):
     global_backend = {}  # {"instance_id": {backend}}
     global_meter_result = {}  # {stats:[timestamp: [{cluster: meter}]]]}
-    global_cluster = []  # {cluter: target}
+    global_cluster = ['']  # {cluter: target}
+    #global_users = 5
+    #global_freq = 5
+    #global_throughput = 10
+
+    fip_shenzhen = ''
+    ip_shenzhen = ''
+    dockers = [{'az':'', 'docker':['','']},{'az':'', 'docker':['','']}]
+    loads = {}
+    vip = ''
+    vm_ip = ['', '', '...']
+    vm_az = ['', '', '...']
+    cur_model = 'model2d3v'
 
     @classmethod
     def web_nova_client(cls, request):
@@ -992,6 +1021,73 @@ class Openstack(http.Controller):
         client = muranoclient(request)
         return client
 
+    @http.route('/api/get_cpu', type='http', auth='none')
+    def get_cpu(self, **kwargs):
+        nova_client = self.web_nova_client(request)
+        murano_client = self.web_murano_client(request)
+        env_id = kwargs["env_id"]
+        env = murano_client.environments.get(env_id)
+        services = env.services
+        # tasks = []
+        frontend = []
+        backend = []
+        cluster = []
+        # if self.frontends.get(env_id, None) is not None:
+        #     return json.dumps({"frontend": self.frontends[env_id],
+        #                        "backend": self.backends[env_id]})
+        dockers = []
+        for service in services:
+            if service.get("masterNode", None) is not None:
+                masternode_ip = service["masterNode"]["instance"]["floatingIpAddress"]
+                for az in service["availabilityZones"]:
+                    kubernetesCluster = service["?"]["id"]
+                    scale_service = ""
+                    for s in services:
+                        if s.get("autoscale", None) is not None and s.get("kubernetesCluster", None)==kubernetesCluster:
+                            scale_service = s["name"]
+                    # action_id = "%s_getCpuLoad" % service["?"]["id"]
+                    # task_id = ""
+                    # task_tries = 40
+                    # while task_tries > 0:
+                    #     try:
+                    #         task_id = murano_client.actions.call(env_id, action_id)
+                    #         break
+                    #     except Exception:
+                    #         sleep(5)
+                    #         task_tries -= 1
+                    self.fip_shenzhen = service["masterNode"]["instance"]["floatingIpAddress"]
+                    self.ip_shenzhen = service["masterNode"]["instance"]["ipAddresses"][0]
+#cyj                    floatingIpAddress = service["masterNode"]["instance"]["ipAddresses"][0]
+                    mininodes = service["minionNodes"]
+                    mininodes_ip = []
+                    nodeCount = 0
+                    instance = 0
+                    docker = []
+                    for mininode in mininodes:
+                        if mininode["instance"]["availabilityZone"] == az:
+                            if len(mininode["instance"]["ipAddresses"]) > 0:
+                                ip = mininode["instance"]["ipAddresses"][0]
+                                mininodes_ip.append(ip)
+                                if nodeCount < 2:
+                                    docker.append(ip)
+                                nodeCount = nodeCount + 1
+                    docker.append('')
+                    docker.append('')
+                    dockers.append({'az':az,'docker':docker})
+                    instance = getCount(masternode_ip, mininodes_ip)
+                    load = getCpu(masternode_ip, mininodes_ip)
+                    self.loads[scale_service] = self.loads.get(scale_service, {})
+                    self.loads[scale_service][az] = load
+                    frontend.append({"instance": instance,
+                                     "nodeCount": nodeCount,
+                                     "load": load,
+                                     "az": az.split(".")[0],
+                                     "region": az.split(".")[1],
+                                     "scale_service": scale_service,
+                                     "name": service["name"],
+                                     "ip": masternode_ip})
+        return json.dumps({"valid": True, "frontend": frontend})
+
     @http.route('/api/get_status', type='http', auth='none')
     def get_status(self, **kwargs):
         nova_client = self.web_nova_client(request)
@@ -1006,45 +1102,103 @@ class Openstack(http.Controller):
         # if self.frontends.get(env_id, None) is not None:
         #     return json.dumps({"frontend": self.frontends[env_id],
         #                        "backend": self.backends[env_id]})
-
+        dockers = []
         for service in services:
+#            if service.get("lb_id", None) is not None:
+#                self.cur_model = 'model1v1v'
+#                self.fip_shenzhen = service.get("eip", "")
+#                self.global_cluster = [ env.name ]
+#            if service["?"]["type"] == "io.murano.apps.huawei.EmallBackend":
+#                az = service["instance"]["availabilityZone"]
+#                backend.append({"inst": service["name"],
+#                    "region": az.split(".")[1],
+#                    "az": az.split(".")[0],
+#                    "status": "active",
+#                    "instance_id": service["instance"]["?"]["id"]})
+#            if service.get("emallNodes", None) is not None:
+#                docker = []
+#                az = service["emallNodes"][0]["availabilityZone"]
+#                nodeCount = 0
+#                for node in service["emallNodes"]:
+#                    docker.append(node["ipAddresses"][0])
+#                    nodeCount = nodeCount 
+#                docker.append('')
+#                docker.append('')
+#                dockers.append({'az':az,'docker':docker})
+#                frontend.append({"instance": 0,
+#                                 "nodeCount": nodeCount,
+#                                 "az": az.split(".")[0],
+#                                 "region": az.split(".")[1],
+#                                 "scale_service": self.global_cluster[0],
+#                                 "name": service["name"]
+#                                 })
             if service.get("masterNode", None) is not None:
-                nodeCount = service["nodeCount"]
-                az = service["availabilityZones"][0]
-                kubernetesCluster = service["?"]["id"]
-                scale_service = ""
-                for s in services:
-                    if s.get("autoscale", None) is not None and s.get("kubernetesCluster", None)==kubernetesCluster:
-                        scale_service = s["name"]
-                # action_id = "%s_getCpuLoad" % service["?"]["id"]
-                # task_id = ""
-                # task_tries = 40
-                # while task_tries > 0:
-                #     try:
-                #         task_id = murano_client.actions.call(env_id, action_id)
-                #         break
-                #     except Exception:
-                #         sleep(5)
-                #         task_tries -= 1
-                masternode_ip = service["masterNode"]["instance"]["ipAddresses"][1]
-                mininodes = service["minionNodes"]
-                mininodes_ip = []
-                for mininode in mininodes:
-                    mininodes_ip.append(mininode["instance"]["ipAddresses"][0])
-                load = getCpu(masternode_ip, mininodes_ip)
-                frontend.append({"nodeCount": nodeCount,
-                                 "load": load,
-                                 "az": az.split(".")[0],
-                                 "region": az.split(".")[1],
-                                 "scale_service": scale_service,
-                                 "name": service["name"],
-                                 "ip": masternode_ip})
+                self.cur_model = 'model2d3v'
+                masternode_ip = service["masterNode"]["instance"]["floatingIpAddress"]
+                for az in service["availabilityZones"]:
+                    kubernetesCluster = service["?"]["id"]
+                    scale_service = ""
+                    for s in services:
+                        if s.get("autoscale", None) is not None and s.get("kubernetesCluster", None)==kubernetesCluster:
+                            scale_service = s["name"]
+                    # action_id = "%s_getCpuLoad" % service["?"]["id"]
+                    # task_id = ""
+                    # task_tries = 40
+                    # while task_tries > 0:
+                    #     try:
+                    #         task_id = murano_client.actions.call(env_id, action_id)
+                    #         break
+                    #     except Exception:
+                    #         sleep(5)
+                    #         task_tries -= 1
+                    self.fip_shenzhen = service["masterNode"]["instance"]["floatingIpAddress"]
+                    self.ip_shenzhen = service["masterNode"]["instance"]["ipAddresses"][0]
+#cyj                    floatingIpAddress = service["masterNode"]["instance"]["ipAddresses"][0]
+                    mininodes = service["minionNodes"]
+                    mininodes_ip = []
+                    nodeCount = 0
+                    instance = 0
+                    docker = []
+                    for mininode in mininodes:
+                        if mininode["instance"]["availabilityZone"] == az:
+                            if len(mininode["instance"]["ipAddresses"]) > 0:
+                                ip = mininode["instance"]["ipAddresses"][0]
+                                mininodes_ip.append(ip)
+                                if nodeCount < 2:
+                                    docker.append(ip)
+                                nodeCount = nodeCount + 1
+                    docker.append('')
+                    docker.append('')
+                    dockers.append({'az':az,'docker':docker})
+                    instance = getCount(masternode_ip, mininodes_ip)
+                    try:
+                        load = self.loads[scale_service][az]
+                    except Exception:
+                        load = " %"
+                    frontend.append({"instance": instance,
+                                     "nodeCount": nodeCount,
+                                     "load": load,
+                                     "az": az.split(".")[0],
+                                     "region": az.split(".")[1],
+                                     "scale_service": scale_service,
+                                     "name": service["name"],
+                                     "ip": masternode_ip})
                 cluster.append(service["name"])
                 #tasks.append(task_id)
+            insts = service.get("instance_uuids", None)
+            if insts is not None:
+                self.vip = service.get("vip", self.vip)
+                idx = 0
+                for node in service.get("emallNodes", []):
+                    self.vm_ip[idx] = node["ipAddresses"][0]
+                    self.vm_az[idx] = node["availabilityZone"]
+                    if idx > 1:
+                        break
+                    idx = idx + 1
             for node in service.get("instance_uuids", []):
                 az = node["az"]
                 instance_uuid = node["id"]
-                name = node["id"]
+                name = node["name"]
                 try:
                     server = nova_client.servers.get(instance_uuid)
                     #status = server.status
@@ -1060,15 +1214,19 @@ class Openstack(http.Controller):
                             status = server.status.lower()
                 except Exception:
                     status = "error"
-                if self.global_backend.get(instance_uuid) is not None:
-                    if status == "active":
-                        if self.global_backend.get(instance_uuid)["status"] == "standby":
-                            status = "standby"
+                #if self.global_backend.get(instance_uuid) is not None:
+                    #if status == "active":
+                    #    if self.global_backend.get(instance_uuid)["status"] == "standby":
+                    #        status = "standby"
                 backend.append({"inst": name,
                                 "region": az.split(".")[1],
                                 "az": az.split(".")[0],
                                 "status": status,
                                 "instance_id": instance_uuid})
+        dockers.append({'az':'','docker':['','']})
+        dockers.append({'az':'','docker':['','']})
+        _logger.info('docker info is {0}'.format(dockers))
+        self.dockers = dockers
             # self.global_backend = backend
         # for index, task_id in enumerate(tasks):
         #     if task_id != "":
@@ -1084,13 +1242,16 @@ class Openstack(http.Controller):
         # self.frontends[env_id] = frontend
         # self.backends[env_id] = backend
         
-        if len(backend) == 2:
-            if backend[0]["status"] == "active" and backend[1]["status"] == "active":
-                backend[1]["status"] = "standby" 
+        #if len(backend) == 2:
+        #    if backend[0]["status"] == "active" and backend[1]["status"] == "active":
+        #        backend[1]["status"] = "standby" 
         for item in backend:
             self.global_backend[item["instance_id"]] = item
-           
-        self.global_cluster = cluster
+
+        if len(cluster) > 0:
+            self.global_cluster = cluster
+        else:
+            _logger.warn('no cluster found')
         if len(self.global_meter_result):
             self.global_meter_result["stats"] = []
             now = datetime.utcnow()
@@ -1112,6 +1273,7 @@ class Openstack(http.Controller):
         client = self.web_murano_client(request)
         env_id = kwargs['env_id']
         service_name = kwargs['service_name']
+        az = kwargs['az']
         env = client.environments.get(env_id)
         services = env.services
         for service in services:
@@ -1121,7 +1283,7 @@ class Openstack(http.Controller):
                 task_tries = 40
                 while task_tries > 0:
                     try:
-                        task_id = client.actions.call(env_id, action_id, {"rcName": service_name})
+                        task_id = client.actions.call(env_id, action_id)
                         break
                     except Exception:
                         task_tries -= 1
@@ -1133,7 +1295,7 @@ class Openstack(http.Controller):
                     result = client.actions.get_result(env_id, task_id)
                     if result is not None:
                         if result['isException'] is False:
-                            return "{0}".format(result["result"])
+                            return "Success"
                         else:
                             return "Failed"
                     sleep(5)
@@ -1145,6 +1307,7 @@ class Openstack(http.Controller):
         client = self.web_murano_client(request)
         env_id = kwargs['env_id']
         service_name = kwargs['service_name']
+        az = kwargs['az']
         env = client.environments.get(env_id)
         services = env.services
         for service in services:
@@ -1154,7 +1317,7 @@ class Openstack(http.Controller):
                 task_tries = 40
                 while task_tries > 0:
                     try:
-                        task_id = client.actions.call(env_id, action_id, {"rcName": service_name})
+                        task_id = client.actions.call(env_id, action_id)
                         break
                     except Exception:
                         task_tries -= 1
@@ -1166,7 +1329,7 @@ class Openstack(http.Controller):
                     result = client.actions.get_result(env_id, task_id)
                     if result is not None:
                         if result['isException'] is False:
-                            return "{0}".format(result["result"])
+                            return "Success"
                         else:
                             return "Failed"
                     sleep(5)
@@ -1183,12 +1346,12 @@ class Openstack(http.Controller):
         if server.status != "ACTIVE":
             return "stopped"
         nova_client.servers.stop(instance_id)
-        for id, item in self.global_backend.items():
-            if id == instance_id:
-                item["status"] == 'powerinf-off'
-            else:
-                if item["status"] == "standby":
-                    item["status"] == "active"
+        #for id, item in self.global_backend.items():
+        #    if id == instance_id:
+        #        item["status"] == 'powerinf-off'
+        #    else:
+        #        if item["status"] == "standby":
+        #            item["status"] == "active"
         # self.global_backend[instance_id]["status"] == "powering-off"
         # if backend_0["instance_id"] == instance_id:
         #     backend_0["status"] = "shutdown"
@@ -1206,34 +1369,48 @@ class Openstack(http.Controller):
         if server.status == "ACTIVE":
             return "started"
         nova_client.servers.start(instance_id)
-        self.global_backend[instance_id]["status"] == "powering-on"
+        #self.global_backend[instance_id]["status"] == "powering-on"
         return "starting"
 
     @http.route('/api/turn_over', type='http', auth='none')
     def turn_over(self, **kwargs):
         env_id = kwargs["env_id"]
-        if len(self.global_backend) < 2:
-            return json.dumps({"backend": self.global_backend.values()})
-        backend_0 = self.global_backend.values()[0]
-        backend_1 = self.global_backend.values()[1]
-        if backend_0["status"] == "active":
-            if backend_1["status"] == "standby":
-                backend_0["status"] = "standby"
-                backend_1["status"] = "active"
-        elif backend_0["status"] == "standby":
-            if backend_1["status"] == "active":
-                backend_0["status"] = "active"
-                backend_1["status"] = "standby"
+        #if len(self.global_backend) < 2:
+        #    return json.dumps({"backend": self.global_backend.values()})
+        #backend_0 = self.global_backend.values()[0]
+        #backend_1 = self.global_backend.values()[1]
+        #if backend_0["status"] == "active":
+        #    if backend_1["status"] == "standby":
+        #        backend_0["status"] = "standby"
+        #        backend_1["status"] = "active"
+        #elif backend_0["status"] == "standby":
+        #    if backend_1["status"] == "active":
+        #        backend_0["status"] = "active"
+        #        backend_1["status"] = "standby"
         return json.dumps({"backend": self.global_backend[env_id]})
+
+    @http.route('/api/meter_stop', type='http', auth="none")
+    def meter_stop(self, s_action=None, **kw):
+        if request.httprequest.method == 'POST':
+            address = kw.get('address')
+            cluster = kw.get('cluster')
+            _logger.debug('stop:{0}, {1}, {2}'.format(address))
+            os.system("ps -ef|grep jmeter | awk '$8!=\"grep\"{system(\"kill -9 \" $2)}'")
+            return '{"ret": "success"}'
 
     @http.route('/api/meter_restart', type='http', auth="none")
     def restart(self, s_action=None, **kw):
+        env_id = kw['env_id']
         if request.httprequest.method == 'POST':
             users = kw.get('users')
             freq = kw.get('freq')
+            throughput = kw.get('throughput')
+            #self.global_users = users
+            #self.global_freq = freq
+            #self.global_throughput = throughput
             address = kw.get('address')
             cluster = kw.get('cluster')
-            _logger.debug('restart:{0}, {1}, {2}'.format(users, freq, address))
+            _logger.debug('restart:{0}, {1}, {2}, {3}'.format(users, freq, throughput, address))
             currentPath = os.path.dirname(os.path.realpath(__file__))
             # logfile = '%s/%s.xml' % (currentPath, address)
             f = currentPath + '/meter.jmx'
@@ -1252,21 +1429,54 @@ class Openstack(http.Controller):
                     child.text = currentPath + '/' + cluster + '.xml'
                 else:
                     continue
+            for child in root.iter('doubleProp'):
+                for val in child.iter('value'):
+                    val.text = throughput
             tree.write(f)
             os.system("ps -ef|grep jmeter | awk '$8!=\"grep\"{system(\"kill -9 \" $2)}'")
             os.system('jmeter -n -t %s &' % f)
             os.system("ps -ef|grep sync_meter_result | awk '$8!=\"grep\"{system(\"kill -9 \" $2)}'")
-            command = 'python %s/%s' % (currentPath, 'sync_meter_result.py')
+            command = 'python %s/%s %s' % (currentPath, 'sync_meter_result.py', env_id)
             for c in self.global_cluster:
                 command = "%s %s" % (command, c)
             os.system("%s &" % command)
             return '{"ret": "success"}'
+ 
+    @http.route('/api/get_envs', type='http', auth='none')
+    def get_envs(self, **kwargs):
+        murano_client = self.web_murano_client(request)
+        envs = murano_client.environments.list(all_tenants=True)
+        env_list = []
+        for env in envs:
+            env_list.append({"name": env.name,
+                             "id": env.id})
+        return json.dumps(env_list)
 
     @http.route('/api/sync_meter', type='http', auth="none")
     def meter(self, s_action=None, **kw):
+        env_id = kw['env_id']
         currentPath = os.path.dirname(os.path.realpath(__file__))
-        meter_result_file = "%s/meter_result_new" % currentPath
+        meter_result_file = "%s/%s_result_new" % (currentPath, env_id)
+        if os.path.exists(meter_result_file) is False:
+            return json.dumps(self.global_meter_result)
         with open(meter_result_file, "r") as f:
             sync_result = json.load(f)
         self.global_meter_result["stats"] = sync_result
         return json.dumps(self.global_meter_result)
+
+    @http.route('/api/model', type='http', auth="none")
+    def model(self, s_action=None, **kw):
+        from string import Template
+        models = {
+            'model2d3v': '{"resourceId":"canvas1","properties":{"name":"","documentation":"","process_id":"process","process_author":"","process_executable":"Yes","process_version":"","process_namespace":"http://www.activiti.org/processdef","executionlisteners":"","eventlisteners":"","dataproperties":""},"stencil":{"id":"BPMNDiagram"},"childShapes":[{"resourceId":"oryx_34DC689D-37A4-4C3C-AE17-A5DABC4B4127","properties":{"overrideid":"","name":"","documentation":"","formproperties":"","initiator":"","formkeydefinition":"","executionlisteners":""},"stencil":{"id":"StartNoneEvent"},"childShapes":[],"outgoing":[{"resourceId":"oryx_B9C0E12B-FC44-4FE2-946F-1E493F27CD8E"},{"resourceId":"oryx_1E93D0EC-E2ED-4A53-9AA7-FF27F5BABD8E"}],"bounds":{"lowerRight":{"x":267.5,"y":45},"upperLeft":{"x":237.5,"y":15}},"dockers":[]},{"resourceId":"oryx_B9C0E12B-FC44-4FE2-946F-1E493F27CD8E","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55"}],"bounds":{"lowerRight":{"x":241.93055210941756,"y":96.44605205460505},"upperLeft":{"x":192.36632289058244,"y":41.67894794539496}},"dockers":[{"x":15,"y":15},{"x":92,"y":33.5}],"target":{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55"}},{"resourceId":"oryx_1E93D0EC-E2ED-4A53-9AA7-FF27F5BABD8E","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245"}],"bounds":{"lowerRight":{"x":317.64382141764037,"y":96.4732871608575},"upperLeft":{"x":263.15305358235963,"y":40.870462839142505}},"dockers":[{"x":15,"y":15},{"x":85.50000000000001,"y":33}],"target":{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245"}},{"resourceId":"oryx_A2C1089D-0E33-4552-B3DE-1A49072E35F7","properties":{"overrideid":"","name":"$cluster1","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55","properties":{"overrideid":"","name":"$az1","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":"","looptype":"None","dataproperties":""},"stencil":{"id":"SubProcess"},"childShapes":[{"resourceId":"oryx_9742BA28-E1A5-4B01-8357-162C4F54A741","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":145,"y":61.5},"upperLeft":{"x":105,"y":21.5}},"dockers":[]}],"outgoing":[{"resourceId":"oryx_8F4C4BA3-6420-4BF0-B1A2-B2C5850E2EAB"}],"bounds":{"lowerRight":{"x":199,"y":101.5},"upperLeft":{"x":15,"y":34.5}},"dockers":[]},{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245","properties":{"overrideid":"","name":"$az2","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":"","looptype":"None","dataproperties":""},"stencil":{"id":"SubProcess"},"childShapes":[{"resourceId":"oryx_D34C6ADF-58F3-4012-856F-A3694C05D586","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":61,"y":61},"upperLeft":{"x":21,"y":21}},"dockers":[]},{"resourceId":"oryx_A991DA22-BC01-4E6B-BFE4-26E07A2C9DC0","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":145,"y":61},"upperLeft":{"x":105,"y":21}},"dockers":[]}],"outgoing":[{"resourceId":"oryx_FFA13E89-D8EA-42DD-A731-B2B15091F3F2"}],"bounds":{"lowerRight":{"x":381,"y":101},"upperLeft":{"x":210,"y":35}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":450,"y":175},"upperLeft":{"x":55,"y":62}},"dockers":[]},{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"ParallelGateway"},"childShapes":[],"outgoing":[{"resourceId":"oryx_AA40CC8B-FA9A-4BA2-A253-CEA64F54982D"},{"resourceId":"oryx_553C58F1-CF81-49B8-BCE2-C2B3BD06D248"},{"resourceId":"oryx_3537731F-4593-47FB-8B2C-F26477115B30"}],"bounds":{"lowerRight":{"x":292.5,"y":234.25},"upperLeft":{"x":252.5,"y":194.25}},"dockers":[]},{"resourceId":"oryx_8F4C4BA3-6420-4BF0-B1A2-B2C5850E2EAB","properties":{"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}],"bounds":{"lowerRight":{"x":261.34539982852186,"y":205.7452482855472},"upperLeft":{"x":205.95928767147817,"y":163.5164704644528}},"dockers":[{"x":92,"y":33.5},{"x":20,"y":20}],"target":{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}},{"resourceId":"oryx_FFA13E89-D8EA-42DD-A731-B2B15091F3F2","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}],"bounds":{"lowerRight":{"x":320.15719429761276,"y":204.08039251416363},"upperLeft":{"x":282.75686820238724,"y":163.18132623583637}},"dockers":[{"x":85.50000000000001,"y":33},{"x":20.5,"y":20.5}],"target":{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}},{"resourceId":"oryx_AA40CC8B-FA9A-4BA2-A253-CEA64F54982D","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799"}],"bounds":{"lowerRight":{"x":258.5370486469256,"y":271.4169745019199},"upperLeft":{"x":152.91998260307443,"y":221.57521299808008}},"dockers":[{"x":20.5,"y":20.5},{"x":14,"y":14}],"target":{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799"}},{"resourceId":"oryx_7B06C092-8F54-4A09-8E47-0953BDB0B47E","properties":{"overrideid":"","name":"","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799","properties":{"overrideid":"","name":"","documentation":"","executionlisteners":""},"stencil":{"id":"EndNoneEvent"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":134,"y":48.5},"upperLeft":{"x":106,"y":20.5}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":184.5,"y":313.25},"upperLeft":{"x":19.5,"y":243.25}},"dockers":[]},{"resourceId":"oryx_CACD8AB1-7EBD-4848-91E0-9110D676458E","properties":{"overrideid":"","name":"","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_8FA76418-B008-4272-A62D-D338E7BEE1B5","properties":{"overrideid":"","name":"","documentation":"","executionlisteners":""},"stencil":{"id":"EndNoneEvent"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":54,"y":48.75},"upperLeft":{"x":26,"y":20.75}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":361.5,"y":315.75},"upperLeft":{"x":196.5,"y":245.75}},"dockers":[]},{"resourceId":"oryx_B58A2F27-0751-4133-966B-5EF145E199DE","properties":{"overrideid":"","name":"$az3","documentation":"","text":"az01"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":132.5,"y":283.25},"upperLeft":{"x":32.5,"y":233.25}},"dockers":[]},{"resourceId":"oryx_20D0A43E-AE44-43CD-A19A-74132BFB7BAF","properties":{"overrideid":"","name":"$az4","documentation":"","text":"az11"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":329,"y":283.25},"upperLeft":{"x":229,"y":233.25}},"dockers":[]},{"resourceId":"oryx_EF156864-C6CC-4D46-AF64-07183D51DD80","properties":{"overrideid":"","name":"FIP: $fip_shenzhen","documentation":"","text":"FIP:205."},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":410.5,"y":45.25},"upperLeft":{"x":265.5,"y":2.25}},"dockers":[]},{"resourceId":"oryx_E6E487F8-72E8-42F1-B00F-4563DF713885","properties":{"overrideid":"","name":"$ip_shenzhen","documentation":"","text":"10.0.0.27"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":365.5,"y":65},"upperLeft":{"x":265.5,"y":15}},"dockers":[]},{"resourceId":"oryx_D62D21F4-DD55-44FA-B431-2CDE215174D8","properties":{"overrideid":"","name":"VIP: $vip","documentation":"","text":""},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":385.5,"y":239.25},"upperLeft":{"x":285.5,"y":189.25}},"dockers":[]},{"resourceId":"oryx_7A48A4BD-ED42-4010-9F3A-B132A6B3ED41","properties":{"overrideid":"","name":"$vm_az01","documentation":"","text":"10.0.0.14"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":152,"y":332},"upperLeft":{"x":52,"y":285}},"dockers":[]},{"resourceId":"oryx_7263AA74-C391-42B7-9FC2-2DE7C38B10B3","properties":{"overrideid":"","name":"$vm_az11","documentation":"","text":"10.0.0.15"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":326.5,"y":335},"upperLeft":{"x":226.5,"y":285}},"dockers":[]},{"resourceId":"oryx_49BBB1A0-99AE-40D5-9589-30EC06269A3A","properties":{"overrideid":"","name":"$shenzhen1","documentation":"","text":"10.0.0.28"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":170,"y":182.625},"upperLeft":{"x":70,"y":132.625}},"dockers":[]},{"resourceId":"oryx_547375F0-4946-44F3-A2BB-474A93EFE0F3","properties":{"overrideid":"","name":"$shenzhen2","documentation":"","text":"10.0.0.29"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":258.5,"y":183.25},"upperLeft":{"x":158.5,"y":133.25}},"dockers":[]},{"resourceId":"oryx_8110E8CC-040B-4691-AE3E-8F64BEBF384C","properties":{"overrideid":"","name":"$shenzhen3","documentation":"","text":"10.0.0.30"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":365.5,"y":175},"upperLeft":{"x":265.5,"y":125}},"dockers":[]},{"resourceId":"oryx_6C3CA1A0-F2CD-497A-AB25-DEE4B27F5C70","properties":{"overrideid":"","name":"$shenzhen4","documentation":"","text":"10.0.0.31"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":460,"y":175},"upperLeft":{"x":360,"y":125}},"dockers":[]},{"resourceId":"oryx_DD6F5A9E-AD94-47C3-8F21-4ACF6EDCF3DD","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":137.5,"y":157.375},"upperLeft":{"x":97.5,"y":117.375}},"dockers":[]},{"resourceId":"oryx_948AA0D9-6A10-49C3-AFA8-7636C8801CAF","properties":{"overrideid":"","name":"","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_B1E5F056-BF0D-4D5F-ABAF-08C722F57EBA","properties":{"overrideid":"","name":"","documentation":"","executionlisteners":""},"stencil":{"id":"EndNoneEvent"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":54,"y":48.75},"upperLeft":{"x":26,"y":20.75}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":540,"y":312.375},"upperLeft":{"x":375,"y":242.375}},"dockers":[]},{"resourceId":"oryx_3DD9A007-A705-444E-A02A-A3C8E19DC952","properties":{"overrideid":"","name":"$vm_az02","documentation":"","text":"10.0.0.15"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":485,"y":331.625},"upperLeft":{"x":385,"y":281.625}},"dockers":[]},{"resourceId":"oryx_C71DF121-B5C3-4811-A685-2A77E21EE4FB","properties":{"overrideid":"","name":"$az5","documentation":"","text":"az11"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":510,"y":279.875},"upperLeft":{"x":410,"y":229.875}},"dockers":[]},{"resourceId":"oryx_553C58F1-CF81-49B8-BCE2-C2B3BD06D248","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"Association"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":264.73487257488773,"y":273},"upperLeft":{"x":235,"y":227.41957032928389}},"dockers":[{"x":20.5,"y":20.5},{"x":235,"y":273}]},{"resourceId":"oryx_3537731F-4593-47FB-8B2C-F26477115B30","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"Association"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":405,"y":264},"upperLeft":{"x":287.3431612670644,"y":220.10152039699182}},"dockers":[{"x":20.5,"y":20.5},{"x":405,"y":264}]}],"bounds":{"lowerRight":{"x":1485,"y":1050},"upperLeft":{"x":0,"y":0}},"stencilset":{"url":"../stencilsets/bpmn2.0/bpmn2.0.json","namespace":"http://b3mn.org/stencilset/bpmn2.0#"},"ssextensions":[]}',
+            'model2d2v': '{"resourceId":"canvas1","properties":{"name":"","documentation":"","process_id":"process","process_author":"","process_executable":"Yes","process_version":"","process_namespace":"http://www.activiti.org/processdef","executionlisteners":"","eventlisteners":"","dataproperties":""},"stencil":{"id":"BPMNDiagram"},"childShapes":[{"resourceId":"oryx_34DC689D-37A4-4C3C-AE17-A5DABC4B4127","properties":{"overrideid":"","name":"","documentation":"","formproperties":"","initiator":"","formkeydefinition":"","executionlisteners":""},"stencil":{"id":"StartNoneEvent"},"childShapes":[],"outgoing":[{"resourceId":"oryx_B9C0E12B-FC44-4FE2-946F-1E493F27CD8E"},{"resourceId":"oryx_1E93D0EC-E2ED-4A53-9AA7-FF27F5BABD8E"}],"bounds":{"lowerRight":{"x":227.5,"y":45},"upperLeft":{"x":197.5,"y":15}},"dockers":[]},{"resourceId":"oryx_B9C0E12B-FC44-4FE2-946F-1E493F27CD8E","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55"}],"bounds":{"lowerRight":{"x":203.4134980571711,"y":116.38909963381802},"upperLeft":{"x":147.3482206928289,"y":42.04840036618198}},"dockers":[{"x":15,"y":15},{"x":92,"y":33.5}],"target":{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55"}},{"resourceId":"oryx_1E93D0EC-E2ED-4A53-9AA7-FF27F5BABD8E","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245"}],"bounds":{"lowerRight":{"x":283.07059042913755,"y":116.41296787241336},"upperLeft":{"x":222.32003457086242,"y":42.02453212758664}},"dockers":[{"x":15,"y":15},{"x":85.50000000000001,"y":33}],"target":{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245"}},{"resourceId":"oryx_A2C1089D-0E33-4552-B3DE-1A49072E35F7","properties":{"overrideid":"","name":"$cluster1","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55","properties":{"overrideid":"","name":"$az1","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":"","looptype":"None","dataproperties":""},"stencil":{"id":"SubProcess"},"childShapes":[{"resourceId":"oryx_9742BA28-E1A5-4B01-8357-162C4F54A741","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":145,"y":61.5},"upperLeft":{"x":105,"y":21.5}},"dockers":[]}],"outgoing":[{"resourceId":"oryx_8F4C4BA3-6420-4BF0-B1A2-B2C5850E2EAB"}],"bounds":{"lowerRight":{"x":199,"y":101.5},"upperLeft":{"x":15,"y":34.5}},"dockers":[]},{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245","properties":{"overrideid":"","name":"$az2","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":"","looptype":"None","dataproperties":""},"stencil":{"id":"SubProcess"},"childShapes":[{"resourceId":"oryx_D34C6ADF-58F3-4012-856F-A3694C05D586","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":61,"y":61},"upperLeft":{"x":21,"y":21}},"dockers":[]},{"resourceId":"oryx_A991DA22-BC01-4E6B-BFE4-26E07A2C9DC0","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":145,"y":61},"upperLeft":{"x":105,"y":21}},"dockers":[]}],"outgoing":[{"resourceId":"oryx_FFA13E89-D8EA-42DD-A731-B2B15091F3F2"}],"bounds":{"lowerRight":{"x":381,"y":101},"upperLeft":{"x":210,"y":35}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":410,"y":195},"upperLeft":{"x":15,"y":82}},"dockers":[]},{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"ParallelGateway"},"childShapes":[],"outgoing":[{"resourceId":"oryx_AA40CC8B-FA9A-4BA2-A253-CEA64F54982D"},{"resourceId":"oryx_553C58F1-CF81-49B8-BCE2-C2B3BD06D248"}],"bounds":{"lowerRight":{"x":232.5,"y":254.25},"upperLeft":{"x":192.5,"y":214.25}},"dockers":[]},{"resourceId":"oryx_8F4C4BA3-6420-4BF0-B1A2-B2C5850E2EAB","properties":{"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}],"bounds":{"lowerRight":{"x":201.86963375494798,"y":224.353775070214},"upperLeft":{"x":158.08349124505202,"y":183.591537429786}},"dockers":[{"x":92,"y":33.5},{"x":20,"y":20}],"target":{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}},{"resourceId":"oryx_FFA13E89-D8EA-42DD-A731-B2B15091F3F2","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}],"bounds":{"lowerRight":{"x":272.42105075510585,"y":224.82443378136125},"upperLeft":{"x":224.41879299489415,"y":183.09939434363875}},"dockers":[{"x":85.50000000000001,"y":33},{"x":20.5,"y":20.5}],"target":{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}},{"resourceId":"oryx_AA40CC8B-FA9A-4BA2-A253-CEA64F54982D","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799"}],"bounds":{"lowerRight":{"x":199.50404818266824,"y":270.52628414088076},"upperLeft":{"x":151.84751431733176,"y":242.64559085911927}},"dockers":[{"x":20.5,"y":20.5},{"x":14,"y":14}],"target":{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799"}},{"resourceId":"oryx_7B06C092-8F54-4A09-8E47-0953BDB0B47E","properties":{"overrideid":"","name":"","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799","properties":{"overrideid":"","name":"","documentation":"","executionlisteners":""},"stencil":{"id":"EndNoneEvent"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":134,"y":48.5},"upperLeft":{"x":106,"y":20.5}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":184.5,"y":313.25},"upperLeft":{"x":19.5,"y":243.25}},"dockers":[]},{"resourceId":"oryx_CACD8AB1-7EBD-4848-91E0-9110D676458E","properties":{"overrideid":"","name":"","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_8FA76418-B008-4272-A62D-D338E7BEE1B5","properties":{"overrideid":"","name":"","documentation":"","executionlisteners":""},"stencil":{"id":"EndNoneEvent"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":54,"y":48.75},"upperLeft":{"x":26,"y":20.75}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":421.5,"y":315.75},"upperLeft":{"x":256.5,"y":245.75}},"dockers":[]},{"resourceId":"oryx_B58A2F27-0751-4133-966B-5EF145E199DE","properties":{"overrideid":"","name":"$az3","documentation":"","text":"az01"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":132.5,"y":283.25},"upperLeft":{"x":32.5,"y":233.25}},"dockers":[]},{"resourceId":"oryx_20D0A43E-AE44-43CD-A19A-74132BFB7BAF","properties":{"overrideid":"","name":"$az4","documentation":"","text":"az11"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":389,"y":283.25},"upperLeft":{"x":289,"y":233.25}},"dockers":[]},{"resourceId":"oryx_EF156864-C6CC-4D46-AF64-07183D51DD80","properties":{"overrideid":"","name":"FIP: $fip_shenzhen","documentation":"","text":"FIP:205."},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":350.5,"y":45.25},"upperLeft":{"x":205.5,"y":2.25}},"dockers":[]},{"resourceId":"oryx_E6E487F8-72E8-42F1-B00F-4563DF713885","properties":{"overrideid":"","name":"$ip_shenzhen","documentation":"","text":"10.0.0.27"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":325.5,"y":65},"upperLeft":{"x":225.5,"y":15}},"dockers":[]},{"resourceId":"oryx_D62D21F4-DD55-44FA-B431-2CDE215174D8","properties":{"overrideid":"","name":"VIP: $vip","documentation":"","text":""},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":325.5,"y":259.25},"upperLeft":{"x":225.5,"y":209.25}},"dockers":[]},{"resourceId":"oryx_7A48A4BD-ED42-4010-9F3A-B132A6B3ED41","properties":{"overrideid":"","name":"$vm_az01","documentation":"","text":"10.0.0.14"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":192,"y":332},"upperLeft":{"x":92,"y":285}},"dockers":[]},{"resourceId":"oryx_7263AA74-C391-42B7-9FC2-2DE7C38B10B3","properties":{"overrideid":"","name":"$vm_az11","documentation":"","text":"10.0.0.15"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":366.5,"y":335},"upperLeft":{"x":266.5,"y":285}},"dockers":[]},{"resourceId":"oryx_49BBB1A0-99AE-40D5-9589-30EC06269A3A","properties":{"overrideid":"","name":"$shenzhen1","documentation":"","text":"10.0.0.28"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":130,"y":202.625},"upperLeft":{"x":30,"y":152.625}},"dockers":[]},{"resourceId":"oryx_547375F0-4946-44F3-A2BB-474A93EFE0F3","properties":{"overrideid":"","name":"$shenzhen2","documentation":"","text":"10.0.0.29"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":218.5,"y":203.25},"upperLeft":{"x":118.5,"y":153.25}},"dockers":[]},{"resourceId":"oryx_8110E8CC-040B-4691-AE3E-8F64BEBF384C","properties":{"overrideid":"","name":"$shenzhen3","documentation":"","text":"10.0.0.30"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":319.25,"y":202.625},"upperLeft":{"x":219.25,"y":152.625}},"dockers":[]},{"resourceId":"oryx_6C3CA1A0-F2CD-497A-AB25-DEE4B27F5C70","properties":{"overrideid":"","name":"$shenzhen4","documentation":"","text":"10.0.0.31"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":413.75,"y":202.625},"upperLeft":{"x":313.75,"y":152.625}},"dockers":[]},{"resourceId":"oryx_553C58F1-CF81-49B8-BCE2-C2B3BD06D248","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"Association"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":287,"y":275},"upperLeft":{"x":226.01908704847276,"y":241.8313277527166}},"dockers":[{"x":20.5,"y":20.5},{"x":287,"y":275}]},{"resourceId":"oryx_DD6F5A9E-AD94-47C3-8F21-4ACF6EDCF3DD","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":97.5,"y":177.375},"upperLeft":{"x":57.5,"y":137.375}},"dockers":[]},{"resourceId":"oryx_4D312215-BD24-4BC7-BC67-BACBFE93D358","properties":{"overrideid":"","name":"...","documentation":"","text":"10.0.0.31"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":363.75,"y":172.625},"upperLeft":{"x":263.75,"y":122.625}},"dockers":[]},{"resourceId":"oryx_2A23B616-0D07-4D4F-9447-0895EA8AD5A8","properties":{"overrideid":"","name":"...","documentation":"","text":"10.0.0.31"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":173.75,"y":182.625},"upperLeft":{"x":61.75,"y":116.625}},"dockers":[]}],"bounds":{"lowerRight":{"x":1485,"y":1050},"upperLeft":{"x":0,"y":0}},"stencilset":{"url":"../stencilsets/bpmn2.0/bpmn2.0.json","namespace":"http://b3mn.org/stencilset/bpmn2.0#"},"ssextensions":[]}',
+            'model1v1v': '{"resourceId":"canvas1","properties":{"name":"","documentation":"","process_id":"process","process_author":"","process_executable":"Yes","process_version":"","process_namespace":"http://www.activiti.org/processdef","executionlisteners":"","eventlisteners":"","dataproperties":""},"stencil":{"id":"BPMNDiagram"},"childShapes":[{"resourceId":"oryx_34DC689D-37A4-4C3C-AE17-A5DABC4B4127","properties":{"overrideid":"","name":"","documentation":"","formproperties":"","initiator":"","formkeydefinition":"","executionlisteners":""},"stencil":{"id":"StartNoneEvent"},"childShapes":[],"outgoing":[{"resourceId":"oryx_B9C0E12B-FC44-4FE2-946F-1E493F27CD8E"},{"resourceId":"oryx_1E93D0EC-E2ED-4A53-9AA7-FF27F5BABD8E"}],"bounds":{"lowerRight":{"x":227.5,"y":45},"upperLeft":{"x":197.5,"y":15}},"dockers":[]},{"resourceId":"oryx_B9C0E12B-FC44-4FE2-946F-1E493F27CD8E","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55"}],"bounds":{"lowerRight":{"x":203.4134980571711,"y":116.38909963381802},"upperLeft":{"x":147.3482206928289,"y":42.04840036618198}},"dockers":[{"x":15,"y":15},{"x":92,"y":33.5}],"target":{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55"}},{"resourceId":"oryx_1E93D0EC-E2ED-4A53-9AA7-FF27F5BABD8E","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245"}],"bounds":{"lowerRight":{"x":283.07059042913755,"y":116.41296787241336},"upperLeft":{"x":222.32003457086242,"y":42.02453212758664}},"dockers":[{"x":15,"y":15},{"x":85.50000000000001,"y":33}],"target":{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245"}},{"resourceId":"oryx_A2C1089D-0E33-4552-B3DE-1A49072E35F7","properties":{"overrideid":"","name":"$cluster1","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_1C3BD699-AE56-4D1F-92D9-F735AFA9BE55","properties":{"overrideid":"","name":"$az1","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":"","looptype":"None","dataproperties":""},"stencil":{"id":"SubProcess"},"childShapes":[{"resourceId":"oryx_9742BA28-E1A5-4B01-8357-162C4F54A741","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":145,"y":61.5},"upperLeft":{"x":105,"y":21.5}},"dockers":[]}],"outgoing":[{"resourceId":"oryx_8F4C4BA3-6420-4BF0-B1A2-B2C5850E2EAB"}],"bounds":{"lowerRight":{"x":199,"y":101.5},"upperLeft":{"x":15,"y":34.5}},"dockers":[]},{"resourceId":"oryx_9503FB34-DCB0-48BF-ABB5-597043B13245","properties":{"overrideid":"","name":"$az2","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":"","looptype":"None","dataproperties":""},"stencil":{"id":"SubProcess"},"childShapes":[{"resourceId":"oryx_D34C6ADF-58F3-4012-856F-A3694C05D586","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":61,"y":61},"upperLeft":{"x":21,"y":21}},"dockers":[]},{"resourceId":"oryx_A991DA22-BC01-4E6B-BFE4-26E07A2C9DC0","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":145,"y":61},"upperLeft":{"x":105,"y":21}},"dockers":[]}],"outgoing":[{"resourceId":"oryx_FFA13E89-D8EA-42DD-A731-B2B15091F3F2"}],"bounds":{"lowerRight":{"x":381,"y":101},"upperLeft":{"x":210,"y":35}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":410,"y":195},"upperLeft":{"x":15,"y":82}},"dockers":[]},{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"ParallelGateway"},"childShapes":[],"outgoing":[{"resourceId":"oryx_AA40CC8B-FA9A-4BA2-A253-CEA64F54982D"},{"resourceId":"oryx_553C58F1-CF81-49B8-BCE2-C2B3BD06D248"}],"bounds":{"lowerRight":{"x":232.5,"y":254.25},"upperLeft":{"x":192.5,"y":214.25}},"dockers":[]},{"resourceId":"oryx_8F4C4BA3-6420-4BF0-B1A2-B2C5850E2EAB","properties":{"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}],"bounds":{"lowerRight":{"x":201.86963375494798,"y":224.353775070214},"upperLeft":{"x":158.08349124505202,"y":183.591537429786}},"dockers":[{"x":92,"y":33.5},{"x":20,"y":20}],"target":{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}},{"resourceId":"oryx_FFA13E89-D8EA-42DD-A731-B2B15091F3F2","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}],"bounds":{"lowerRight":{"x":272.42105075510585,"y":224.82443378136125},"upperLeft":{"x":224.41879299489415,"y":183.09939434363875}},"dockers":[{"x":85.50000000000001,"y":33},{"x":20.5,"y":20.5}],"target":{"resourceId":"oryx_CB00B44C-4980-45A8-976F-96DCCFCF9E6D"}},{"resourceId":"oryx_AA40CC8B-FA9A-4BA2-A253-CEA64F54982D","properties":{"showdiamondmarker":false,"overrideid":"","name":"","documentation":"","conditionsequenceflow":"","defaultflow":"None","conditionalflow":"None","executionlisteners":""},"stencil":{"id":"SequenceFlow"},"childShapes":[],"outgoing":[{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799"}],"bounds":{"lowerRight":{"x":199.50404818266824,"y":270.52628414088076},"upperLeft":{"x":151.84751431733176,"y":242.64559085911927}},"dockers":[{"x":20.5,"y":20.5},{"x":14,"y":14}],"target":{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799"}},{"resourceId":"oryx_7B06C092-8F54-4A09-8E47-0953BDB0B47E","properties":{"overrideid":"","name":"","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_ABD251AD-6385-4D04-9CA0-4EE2CA6F9799","properties":{"overrideid":"","name":"","documentation":"","executionlisteners":""},"stencil":{"id":"EndNoneEvent"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":134,"y":48.5},"upperLeft":{"x":106,"y":20.5}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":184.5,"y":313.25},"upperLeft":{"x":19.5,"y":243.25}},"dockers":[]},{"resourceId":"oryx_CACD8AB1-7EBD-4848-91E0-9110D676458E","properties":{"overrideid":"","name":"","documentation":"","asynchronousdefinition":"No","exclusivedefinition":"Yes","executionlisteners":""},"stencil":{"id":"EventSubProcess"},"childShapes":[{"resourceId":"oryx_8FA76418-B008-4272-A62D-D338E7BEE1B5","properties":{"overrideid":"","name":"","documentation":"","executionlisteners":""},"stencil":{"id":"EndNoneEvent"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":54,"y":48.75},"upperLeft":{"x":26,"y":20.75}},"dockers":[]}],"outgoing":[],"bounds":{"lowerRight":{"x":421.5,"y":315.75},"upperLeft":{"x":256.5,"y":245.75}},"dockers":[]},{"resourceId":"oryx_B58A2F27-0751-4133-966B-5EF145E199DE","properties":{"overrideid":"","name":"$az3","documentation":"","text":"az01"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":132.5,"y":283.25},"upperLeft":{"x":32.5,"y":233.25}},"dockers":[]},{"resourceId":"oryx_20D0A43E-AE44-43CD-A19A-74132BFB7BAF","properties":{"overrideid":"","name":"$az4","documentation":"","text":"az11"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":389,"y":283.25},"upperLeft":{"x":289,"y":233.25}},"dockers":[]},{"resourceId":"oryx_EF156864-C6CC-4D46-AF64-07183D51DD80","properties":{"overrideid":"","name":"FIP: $fip_shenzhen","documentation":"","text":"FIP:205."},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":350.5,"y":45.25},"upperLeft":{"x":205.5,"y":2.25}},"dockers":[]},{"resourceId":"oryx_E6E487F8-72E8-42F1-B00F-4563DF713885","properties":{"overrideid":"","name":"$ip_shenzhen","documentation":"","text":"10.0.0.27"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":325.5,"y":65},"upperLeft":{"x":225.5,"y":15}},"dockers":[]},{"resourceId":"oryx_D62D21F4-DD55-44FA-B431-2CDE215174D8","properties":{"overrideid":"","name":"VIP: $vip","documentation":"","text":""},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":325.5,"y":259.25},"upperLeft":{"x":225.5,"y":209.25}},"dockers":[]},{"resourceId":"oryx_7A48A4BD-ED42-4010-9F3A-B132A6B3ED41","properties":{"overrideid":"","name":"$vm_az01","documentation":"","text":"10.0.0.14"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":192,"y":332},"upperLeft":{"x":92,"y":285}},"dockers":[]},{"resourceId":"oryx_7263AA74-C391-42B7-9FC2-2DE7C38B10B3","properties":{"overrideid":"","name":"$vm_az11","documentation":"","text":"10.0.0.15"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":366.5,"y":335},"upperLeft":{"x":266.5,"y":285}},"dockers":[]},{"resourceId":"oryx_49BBB1A0-99AE-40D5-9589-30EC06269A3A","properties":{"overrideid":"","name":"$shenzhen1","documentation":"","text":"10.0.0.28"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":130,"y":202.625},"upperLeft":{"x":30,"y":152.625}},"dockers":[]},{"resourceId":"oryx_547375F0-4946-44F3-A2BB-474A93EFE0F3","properties":{"overrideid":"","name":"$shenzhen2","documentation":"","text":"10.0.0.29"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":218.5,"y":203.25},"upperLeft":{"x":118.5,"y":153.25}},"dockers":[]},{"resourceId":"oryx_8110E8CC-040B-4691-AE3E-8F64BEBF384C","properties":{"overrideid":"","name":"$shenzhen3","documentation":"","text":"10.0.0.30"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":319.25,"y":202.625},"upperLeft":{"x":219.25,"y":152.625}},"dockers":[]},{"resourceId":"oryx_6C3CA1A0-F2CD-497A-AB25-DEE4B27F5C70","properties":{"overrideid":"","name":"$shenzhen4","documentation":"","text":"10.0.0.31"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":413.75,"y":202.625},"upperLeft":{"x":313.75,"y":152.625}},"dockers":[]},{"resourceId":"oryx_553C58F1-CF81-49B8-BCE2-C2B3BD06D248","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"Association"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":287,"y":275},"upperLeft":{"x":226.01908704847276,"y":241.8313277527166}},"dockers":[{"x":20.5,"y":20.5},{"x":287,"y":275}]},{"resourceId":"oryx_DD6F5A9E-AD94-47C3-8F21-4ACF6EDCF3DD","properties":{"overrideid":"","name":"","documentation":""},"stencil":{"id":"EventGateway"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":97.5,"y":177.375},"upperLeft":{"x":57.5,"y":137.375}},"dockers":[]},{"resourceId":"oryx_4D312215-BD24-4BC7-BC67-BACBFE93D358","properties":{"overrideid":"","name":"...","documentation":"","text":"10.0.0.31"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":363.75,"y":172.625},"upperLeft":{"x":263.75,"y":122.625}},"dockers":[]},{"resourceId":"oryx_2A23B616-0D07-4D4F-9447-0895EA8AD5A8","properties":{"overrideid":"","name":"...","documentation":"","text":"10.0.0.31"},"stencil":{"id":"Text"},"childShapes":[],"outgoing":[],"bounds":{"lowerRight":{"x":173.75,"y":182.625},"upperLeft":{"x":61.75,"y":116.625}},"dockers":[]}],"bounds":{"lowerRight":{"x":1485,"y":1050},"upperLeft":{"x":0,"y":0}},"stencilset":{"url":"../stencilsets/bpmn2.0/bpmn2.0.json","namespace":"http://b3mn.org/stencilset/bpmn2.0#"},"ssextensions":[]}',
+        }
+        s = Template(models.get(self.cur_model))
+        _logger.info('backend info for {2} is {0}:{1}'.format(self.vm_az, self.vm_ip, self.cur_model))
+        return s.substitute(cluster1=self.global_cluster[0], fip_shenzhen=self.fip_shenzhen, ip_shenzhen=self.ip_shenzhen,
+                            shenzhen1=self.dockers[0]['docker'][0], shenzhen2=self.dockers[0]['docker'][1],
+                            shenzhen3=self.dockers[1]['docker'][0], shenzhen4=self.dockers[1]['docker'][1],
+                            vip=self.vip, vm_az01=self.vm_ip[0], vm_az11=self.vm_ip[1], vm_az02=self.vm_ip[2],
+                            az1=self.dockers[0]['az'], az2=self.dockers[1]['az'], az3=self.vm_az[0],
+                            az4=self.vm_az[1], az5=self.vm_az[2])
