@@ -12,18 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var env_id = "fd5498e0f06c483d9abeb0686edb9fda"
-var users = "50";
+var users = "5";
 var freq = "5";
+var throughput = '10';
 function getUsersVal(index){
   users = $("#users"+index).val();
 }
 function getFreqVal(index){
   freq = $("#freq"+index).val();
 }
-function reStart(address,cluster){
+function getThroughputVal(index){
+  throughput = $("#throughput"+index).val();
+}
+function reStart(obj, address,cluster){
+  var $throughput = $(obj).parent().prev()
+  var $freq = $throughput.prev()
+  var $users = $freq.prev()
+  throughput = Number($throughput.children()[0].value)
+  freq = Number($freq.children()[0].value)
+//  users = Number($users.children()[0].value)
   $("#loadingDiv").show();
-  $.post("/api/meter_restart", { users:users, freq:freq, address:address,cluster:cluster}).complete(function(data){
+  $.post("/api/meter_restart", { env_id, users:users, freq:freq, throughput:throughput, address:address,cluster:cluster}).complete(function(data){
     $("#loadingDiv").hide();
     confirm(JSON.parse(data.responseText).ret);
   });
@@ -171,7 +180,7 @@ function getInterval(current, previous) {
 }
 
 function getStats(callback) {
-  $.getJSON('/api/sync_meter')
+  $.getJSON('/api/sync_meter?env_id='+env_id)
   .done(function(data) { callback(data); })
   .fail(function(jqhxr, textStatus, error) {
 	  callback({});
@@ -182,6 +191,18 @@ function getTopo(callback) {
   $.getJSON('/api/model')
   .done(function(data) { callback(data); })
   .fail(function(jqhxr, textStatus, error) {});
+}
+
+var on_cpu = false;  // avoid re-entry
+function getCpu(callback) {
+  if(on_cpu) {
+    return;
+  }
+  
+  on_cpu = true;
+  $.getJSON('/api/get_cpu?env_id='+env_id)
+  .done(function(data) { callback(data); on_cpu = false; })
+  .fail(function(jqhxr, textStatus, error) { on_cpu = false; });
 }
 
 var on_status = false;  // avoid re-entry
@@ -211,7 +232,7 @@ function drawThroughput(elementId, stats) {
     }
     data.push(elements);
   }
-  drawLineChart(titles, data, elementId, 'Requests/min');
+  drawLineChart(titles, data, elementId, 'Throughput(reqs/min)');
 }
 
 // Refresh the stats on the page.
@@ -220,7 +241,11 @@ function refresh() {
     $("#detail").empty();
     modeler("detail", {no_plugins:true, meta:model});
   });
-  
+
+  getStats(function(stats) {
+    drawThroughput('throughput', stats);
+  });
+
   getStatus(function(status){
     if(!status.valid)  return;
     var frontend = status.frontend;
@@ -245,9 +270,10 @@ function refresh() {
     	  var row = [];
           row.push(frontend[i].name);
           row.push(frontend[i].ip);
-          row.push('<input type="number" id="users'+i+'" value="'+users+'" style="width: 100px;" onChange="getUsersVal('+i+')" />');
-          row.push('<input type="text" id="freq'+i+'" value="'+freq+'" style="width: 100px;"  onChange="getFreqVal('+i+')"/>');
-          row.push('<img id="restart" title="Restart" class="action" onclick="reStart(\''+frontend[i].ip+'\',\''+frontend[i].name+'\')" src="/hybrid_cloud/static/img/system-reboot-md.png"/>');
+          row.push('<input type="number" id="users'+i+'" value="'+users+'" style="width: 80px;" onChange="getUsersVal('+i+')" />');
+//          row.push('<input type="text" id="freq'+i+'" value="'+freq+'" style="width: 80px;"  onChange="getFreqVal('+i+')"/>');
+          row.push('<input type="text" id="throughput'+i+'" value="'+throughput+'" style="width: 80px;"  onChange="getThroughputVal('+i+')"/>');
+          row.push('<img id="restart" title="Restart" class="action" onclick="reStart(this,\''+frontend[i].ip+'\',\''+frontend[i].name+'\')" src="/hybrid_cloud/static/img/system-reboot-md.png"/>');
     	  meters.push(row);
     	  targets.push(ip);
       }
@@ -267,7 +293,7 @@ function refresh() {
     }
     drawTable(titles, titleTypes, data, 'frontend', 0, sortIndex);
     if(changed) {
-        var titles = [ 'Cluster', 'Target', 'Number of Users', 'Request Period', 'Action' ];
+        var titles = [ 'Cluster', 'Target', 'Number of Users', 'Requests/min', 'Action' ];
         var titleTypes = [ 'string', 'string', 'string', 'string', 'string' ];
         drawTable(titles, titleTypes, meters, 'meter', 0, sortIndex);
     }
@@ -297,9 +323,39 @@ function refresh() {
     }
     drawTable(titles, titleTypes, data, 'backend', 0, sortIndex);
   });
+}
 
-  getStats(function(stats) {
-    drawThroughput('throughput', stats);
+function refreshCPU() {
+  getCpu(function(status){
+    if(!status.valid)  return;
+    var frontend = status.frontend;
+    if (frontend.length == 0) {
+      $('#frontend').text('No instance found');
+      return;
+    }
+    var titles = [ 'Cluster', 'Region', 'AZ', 'Count', 'Nodes', 'Load', 'Action' ];
+    var titleTypes = [ 'string', 'string', 'string', 'number', 'number', 'string', 'string' ];
+    var sortIndex = 1;
+    var data = [];
+    for (var i = 0; i < frontend.length; i++) {
+      var elements = [];
+      var region = frontend[i].region;
+      var ip = frontend[i].ip;
+      elements.push(frontend[i].name);
+
+      var cloudIcos ={"fusionsphere":"fs-icon.png","hws":"hws-icon.png","aws":"aws-icon.png","otc":"otc-icon.png","openstack":"openstack-icon.png","vcloud":"vcloud-icon.png"};
+      var regions = frontend[i].region.split("--");
+      var imgName = cloudIcos[regions[1]];
+      var regionStr = '<img  src="/hybrid_cloud/static/img/'+imgName+'"/>'+regions[0];
+      elements.push(regionStr);
+      elements.push(frontend[i].az);
+      elements.push(frontend[i].instance);
+      elements.push(frontend[i].nodeCount);
+      elements.push(frontend[i].load);
+      elements.push('<img class="action" title="Scale Up" onclick="scale_up(\''+frontend[i].scale_service+'\', \''+frontend[i].az+'\')" src="/hybrid_cloud/static/img/green-arrows-md.png"/><img class="action" title="Scale Down" onclick="scale_down(\''+frontend[i].scale_service+'\', \''+frontend[i].az+'\')" src="/hybrid_cloud/static/img/green-inward-arrows-md.png"/>')
+      data.push(elements);
+    }
+    drawTable(titles, titleTypes, data, 'frontend', 0, sortIndex);
   });
 }
 
@@ -316,7 +372,7 @@ function meter() {
   var sortIndex = 2;
   var data = [];
   drawTable(titles, titleTypes, data, 'backend', 0, sortIndex);
-  var titles = [ 'Cluster', 'Target', 'Number of Users', 'Request Period', 'Action' ];
+  var titles = [ 'Cluster', 'Target', 'Number of Users', 'Requests/min', 'Action' ];
   var titleTypes = [ 'string', 'string', 'string', 'string', 'string' ];
   var data = [];
   drawTable(titles, titleTypes, data, 'meter', 0, sortIndex);
@@ -331,5 +387,50 @@ function meter() {
       refresh();
     });
   });
-  setInterval(function() { refresh(); }, 15000);
+  setInterval(function() { refresh(); }, 13000);
+  setInterval(function() { refreshCPU(); }, 17000);
+  
 }
+
+var env_id = ""
+var environment={
+  show: function() {
+    $('#choose_environment').dialog("open");
+  },
+  submit: function() {
+    $("#_set_environment").submit();
+    $('#choose_environment').dialog("close");
+    $("#container").show()
+    meter();
+  }
+};
+
+$(function () {
+  $("#container").hide()
+  getEnvlist(function(envs){
+    if(envs.length > 0) {
+        $("#environment_id").empty()
+	    for (var i = envs.length -1; i>=0; i--){
+	      if (i == 0){
+	        $("#environment_id").append('<option value="'+envs[i].id+'" selected>'+envs[i].name+'</option>')
+	      }else{
+	        $("#environment_id").append('<option value="'+envs[i].id+'">'+envs[i].name+'</option>')
+	      }
+	   }
+    }
+  });
+  $("#_set_environment").submit(function ()
+  {
+    env_id = $("#environment_id").val()
+    return false
+  });
+  $('#_set_environment_btn').bind('click', function(){environment.submit();});
+  $('#choose_environment').dialog('open');
+});
+
+function getEnvlist(callback){
+  $.getJSON('/api/get_envs')
+  .done(function(data) { callback(data);})
+  .fail(function(jqhxr, textStatus, error) {});
+}
+
